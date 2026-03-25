@@ -1,37 +1,39 @@
 # PROGRESS.md — RL Routing Project Session Log
 
 ## Current Phase
-Phase 2 — RL Agent Training
+Phase 3 — Evaluation and Comparison
 
 ## Phase Status
 COMPLETE
 
 ## Last Completed Step
-Phase 2 complete. All three PPO variants trained (A, B, C) and committed.
-Models saved to models/trained/. Training metadata saved to experiments/results/.
+Phase 3 complete. evaluate.py run on 177-transaction held-out set.
+comparison_report.md auto-generated. 4 analysis figures saved.
+All committed.
 
 ## Next Step
-Phase 3, Step 1: Create agent/evaluate.py. Load held-out set from
-data/evaluation/held_out_set.json. Evaluate baseline (ThresholdPolicy) and
-all three PPO variants. Compute: routing accuracy, auto-approval precision,
-auto-approval rate, unnecessary escalation rate, error rate by difficulty tier,
-confusion matrix. Save to experiments/results/evaluation_results.json.
+Phase 4, Step 1: Read parent project CLAUDE.md/ARCHITECTURE.md to understand
+API patterns. Create integration/router.py — LearnedRouter class with
+route(confidence_score, transaction_features) → RoutingDecision, fallback to
+threshold policy if model file missing. Then create api/main.py (FastAPI app
+with POST /route, GET /policy/info, GET /health, POST /policy/reload).
 
 ## Completed Phases
 - [x] Phase 0 — Repository initialisation
 - [x] Phase 1 — Environment and synthetic data
 - [x] Phase 2 — RL agent training
-- [ ] Phase 3 — Evaluation and comparison
+- [x] Phase 3 — Evaluation and comparison
 - [ ] Phase 4 — Integration and API
 - [ ] Phase 5 — CI/CD and deployment
 - [ ] Phase 6 — README and documentation
 
 ## Open Issues
 - data/synthetic/transactions.jsonl contains dry-run mock data (no real API calls).
-  For real confidence scores, run `python -m environment.transaction_simulator`
-  with ANTHROPIC_API_KEY set. Training was done on mock data.
-- Variant B training was slower (~24 min vs 10 min for A/C) because parallel
-  training competed for CPU. Sequential training recommended in future.
+  Run `python -m environment.transaction_simulator` with ANTHROPIC_API_KEY set
+  to generate real confidence scores. This explains the tier-based routing behaviour
+  in Phase 3 results (policy learned on coarse discrete features).
+- PPO-A and PPO-B produced identical evaluation results. On higher-load scenarios
+  their behaviour would diverge; evaluate separately if load-sensitive routing matters.
 
 ## Training Results Summary (Phase 2)
 | Variant | Description          | Final Mean Reward | Training Time |
@@ -40,33 +42,31 @@ confusion matrix. Save to experiments/results/evaluation_results.json.
 | B       | Workload-weighted    | 281.1 ± 6.1       | ~24 min       |
 | C       | Conservative (-5.0)  | 67.3 ± 0.0        | ~24 min       |
 
-Notes:
-- Variant A: converged early (~20k steps), stable mean reward of 291.1
-- Variant B: slightly lower reward due to load-dependent escalation penalty;
-  higher variance (±6.1) consistent with stochastic accountant_load state
-- Variant C: significantly lower reward (67.3) as expected — heavy -5.0 penalty
-  forces conservative routing with fewer auto-approvals, fewer +1.0 rewards
-- All three model files are small (~140KB each) and committed to the repo
+## Evaluation Results Summary (Phase 3)
+| Policy   | Routing Acc | Auto-Prec | Auto-Rate | Error Rate |
+|----------|-------------|-----------|-----------|------------|
+| Baseline | 44.6%       | 89.4%     | 37.3%     | 10.6%      |
+| PPO-A    | 75.1%       | 81.2%     | 81.4%     | 18.8%      |
+| PPO-B    | 75.1%       | 81.2%     | 81.4%     | 18.8%      |
+| PPO-C    | 61.0%       | 90.1%     | 45.8%     |  9.9%      |
+
+Key finding: All PPO variants eliminated REJECT_FOR_MANUAL entirely.
+PPO-C is the best balance (highest precision, lowest error rate, no REJECT).
 
 ## Session Log
 ### Session 1 — 2026-03-25
 - Started: No PROGRESS.md existed; Phase 0 not yet started
-- Completed: Context files read, architecture confirmed, directory structure created, CLAUDE.md updated, .gitignore and .env.example created
-- Ended: Phase 0 COMPLETE. Repo at https://github.com/rajo69/AI-Accountant-with-Reinforcement-Learning-Routing.git
-
-### Session 1 cont. — 2026-03-25
-- Completed: Phase 1 — RoutingEnv, reward_functions (A/B/C), transaction_simulator, 17 tests
-- Synthetic data: 882 total records (705 train / 177 eval), dry-run verified
-  - Easy: n=322 correct=89.1% mean_conf=0.900
-  - Medium: n=252 correct=77.0% mean_conf=0.650
-  - Hard: n=131 correct=55.0% mean_conf=0.376
-- NOTE: data/synthetic/ contains dry-run mock data. Run `python -m environment.transaction_simulator`
-  with ANTHROPIC_API_KEY set to generate real confidence scores before Phase 2 training.
+- Completed: Phases 0 and 1 — env, reward functions, simulator, 17 tests
 - Ended: Phase 1 COMPLETE
 
 ### Session 2 — 2026-03-25
-- Started: Phase 1 complete, Phase 2 not started. agent/ had only __init__.py.
-- Completed: Phase 2 — agent/policy_config.yaml, agent/train.py, agent/baseline.py
-  created. All three PPO variants (A, B, C) trained with 100k timesteps each.
-  Models saved to models/trained/. Training metadata JSON written.
+- Started: Phase 1 complete, Phase 2 not started
+- Completed: Phase 2 — policy_config.yaml, train.py, baseline.py,
+  all three PPO variants trained (100k steps each)
 - Ended: Phase 2 COMPLETE
+
+### Session 3 — 2026-03-25
+- Started: Phase 2 complete, Phase 3 not started
+- Completed: Phase 3 — evaluate.py, analysis.ipynb, comparison_report.md,
+  4 figures (fig1–4). Held-out evaluation on 177 transactions.
+- Ended: Phase 3 COMPLETE

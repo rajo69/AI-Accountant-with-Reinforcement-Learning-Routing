@@ -1,0 +1,150 @@
+{
+  "held_out_set_path": "C:\\Users\\Rajo\\Desktop\\projects_2026\\github_exp\\RL_Routing_AI_Accountant\\data\\evaluation\\held_out_set.json",
+  "n_transactions": 177,
+  "policies": [
+    {
+      "policy": "Baseline (threshold 0.85/0.50)",
+      "n_transactions": 177,
+      "overall_routing_accuracy": 0.4463,
+      "auto_approval_precision": 0.8939,
+      "auto_approval_rate": 0.3729,
+      "unnecessary_escalation_rate": 0.3277,
+      "error_rate_auto": 0.1061,
+      "error_rate_by_tier": {
+        "easy": 0.1061,
+        "medium": null,
+        "hard": null
+      },
+      "action_distribution_by_tier": {
+        "easy": {
+          "AUTO_APPROVE": 66,
+          "SURFACE_FOR_REVIEW": 15,
+          "REJECT_FOR_MANUAL": 0
+        },
+        "medium": {
+          "AUTO_APPROVE": 0,
+          "SURFACE_FOR_REVIEW": 63,
+          "REJECT_FOR_MANUAL": 0
+        },
+        "hard": {
+          "AUTO_APPROVE": 0,
+          "SURFACE_FOR_REVIEW": 0,
+          "REJECT_FOR_MANUAL": 33
+        }
+      },
+      "action_totals": {
+        "AUTO_APPROVE": 66,
+        "SURFACE_FOR_REVIEW": 78,
+        "REJECT_FOR_MANUAL": 33
+      }
+    },
+    {
+      "policy": "PPO Variant A",
+      "n_transactions": 177,
+      "overall_routing_accuracy": 0.7514,
+      "auto_approval_precision": 0.8125,
+      "auto_approval_rate": 0.8136,
+      "unnecessary_escalation_rate": 0.096,
+      "error_rate_auto": 0.1875,
+      "error_rate_by_tier": {
+        "easy": 0.0988,
+        "medium": 0.3016,
+        "hard": null
+      },
+      "action_distribution_by_tier": {
+        "easy": {
+          "AUTO_APPROVE": 81,
+          "SURFACE_FOR_REVIEW": 0,
+          "REJECT_FOR_MANUAL": 0
+        },
+        "medium": {
+          "AUTO_APPROVE": 63,
+          "SURFACE_FOR_REVIEW": 0,
+          "REJECT_FOR_MANUAL": 0
+        },
+        "hard": {
+          "AUTO_APPROVE": 0,
+          "SURFACE_FOR_REVIEW": 33,
+          "REJECT_FOR_MANUAL": 0
+        }
+      },
+      "action_totals": {
+        "AUTO_APPROVE": 144,
+        "SURFACE_FOR_REVIEW": 33,
+        "REJECT_FOR_MANUAL": 0
+      }
+    },
+    {
+      "policy": "PPO Variant B",
+      "n_transactions": 177,
+      "overall_routing_accuracy": 0.7514,
+      "auto_approval_precision": 0.8125,
+      "auto_approval_rate": 0.8136,
+      "unnecessary_escalation_rate": 0.096,
+      "error_rate_auto": 0.1875,
+      "error_rate_by_tier": {
+        "easy": 0.0988,
+        "medium": 0.3016,
+        "hard": null
+      },
+      "action_distribution_by_tier": {
+        "easy": {
+          "AUTO_APPROVE": 81,
+          "SURFACE_FOR_REVIEW": 0,
+          "REJECT_FOR_MANUAL": 0
+        },
+        "medium": {
+          "AUTO_APPROVE": 63,
+          "SURFACE_FOR_REVIEW": 0,
+          "REJECT_FOR_MANUAL": 0
+        },
+        "hard": {
+          "AUTO_APPROVE": 0,
+          "SURFACE_FOR_REVIEW": 33,
+          "REJECT_FOR_MANUAL": 0
+        }
+      },
+      "action_totals": {
+        "AUTO_APPROVE": 144,
+        "SURFACE_FOR_REVIEW": 33,
+        "REJECT_FOR_MANUAL": 0
+      }
+    },
+    {
+      "policy": "PPO Variant C",
+      "n_transactions": 177,
+      "overall_routing_accuracy": 0.6102,
+      "auto_approval_precision": 0.9012,
+      "auto_approval_rate": 0.4576,
+      "unnecessary_escalation_rate": 0.3446,
+      "error_rate_auto": 0.0988,
+      "error_rate_by_tier": {
+        "easy": 0.0988,
+        "medium": null,
+        "hard": null
+      },
+      "action_distribution_by_tier": {
+        "easy": {
+          "AUTO_APPROVE": 81,
+          "SURFACE_FOR_REVIEW": 0,
+          "REJECT_FOR_MANUAL": 0
+        },
+        "medium": {
+          "AUTO_APPROVE": 0,
+          "SURFACE_FOR_REVIEW": 63,
+          "REJECT_FOR_MANUAL": 0
+        },
+        "hard": {
+          "AUTO_APPROVE": 0,
+          "SURFACE_FOR_REVIEW": 33,
+          "REJECT_FOR_MANUAL": 0
+        }
+      },
+      "action_totals": {
+        "AUTO_APPROVE": 81,
+        "SURFACE_FOR_REVIEW": 96,
+        "REJECT_FOR_MANUAL": 0
+      }
+    }
+  ]
+}
