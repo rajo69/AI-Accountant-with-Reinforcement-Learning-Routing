@@ -1,0 +1,3542 @@
+[
+  {
+    "transaction_id": "t016_syn_000",
+    "features": {
+      "confidence_score": 0.9407862609698845,
+      "amount_normalised": 0.4826614824922575,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9407862609698845,
+    "true_category": "Postage & Freight",
+    "true_category_code": "489",
+    "predicted_category": "Postage & Freight",
+    "predicted_category_code": "489",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "ROYAL MAIL BULK FRANKING VAR1",
+    "amount": -184.36,
+    "seed_id": "t016"
+  },
+  {
+    "transaction_id": "t010_syn_000",
+    "features": {
+      "confidence_score": 0.9237092526250104,
+      "amount_normalised": 0.5123076878155689,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9237092526250104,
+    "true_category": "Utilities",
+    "true_category_code": "445",
+    "predicted_category": "Utilities",
+    "predicted_category_code": "445",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "BRITISH GAS BUSINESS VAR1",
+    "amount": -254.46,
+    "seed_id": "t010"
+  },
+  {
+    "transaction_id": "t004_syn_010",
+    "features": {
+      "confidence_score": 0.8368128395973888,
+      "amount_normalised": 0.6505369220202454,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8368128395973888,
+    "true_category": "Rent",
+    "true_category_code": "401",
+    "predicted_category": "Rent",
+    "predicted_category_code": "401",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "REGUS FLEET STREET VAR11",
+    "amount": -1138.88,
+    "seed_id": "t004"
+  },
+  {
+    "transaction_id": "t002_syn_000",
+    "features": {
+      "confidence_score": 0.8708660071663286,
+      "amount_normalised": 0.622058972040187,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8708660071663286,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "Computer Equipment & Software",
+    "predicted_category_code": "404",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "ADOBE SYSTEMS INC VAR1",
+    "amount": -836.61,
+    "seed_id": "t002"
+  },
+  {
+    "transaction_id": "t033_syn_002",
+    "features": {
+      "confidence_score": 0.8862337489697298,
+      "amount_normalised": 0.44754027825909226,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8862337489697298,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "Computer Equipment & Software",
+    "predicted_category_code": "404",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "SAGE PAYROLL SOFTWARE VAR3",
+    "amount": -125.76,
+    "seed_id": "t033"
+  },
+  {
+    "transaction_id": "t004_syn_001",
+    "features": {
+      "confidence_score": 0.937742047724113,
+      "amount_normalised": 0.6443688162773601,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.937742047724113,
+    "true_category": "Rent",
+    "true_category_code": "401",
+    "predicted_category": "Rent",
+    "predicted_category_code": "401",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "REGUS FLEET STREET VAR2",
+    "amount": -1065.29,
+    "seed_id": "t004"
+  },
+  {
+    "transaction_id": "t045_syn_005",
+    "features": {
+      "confidence_score": 0.9378781042978487,
+      "amount_normalised": 0.6445203772587055,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9378781042978487,
+    "true_category": "Insurance",
+    "true_category_code": "462",
+    "predicted_category": "Insurance",
+    "predicted_category_code": "462",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "ZURICH BUSINESS INSURANCE VAR6",
+    "amount": -1067.04,
+    "seed_id": "t045"
+  },
+  {
+    "transaction_id": "t034_syn_010",
+    "features": {
+      "confidence_score": 0.9292616575928092,
+      "amount_normalised": 0.7216402548401576,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9292616575928092,
+    "true_category": "Cleaning",
+    "true_category_code": "480",
+    "predicted_category": "Cleaning",
+    "predicted_category_code": "480",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "PHOENIX CLEANING SERVICES VAR11",
+    "amount": -2459.21,
+    "seed_id": "t034"
+  },
+  {
+    "transaction_id": "t018_syn_003",
+    "features": {
+      "confidence_score": 0.8782556405226927,
+      "amount_normalised": 0.4332494270563915,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8782556405226927,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "Computer Equipment & Software",
+    "predicted_category_code": "404",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "XERO LIMITED SUBSCRIPTION VAR4",
+    "amount": -107.6,
+    "seed_id": "t018"
+  },
+  {
+    "transaction_id": "t026_syn_008",
+    "features": {
+      "confidence_score": 0.8467817433996832,
+      "amount_normalised": 0.5368096860027098,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8467817433996832,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "SLACK TECHNOLOGIES INC VAR9",
+    "amount": -332.01,
+    "seed_id": "t026"
+  },
+  {
+    "transaction_id": "t003",
+    "features": {
+      "confidence_score": 0.8851298277442923,
+      "amount_normalised": 0.7231600557929171,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8851298277442923,
+    "true_category": "PAYE Payable",
+    "true_category_code": "820",
+    "predicted_category": "PAYE Payable",
+    "predicted_category_code": "820",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": false,
+    "description": "HMRC PAYE",
+    "amount": -2500.0,
+    "seed_id": "t003"
+  },
+  {
+    "transaction_id": "t025_syn_000",
+    "features": {
+      "confidence_score": 0.8760550205812457,
+      "amount_normalised": 0.643979683821182,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8760550205812457,
+    "true_category": "Postage & Freight",
+    "true_category_code": "489",
+    "predicted_category": "Postage & Freight",
+    "predicted_category_code": "489",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "DPD COURIER SERVICES JAN 24 VAR1",
+    "amount": -1060.81,
+    "seed_id": "t025"
+  },
+  {
+    "transaction_id": "t009_syn_007",
+    "features": {
+      "confidence_score": 0.8896844233526268,
+      "amount_normalised": 0.6575063694688543,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8896844233526268,
+    "true_category": "Advertising & Marketing",
+    "true_category_code": "412",
+    "predicted_category": "Advertising & Marketing",
+    "predicted_category_code": "412",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "GOOGLE ADS PAYMENT VAR8",
+    "amount": -1228.16,
+    "seed_id": "t009"
+  },
+  {
+    "transaction_id": "t009_syn_008",
+    "features": {
+      "confidence_score": 0.9056588032143269,
+      "amount_normalised": 0.66646713785641,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9056588032143269,
+    "true_category": "Advertising & Marketing",
+    "true_category_code": "412",
+    "predicted_category": "Advertising & Marketing",
+    "predicted_category_code": "412",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "GOOGLE ADS PAYMENT VAR9",
+    "amount": -1353.3,
+    "seed_id": "t009"
+  },
+  {
+    "transaction_id": "t006_syn_006",
+    "features": {
+      "confidence_score": 0.9783186581613954,
+      "amount_normalised": 0.2741551538157611,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9783186581613954,
+    "true_category": "Travel",
+    "true_category_code": "493",
+    "predicted_category": "Travel",
+    "predicted_category_code": "493",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "KINGS CROSS STATION TFL VAR7",
+    "amount": -18.42,
+    "seed_id": "t006"
+  },
+  {
+    "transaction_id": "t017_syn_004",
+    "features": {
+      "confidence_score": 0.8388835555462882,
+      "amount_normalised": 0.7968522130937358,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8388835555462882,
+    "true_category": "VAT",
+    "true_category_code": "820",
+    "predicted_category": "VAT",
+    "predicted_category_code": "820",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "HMRC VAT PAYMENT VAR5",
+    "amount": -5550.26,
+    "seed_id": "t017"
+  },
+  {
+    "transaction_id": "t019_syn_005",
+    "features": {
+      "confidence_score": 0.8509303307166909,
+      "amount_normalised": 0.7180162690393184,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8509303307166909,
+    "true_category": "Insurance",
+    "true_category_code": "462",
+    "predicted_category": "Insurance",
+    "predicted_category_code": "462",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "LLOYDS BANK INSURANCE PREM VAR6",
+    "amount": -2364.61,
+    "seed_id": "t019"
+  },
+  {
+    "transaction_id": "t030_syn_004",
+    "features": {
+      "confidence_score": 0.9152774420022374,
+      "amount_normalised": 0.4317739191687078,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9152774420022374,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "Computer Equipment & Software",
+    "predicted_category_code": "404",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "AMAZON WEB SERVICES EMEA VAR5",
+    "amount": -105.88,
+    "seed_id": "t030"
+  },
+  {
+    "transaction_id": "t045_syn_000",
+    "features": {
+      "confidence_score": 0.8685924439379229,
+      "amount_normalised": 0.6361610894211116,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8685924439379229,
+    "true_category": "Insurance",
+    "true_category_code": "462",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "ZURICH BUSINESS INSURANCE VAR1",
+    "amount": -974.68,
+    "seed_id": "t045"
+  },
+  {
+    "transaction_id": "t048_syn_002",
+    "features": {
+      "confidence_score": 0.9461526749833431,
+      "amount_normalised": 0.8164048588050561,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9461526749833431,
+    "true_category": "Employer NIC Payable",
+    "true_category_code": "820",
+    "predicted_category": "Employer NIC Payable",
+    "predicted_category_code": "820",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "HMRC NIC EMPLOYER VAR3",
+    "amount": -6858.13,
+    "seed_id": "t048"
+  },
+  {
+    "transaction_id": "t043_syn_001",
+    "features": {
+      "confidence_score": 0.9382380393858931,
+      "amount_normalised": 0.7749108657487007,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9382380393858931,
+    "true_category": "Accountancy & Audit Fees",
+    "true_category_code": "420",
+    "predicted_category": "Accountancy & Audit Fees",
+    "predicted_category_code": "420",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "THORNTON BAKER LLP AUDIT FEE VAR2",
+    "amount": -4377.14,
+    "seed_id": "t043"
+  },
+  {
+    "transaction_id": "t007_syn_006",
+    "features": {
+      "confidence_score": 0.8593071166494026,
+      "amount_normalised": 0.42194772915856305,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8593071166494026,
+    "true_category": "Travel",
+    "true_category_code": "493",
+    "predicted_category": "Travel",
+    "predicted_category_code": "493",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "PREMIER INN MANCHESTER VAR7",
+    "amount": -95.1,
+    "seed_id": "t007"
+  },
+  {
+    "transaction_id": "t044_syn_010",
+    "features": {
+      "confidence_score": 0.8893636651485973,
+      "amount_normalised": 0.32798716323562094,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8893636651485973,
+    "true_category": "Entertainment & Hospitality",
+    "true_category_code": "429",
+    "predicted_category": "Entertainment & Hospitality",
+    "predicted_category_code": "429",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "DELIVEROO BUSINESS ACCOUNT VAR11",
+    "amount": -33.77,
+    "seed_id": "t044"
+  },
+  {
+    "transaction_id": "t001_syn_007",
+    "features": {
+      "confidence_score": 0.9557520885382086,
+      "amount_normalised": 0.3606326631124844,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9557520885382086,
+    "true_category": "Entertainment & Hospitality",
+    "true_category_code": "429",
+    "predicted_category": "Entertainment & Hospitality",
+    "predicted_category_code": "429",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "TESCO STORES 3526 LONDON VAR8",
+    "amount": -48.5,
+    "seed_id": "t001"
+  },
+  {
+    "transaction_id": "t030_syn_000",
+    "features": {
+      "confidence_score": 0.8905967181237032,
+      "amount_normalised": 0.43871828472361385,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8905967181237032,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "Computer Equipment & Software",
+    "predicted_category_code": "404",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "AMAZON WEB SERVICES EMEA VAR1",
+    "amount": -114.22,
+    "seed_id": "t030"
+  },
+  {
+    "transaction_id": "t040_syn_004",
+    "features": {
+      "confidence_score": 0.9154787956930989,
+      "amount_normalised": 0.5252472628211714,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9154787956930989,
+    "true_category": "Postage & Freight",
+    "true_category_code": "489",
+    "predicted_category": "Postage & Freight",
+    "predicted_category_code": "489",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "CITY SPRINT SAME DAY COURIER VAR5",
+    "amount": -292.85,
+    "seed_id": "t040"
+  },
+  {
+    "transaction_id": "t015",
+    "features": {
+      "confidence_score": 0.9017713053773586,
+      "amount_normalised": 0.8718798329038441,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9017713053773586,
+    "true_category": "Sales",
+    "true_category_code": "200",
+    "predicted_category": "Sales",
+    "predicted_category_code": "200",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": false,
+    "description": "CLIENT PAYMENT JOHNSON CO",
+    "amount": 12500.0,
+    "seed_id": "t015"
+  },
+  {
+    "transaction_id": "t048_syn_010",
+    "features": {
+      "confidence_score": 0.8855671432271065,
+      "amount_normalised": 0.8261017879134384,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8855671432271065,
+    "true_category": "Employer NIC Payable",
+    "true_category_code": "820",
+    "predicted_category": "Employer NIC Payable",
+    "predicted_category_code": "820",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "HMRC NIC EMPLOYER VAR11",
+    "amount": -7616.89,
+    "seed_id": "t048"
+  },
+  {
+    "transaction_id": "t045_syn_007",
+    "features": {
+      "confidence_score": 0.8262343470596347,
+      "amount_normalised": 0.6436981063253128,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8262343470596347,
+    "true_category": "Insurance",
+    "true_category_code": "462",
+    "predicted_category": "Insurance",
+    "predicted_category_code": "462",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "ZURICH BUSINESS INSURANCE VAR8",
+    "amount": -1057.58,
+    "seed_id": "t045"
+  },
+  {
+    "transaction_id": "t043",
+    "features": {
+      "confidence_score": 0.9135712682185892,
+      "amount_normalised": 0.7710936610846739,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9135712682185892,
+    "true_category": "Accountancy & Audit Fees",
+    "true_category_code": "420",
+    "predicted_category": "Accountancy & Audit Fees",
+    "predicted_category_code": "420",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": false,
+    "description": "THORNTON BAKER LLP AUDIT FEE",
+    "amount": -4200.0,
+    "seed_id": "t043"
+  },
+  {
+    "transaction_id": "t026_syn_002",
+    "features": {
+      "confidence_score": 0.8553467784841847,
+      "amount_normalised": 0.5435594082593104,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8553467784841847,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "Computer Equipment & Software",
+    "predicted_category_code": "404",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "SLACK TECHNOLOGIES INC VAR3",
+    "amount": -357.24,
+    "seed_id": "t026"
+  },
+  {
+    "transaction_id": "t003_syn_011",
+    "features": {
+      "confidence_score": 0.8780369336739584,
+      "amount_normalised": 0.7067439165690524,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8780369336739584,
+    "true_category": "PAYE Payable",
+    "true_category_code": "820",
+    "predicted_category": "PAYE Payable",
+    "predicted_category_code": "820",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "HMRC PAYE VAR12",
+    "amount": -2092.99,
+    "seed_id": "t003"
+  },
+  {
+    "transaction_id": "t017_syn_006",
+    "features": {
+      "confidence_score": 0.9752074467322822,
+      "amount_normalised": 0.8040520878919958,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9752074467322822,
+    "true_category": "VAT",
+    "true_category_code": "820",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "HMRC VAT PAYMENT VAR7",
+    "amount": -6000.0,
+    "seed_id": "t017"
+  },
+  {
+    "transaction_id": "t027_syn_003",
+    "features": {
+      "confidence_score": 0.8639261276821797,
+      "amount_normalised": 0.59951235633435,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8639261276821797,
+    "true_category": "Rates",
+    "true_category_code": "469",
+    "predicted_category": "Rates",
+    "predicted_category_code": "469",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "RATES DEMAND NOTICE LB HACKNEY VAR4",
+    "amount": -655.29,
+    "seed_id": "t027"
+  },
+  {
+    "transaction_id": "t027_syn_009",
+    "features": {
+      "confidence_score": 0.8281018059840443,
+      "amount_normalised": 0.5721872337588946,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8281018059840443,
+    "true_category": "Rates",
+    "true_category_code": "469",
+    "predicted_category": "Rates",
+    "predicted_category_code": "469",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "RATES DEMAND NOTICE LB HACKNEY VAR10",
+    "amount": -487.31,
+    "seed_id": "t027"
+  },
+  {
+    "transaction_id": "t015_syn_005",
+    "features": {
+      "confidence_score": 0.9467405875831905,
+      "amount_normalised": 0.8757651937375289,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9467405875831905,
+    "true_category": "Sales",
+    "true_category_code": "200",
+    "predicted_category": "Sales",
+    "predicted_category_code": "200",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "CLIENT PAYMENT JOHNSON CO VAR6",
+    "amount": 13036.73,
+    "seed_id": "t015"
+  },
+  {
+    "transaction_id": "t043_syn_007",
+    "features": {
+      "confidence_score": 0.8320102723953591,
+      "amount_normalised": 0.7873370307705143,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8320102723953591,
+    "true_category": "Accountancy & Audit Fees",
+    "true_category_code": "420",
+    "predicted_category": "Accountancy & Audit Fees",
+    "predicted_category_code": "420",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "THORNTON BAKER LLP AUDIT FEE VAR8",
+    "amount": -5007.18,
+    "seed_id": "t043"
+  },
+  {
+    "transaction_id": "t003_syn_000",
+    "features": {
+      "confidence_score": 0.8772966255200331,
+      "amount_normalised": 0.7196600637578464,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8772966255200331,
+    "true_category": "PAYE Payable",
+    "true_category_code": "820",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "HMRC PAYE VAR1",
+    "amount": -2407.06,
+    "seed_id": "t003"
+  },
+  {
+    "transaction_id": "t020_syn_001",
+    "features": {
+      "confidence_score": 0.8255244260935143,
+      "amount_normalised": 0.3388346409693628,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8255244260935143,
+    "true_category": "Entertainment & Hospitality",
+    "true_category_code": "429",
+    "predicted_category": "Entertainment & Hospitality",
+    "predicted_category_code": "429",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "COSTA COFFEE CANARY WHARF VAR2",
+    "amount": -38.1,
+    "seed_id": "t020"
+  },
+  {
+    "transaction_id": "t045_syn_003",
+    "features": {
+      "confidence_score": 0.8747750236217294,
+      "amount_normalised": 0.649246050764731,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8747750236217294,
+    "true_category": "Insurance",
+    "true_category_code": "462",
+    "predicted_category": "Insurance",
+    "predicted_category_code": "462",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "ZURICH BUSINESS INSURANCE VAR4",
+    "amount": -1123.07,
+    "seed_id": "t045"
+  },
+  {
+    "transaction_id": "t006_syn_003",
+    "features": {
+      "confidence_score": 0.8854633375443917,
+      "amount_normalised": 0.2704159605599686,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8854633375443917,
+    "true_category": "Travel",
+    "true_category_code": "493",
+    "predicted_category": "Travel",
+    "predicted_category_code": "493",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "KINGS CROSS STATION TFL VAR4",
+    "amount": -17.65,
+    "seed_id": "t006"
+  },
+  {
+    "transaction_id": "t001_syn_003",
+    "features": {
+      "confidence_score": 0.8685559279892492,
+      "amount_normalised": 0.35070800849158434,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8685559279892492,
+    "true_category": "Entertainment & Hospitality",
+    "true_category_code": "429",
+    "predicted_category": "Entertainment & Hospitality",
+    "predicted_category_code": "429",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "TESCO STORES 3526 LONDON VAR4",
+    "amount": -43.46,
+    "seed_id": "t001"
+  },
+  {
+    "transaction_id": "t007_syn_003",
+    "features": {
+      "confidence_score": 0.8901008371576247,
+      "amount_normalised": 0.40896939748152683,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8901008371576247,
+    "true_category": "Travel",
+    "true_category_code": "493",
+    "predicted_category": "Travel",
+    "predicted_category_code": "493",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "PREMIER INN MANCHESTER VAR4",
+    "amount": -82.51,
+    "seed_id": "t007"
+  },
+  {
+    "transaction_id": "t035_syn_008",
+    "features": {
+      "confidence_score": 0.8897085995239531,
+      "amount_normalised": 0.5352422527691082,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8897085995239531,
+    "true_category": "Utilities",
+    "true_category_code": "445",
+    "predicted_category": "Utilities",
+    "predicted_category_code": "445",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "BT BUSINESS BROADBAND JAN24 VAR9",
+    "amount": -326.41,
+    "seed_id": "t035"
+  },
+  {
+    "transaction_id": "t050_syn_003",
+    "features": {
+      "confidence_score": 0.9644975112100357,
+      "amount_normalised": 0.8327295385777419,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9644975112100357,
+    "true_category": "Wages & Salaries",
+    "true_category_code": "477",
+    "predicted_category": "Wages & Salaries",
+    "predicted_category_code": "477",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "REF: PAYROLL FEB 2024 VAR4",
+    "amount": -8183.24,
+    "seed_id": "t050"
+  },
+  {
+    "transaction_id": "t027_syn_011",
+    "features": {
+      "confidence_score": 0.8500772370306722,
+      "amount_normalised": 0.5746837697805196,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8500772370306722,
+    "true_category": "Rates",
+    "true_category_code": "469",
+    "predicted_category": "Rates",
+    "predicted_category_code": "469",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "RATES DEMAND NOTICE LB HACKNEY VAR12",
+    "amount": -500.68,
+    "seed_id": "t027"
+  },
+  {
+    "transaction_id": "t035_syn_000",
+    "features": {
+      "confidence_score": 0.8846686854658729,
+      "amount_normalised": 0.5549210616034025,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8846686854658729,
+    "true_category": "Utilities",
+    "true_category_code": "445",
+    "predicted_category": "Utilities",
+    "predicted_category_code": "445",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "BT BUSINESS BROADBAND JAN24 VAR1",
+    "amount": -404.1,
+    "seed_id": "t035"
+  },
+  {
+    "transaction_id": "t017_syn_002",
+    "features": {
+      "confidence_score": 0.9324140848188891,
+      "amount_normalised": 0.7803570159909784,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9324140848188891,
+    "true_category": "VAT",
+    "true_category_code": "820",
+    "predicted_category": "VAT",
+    "predicted_category_code": "820",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "HMRC VAT PAYMENT VAR3",
+    "amount": -4642.88,
+    "seed_id": "t017"
+  },
+  {
+    "transaction_id": "t026_syn_010",
+    "features": {
+      "confidence_score": 0.8532167110533092,
+      "amount_normalised": 0.5433320957214999,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8532167110533092,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "Computer Equipment & Software",
+    "predicted_category_code": "404",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "SLACK TECHNOLOGIES INC VAR11",
+    "amount": -356.36,
+    "seed_id": "t026"
+  },
+  {
+    "transaction_id": "t040_syn_003",
+    "features": {
+      "confidence_score": 0.8610540787220445,
+      "amount_normalised": 0.54549458817185,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8610540787220445,
+    "true_category": "Postage & Freight",
+    "true_category_code": "489",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "CITY SPRINT SAME DAY COURIER VAR4",
+    "amount": -364.82,
+    "seed_id": "t040"
+  },
+  {
+    "transaction_id": "t003_syn_004",
+    "features": {
+      "confidence_score": 0.88615550196966,
+      "amount_normalised": 0.7028057973693479,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.88615550196966,
+    "true_category": "PAYE Payable",
+    "true_category_code": "820",
+    "predicted_category": "PAYE Payable",
+    "predicted_category_code": "820",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "HMRC PAYE VAR5",
+    "amount": -2005.64,
+    "seed_id": "t003"
+  },
+  {
+    "transaction_id": "t048",
+    "features": {
+      "confidence_score": 0.821976337286974,
+      "amount_normalised": 0.8209002562654655,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.821976337286974,
+    "true_category": "Employer NIC Payable",
+    "true_category_code": "820",
+    "predicted_category": "Employer NIC Payable",
+    "predicted_category_code": "820",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": false,
+    "description": "HMRC NIC EMPLOYER",
+    "amount": -7200.0,
+    "seed_id": "t048"
+  },
+  {
+    "transaction_id": "t040_syn_007",
+    "features": {
+      "confidence_score": 0.8615156175264723,
+      "amount_normalised": 0.5432803557185772,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8615156175264723,
+    "true_category": "Postage & Freight",
+    "true_category_code": "489",
+    "predicted_category": "Postage & Freight",
+    "predicted_category_code": "489",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "CITY SPRINT SAME DAY COURIER VAR8",
+    "amount": -356.16,
+    "seed_id": "t040"
+  },
+  {
+    "transaction_id": "t027_syn_008",
+    "features": {
+      "confidence_score": 0.8234413825063045,
+      "amount_normalised": 0.5883759928469783,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8234413825063045,
+    "true_category": "Rates",
+    "true_category_code": "469",
+    "predicted_category": "Rates",
+    "predicted_category_code": "469",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "RATES DEMAND NOTICE LB HACKNEY VAR9",
+    "amount": -580.79,
+    "seed_id": "t027"
+  },
+  {
+    "transaction_id": "t034_syn_005",
+    "features": {
+      "confidence_score": 0.9093202416293619,
+      "amount_normalised": 0.7111792667592371,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9093202416293619,
+    "true_category": "Cleaning",
+    "true_category_code": "480",
+    "predicted_category": "Cleaning",
+    "predicted_category_code": "480",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "PHOENIX CLEANING SERVICES VAR6",
+    "amount": -2195.93,
+    "seed_id": "t034"
+  },
+  {
+    "transaction_id": "t004_syn_005",
+    "features": {
+      "confidence_score": 0.8954788296846556,
+      "amount_normalised": 0.6697796894303575,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8954788296846556,
+    "true_category": "Rent",
+    "true_category_code": "401",
+    "predicted_category": "Rent",
+    "predicted_category_code": "401",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "REGUS FLEET STREET VAR6",
+    "amount": -1402.72,
+    "seed_id": "t004"
+  },
+  {
+    "transaction_id": "t033_syn_010",
+    "features": {
+      "confidence_score": 0.8419323442412361,
+      "amount_normalised": 0.4493095767624983,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8419323442412361,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "Computer Equipment & Software",
+    "predicted_category_code": "404",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "SAGE PAYROLL SOFTWARE VAR11",
+    "amount": -128.21,
+    "seed_id": "t033"
+  },
+  {
+    "transaction_id": "t039_syn_000",
+    "features": {
+      "confidence_score": 0.8475234347264026,
+      "amount_normalised": 0.6435696734508092,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8475234347264026,
+    "true_category": "Office Supplies",
+    "true_category_code": "460",
+    "predicted_category": "Office Supplies",
+    "predicted_category_code": "460",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "STAPLES OFFICE SUPPLIES VAR1",
+    "amount": -1056.11,
+    "seed_id": "t039"
+  },
+  {
+    "transaction_id": "t037_syn_011",
+    "features": {
+      "confidence_score": 0.8894257919334343,
+      "amount_normalised": 0.49675316281560983,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8894257919334343,
+    "true_category": "Subscriptions",
+    "true_category_code": "461",
+    "predicted_category": "Subscriptions",
+    "predicted_category_code": "461",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "ICAEW ANNUAL SUBSCRIPTION VAR12",
+    "amount": -214.89,
+    "seed_id": "t037"
+  },
+  {
+    "transaction_id": "t026_syn_004",
+    "features": {
+      "confidence_score": 0.9451939801539212,
+      "amount_normalised": 0.5423545039030081,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9451939801539212,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "SLACK TECHNOLOGIES INC VAR5",
+    "amount": -352.6,
+    "seed_id": "t026"
+  },
+  {
+    "transaction_id": "t002_syn_002",
+    "features": {
+      "confidence_score": 0.8356854341988773,
+      "amount_normalised": 0.6535960184142021,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8356854341988773,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "Computer Equipment & Software",
+    "predicted_category_code": "404",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "ADOBE SYSTEMS INC VAR3",
+    "amount": -1177.24,
+    "seed_id": "t002"
+  },
+  {
+    "transaction_id": "t025_syn_007",
+    "features": {
+      "confidence_score": 0.8733374786559274,
+      "amount_normalised": 0.6688260085734605,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8733374786559274,
+    "true_category": "Postage & Freight",
+    "true_category_code": "489",
+    "predicted_category": "Postage & Freight",
+    "predicted_category_code": "489",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "DPD COURIER SERVICES JAN 24 VAR8",
+    "amount": -1388.31,
+    "seed_id": "t025"
+  },
+  {
+    "transaction_id": "t030_syn_006",
+    "features": {
+      "confidence_score": 0.825535147529438,
+      "amount_normalised": 0.4454460304627008,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.825535147529438,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "Computer Equipment & Software",
+    "predicted_category_code": "404",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "AMAZON WEB SERVICES EMEA VAR7",
+    "amount": -122.92,
+    "seed_id": "t030"
+  },
+  {
+    "transaction_id": "t015_syn_010",
+    "features": {
+      "confidence_score": 0.9776650967274827,
+      "amount_normalised": 0.8719179003609903,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9776650967274827,
+    "true_category": "Sales",
+    "true_category_code": "200",
+    "predicted_category": "Sales",
+    "predicted_category_code": "200",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "CLIENT PAYMENT JOHNSON CO VAR11",
+    "amount": 12505.15,
+    "seed_id": "t015"
+  },
+  {
+    "transaction_id": "t005_syn_006",
+    "features": {
+      "confidence_score": 0.936102920802261,
+      "amount_normalised": 0.3543361090159128,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.936102920802261,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "Computer Equipment & Software",
+    "predicted_category_code": "404",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "MICROSOFT 365 BUSINESS VAR7",
+    "amount": -45.24,
+    "seed_id": "t005"
+  },
+  {
+    "transaction_id": "t002_syn_010",
+    "features": {
+      "confidence_score": 0.9644377029949752,
+      "amount_normalised": 0.6372225432012497,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9644377029949752,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "Computer Equipment & Software",
+    "predicted_category_code": "404",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "ADOBE SYSTEMS INC VAR11",
+    "amount": -985.95,
+    "seed_id": "t002"
+  },
+  {
+    "transaction_id": "t004_syn_008",
+    "features": {
+      "confidence_score": 0.8295638830860952,
+      "amount_normalised": 0.6487828047079414,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8295638830860952,
+    "true_category": "Rent",
+    "true_category_code": "401",
+    "predicted_category": "Rent",
+    "predicted_category_code": "401",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "REGUS FLEET STREET VAR9",
+    "amount": -1117.45,
+    "seed_id": "t004"
+  },
+  {
+    "transaction_id": "t043_syn_011",
+    "features": {
+      "confidence_score": 0.8665655246243094,
+      "amount_normalised": 0.7826303115245791,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8665655246243094,
+    "true_category": "Accountancy & Audit Fees",
+    "true_category_code": "420",
+    "predicted_category": "Accountancy & Audit Fees",
+    "predicted_category_code": "420",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "THORNTON BAKER LLP AUDIT FEE VAR12",
+    "amount": -4758.52,
+    "seed_id": "t043"
+  },
+  {
+    "transaction_id": "t001_syn_000",
+    "features": {
+      "confidence_score": 0.8613001676739375,
+      "amount_normalised": 0.37937766603966216,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8613001676739375,
+    "true_category": "Entertainment & Hospitality",
+    "true_category_code": "429",
+    "predicted_category": "Entertainment & Hospitality",
+    "predicted_category_code": "429",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "TESCO STORES 3526 LONDON VAR1",
+    "amount": -59.63,
+    "seed_id": "t001"
+  },
+  {
+    "transaction_id": "t026_syn_000",
+    "features": {
+      "confidence_score": 0.9786199948394719,
+      "amount_normalised": 0.5405944618233789,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9786199948394719,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "Computer Equipment & Software",
+    "predicted_category_code": "404",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "SLACK TECHNOLOGIES INC VAR1",
+    "amount": -345.93,
+    "seed_id": "t026"
+  },
+  {
+    "transaction_id": "t048_syn_004",
+    "features": {
+      "confidence_score": 0.9353516443399688,
+      "amount_normalised": 0.8328834444530844,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9353516443399688,
+    "true_category": "Employer NIC Payable",
+    "true_category_code": "820",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "HMRC NIC EMPLOYER VAR5",
+    "amount": -8196.88,
+    "seed_id": "t048"
+  },
+  {
+    "transaction_id": "t016_syn_006",
+    "features": {
+      "confidence_score": 0.8260826771008793,
+      "amount_normalised": 0.48702444780175747,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8260826771008793,
+    "true_category": "Postage & Freight",
+    "true_category_code": "489",
+    "predicted_category": "Postage & Freight",
+    "predicted_category_code": "489",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "ROYAL MAIL BULK FRANKING VAR7",
+    "amount": -193.32,
+    "seed_id": "t016"
+  },
+  {
+    "transaction_id": "t035_syn_011",
+    "features": {
+      "confidence_score": 0.8652708391555217,
+      "amount_normalised": 0.5561246616595882,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8652708391555217,
+    "true_category": "Utilities",
+    "true_category_code": "445",
+    "predicted_category": "Utilities",
+    "predicted_category_code": "445",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "BT BUSINESS BROADBAND JAN24 VAR12",
+    "amount": -409.41,
+    "seed_id": "t035"
+  },
+  {
+    "transaction_id": "t035_syn_006",
+    "features": {
+      "confidence_score": 0.8867786546058068,
+      "amount_normalised": 0.5577983932606865,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8867786546058068,
+    "true_category": "Utilities",
+    "true_category_code": "445",
+    "predicted_category": "Utilities",
+    "predicted_category_code": "445",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "BT BUSINESS BROADBAND JAN24 VAR7",
+    "amount": -416.91,
+    "seed_id": "t035"
+  },
+  {
+    "transaction_id": "t040_syn_005",
+    "features": {
+      "confidence_score": 0.9191375655530334,
+      "amount_normalised": 0.5162976946578893,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9191375655530334,
+    "true_category": "Postage & Freight",
+    "true_category_code": "489",
+    "predicted_category": "Postage & Freight",
+    "predicted_category_code": "489",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "CITY SPRINT SAME DAY COURIER VAR6",
+    "amount": -265.73,
+    "seed_id": "t040"
+  },
+  {
+    "transaction_id": "t016",
+    "features": {
+      "confidence_score": 0.8901831851551331,
+      "amount_normalised": 0.4849465705675543,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8901831851551331,
+    "true_category": "Postage & Freight",
+    "true_category_code": "489",
+    "predicted_category": "Postage & Freight",
+    "predicted_category_code": "489",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": false,
+    "description": "ROYAL MAIL BULK FRANKING",
+    "amount": -189.0,
+    "seed_id": "t016"
+  },
+  {
+    "transaction_id": "t003_syn_010",
+    "features": {
+      "confidence_score": 0.8952883678218976,
+      "amount_normalised": 0.7195052597366207,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8952883678218976,
+    "true_category": "PAYE Payable",
+    "true_category_code": "820",
+    "predicted_category": "PAYE Payable",
+    "predicted_category_code": "820",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "HMRC PAYE VAR11",
+    "amount": -2403.03,
+    "seed_id": "t003"
+  },
+  {
+    "transaction_id": "t009_syn_005",
+    "features": {
+      "confidence_score": 0.9665486249058037,
+      "amount_normalised": 0.6832262667517552,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9665486249058037,
+    "true_category": "Advertising & Marketing",
+    "true_category_code": "412",
+    "predicted_category": "Advertising & Marketing",
+    "predicted_category_code": "412",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "GOOGLE ADS PAYMENT VAR6",
+    "amount": -1622.55,
+    "seed_id": "t009"
+  },
+  {
+    "transaction_id": "t030_syn_007",
+    "features": {
+      "confidence_score": 0.8614893784199292,
+      "amount_normalised": 0.43739331456443153,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8614893784199292,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "Computer Equipment & Software",
+    "predicted_category_code": "404",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "AMAZON WEB SERVICES EMEA VAR8",
+    "amount": -112.58,
+    "seed_id": "t030"
+  },
+  {
+    "transaction_id": "t020_syn_008",
+    "features": {
+      "confidence_score": 0.8688353404641332,
+      "amount_normalised": 0.318829422184992,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.8688353404641332,
+    "true_category": "Entertainment & Hospitality",
+    "true_category_code": "429",
+    "predicted_category": "Entertainment & Hospitality",
+    "predicted_category_code": "429",
+    "is_correct": true,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "COSTA COFFEE CANARY WHARF VAR9",
+    "amount": -30.49,
+    "seed_id": "t020"
+  },
+  {
+    "transaction_id": "t003_syn_009",
+    "features": {
+      "confidence_score": 0.9721248856345048,
+      "amount_normalised": 0.7053304786096832,
+      "difficulty_tier": 0,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.9721248856345048,
+    "true_category": "PAYE Payable",
+    "true_category_code": "820",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 0,
+    "is_synthetic": true,
+    "description": "HMRC PAYE VAR10",
+    "amount": -2061.21,
+    "seed_id": "t003"
+  },
+  {
+    "transaction_id": "t012_syn_006",
+    "features": {
+      "confidence_score": 0.7006878612713218,
+      "amount_normalised": 0.3923154507826689,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.7006878612713218,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "Computer Equipment & Software",
+    "predicted_category_code": "404",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "CURRYS PC WORLD ONLINE VAR7",
+    "amount": -68.74,
+    "seed_id": "t012"
+  },
+  {
+    "transaction_id": "t008_syn_001",
+    "features": {
+      "confidence_score": 0.6105651007588003,
+      "amount_normalised": 0.5394552572771794,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6105651007588003,
+    "true_category": "Subscriptions",
+    "true_category_code": "461",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "LAW SOCIETY OF ENGLAND VAR2",
+    "amount": -341.68,
+    "seed_id": "t008"
+  },
+  {
+    "transaction_id": "t042_syn_008",
+    "features": {
+      "confidence_score": 0.6412501541568473,
+      "amount_normalised": 0.401827634988179,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6412501541568473,
+    "true_category": "Advertising & Marketing",
+    "true_category_code": "412",
+    "predicted_category": "Advertising & Marketing",
+    "predicted_category_code": "412",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "LINKEDIN PREMIUM BUSINESS VAR9",
+    "amount": -76.3,
+    "seed_id": "t042"
+  },
+  {
+    "transaction_id": "t031_syn_010",
+    "features": {
+      "confidence_score": 0.6343862583733013,
+      "amount_normalised": 0.39576229203404123,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6343862583733013,
+    "true_category": "Entertainment & Hospitality",
+    "true_category_code": "429",
+    "predicted_category": "Entertainment & Hospitality",
+    "predicted_category_code": "429",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "WATERLOO FLOWERS & GIFTS VAR11",
+    "amount": -71.39,
+    "seed_id": "t031"
+  },
+  {
+    "transaction_id": "t032_syn_001",
+    "features": {
+      "confidence_score": 0.682121276061874,
+      "amount_normalised": 0.7869232801764855,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.682121276061874,
+    "true_category": "Loan Repayment",
+    "true_category_code": "820",
+    "predicted_category": "Loan Repayment",
+    "predicted_category_code": "820",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "BARCLAYS BUSINESS LOAN REPMT VAR2",
+    "amount": -4984.81,
+    "seed_id": "t032"
+  },
+  {
+    "transaction_id": "t014_syn_014",
+    "features": {
+      "confidence_score": 0.6992180288686424,
+      "amount_normalised": 0.5565627561667347,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6992180288686424,
+    "true_category": "Utilities",
+    "true_category_code": "445",
+    "predicted_category": "Utilities",
+    "predicted_category_code": "445",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "VEOLIA WASTE MANAGEMENT VAR15",
+    "amount": -411.36,
+    "seed_id": "t014"
+  },
+  {
+    "transaction_id": "t022_syn_019",
+    "features": {
+      "confidence_score": 0.6963765631334922,
+      "amount_normalised": 0.6167801697664933,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6963765631334922,
+    "true_category": "Recruitment",
+    "true_category_code": "477",
+    "predicted_category": "Recruitment",
+    "predicted_category_code": "477",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "REED RECRUITMENT SERVICES VAR20",
+    "amount": -790.11,
+    "seed_id": "t022"
+  },
+  {
+    "transaction_id": "t023_syn_012",
+    "features": {
+      "confidence_score": 0.579842562943229,
+      "amount_normalised": 0.42474218579944484,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.579842562943229,
+    "true_category": "Subscriptions",
+    "true_category_code": "461",
+    "predicted_category": "Subscriptions",
+    "predicted_category_code": "461",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "HMRC COMPANIES HOUSE FEE VAR13",
+    "amount": -98.05,
+    "seed_id": "t023"
+  },
+  {
+    "transaction_id": "t022_syn_007",
+    "features": {
+      "confidence_score": 0.7280055519712505,
+      "amount_normalised": 0.5947664051118676,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.7280055519712505,
+    "true_category": "Recruitment",
+    "true_category_code": "477",
+    "predicted_category": "Recruitment",
+    "predicted_category_code": "477",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "REED RECRUITMENT SERVICES VAR8",
+    "amount": -622.44,
+    "seed_id": "t022"
+  },
+  {
+    "transaction_id": "t012_syn_008",
+    "features": {
+      "confidence_score": 0.6846878212293297,
+      "amount_normalised": 0.3991590642750426,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6846878212293297,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "Computer Equipment & Software",
+    "predicted_category_code": "404",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "CURRYS PC WORLD ONLINE VAR9",
+    "amount": -74.1,
+    "seed_id": "t012"
+  },
+  {
+    "transaction_id": "t013",
+    "features": {
+      "confidence_score": 0.6460027511072959,
+      "amount_normalised": 0.26180016126710887,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6460027511072959,
+    "true_category": "Entertainment & Hospitality",
+    "true_category_code": "429",
+    "predicted_category": "Entertainment & Hospitality",
+    "predicted_category_code": "429",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": false,
+    "description": "NETFLIX.COM",
+    "amount": -15.99,
+    "seed_id": "t013"
+  },
+  {
+    "transaction_id": "t021_syn_000",
+    "features": {
+      "confidence_score": 0.6529587109239274,
+      "amount_normalised": 0.5791415131128742,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6529587109239274,
+    "true_category": "Training & Development",
+    "true_category_code": "463",
+    "predicted_category": "Training & Development",
+    "predicted_category_code": "463",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "ACCOUNTANCY AGE ANNUAL CONF VAR1",
+    "amount": -525.47,
+    "seed_id": "t021"
+  },
+  {
+    "transaction_id": "t021_syn_005",
+    "features": {
+      "confidence_score": 0.5787616545809064,
+      "amount_normalised": 0.5686215921534161,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.5787616545809064,
+    "true_category": "Training & Development",
+    "true_category_code": "463",
+    "predicted_category": "Training & Development",
+    "predicted_category_code": "463",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "ACCOUNTANCY AGE ANNUAL CONF VAR6",
+    "amount": -468.83,
+    "seed_id": "t021"
+  },
+  {
+    "transaction_id": "t023_syn_017",
+    "features": {
+      "confidence_score": 0.6283959965237099,
+      "amount_normalised": 0.4015881966034659,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6283959965237099,
+    "true_category": "Subscriptions",
+    "true_category_code": "461",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "HMRC COMPANIES HOUSE FEE VAR18",
+    "amount": -76.1,
+    "seed_id": "t023"
+  },
+  {
+    "transaction_id": "t031_syn_001",
+    "features": {
+      "confidence_score": 0.7193305892145475,
+      "amount_normalised": 0.4048967352542584,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.7193305892145475,
+    "true_category": "Entertainment & Hospitality",
+    "true_category_code": "429",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "WATERLOO FLOWERS & GIFTS VAR2",
+    "amount": -78.91,
+    "seed_id": "t031"
+  },
+  {
+    "transaction_id": "t021",
+    "features": {
+      "confidence_score": 0.7170872817555571,
+      "amount_normalised": 0.5648411531314182,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.7170872817555571,
+    "true_category": "Training & Development",
+    "true_category_code": "463",
+    "predicted_category": "Training & Development",
+    "predicted_category_code": "463",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": false,
+    "description": "ACCOUNTANCY AGE ANNUAL CONF",
+    "amount": -450.0,
+    "seed_id": "t021"
+  },
+  {
+    "transaction_id": "t023_syn_011",
+    "features": {
+      "confidence_score": 0.6295611190289033,
+      "amount_normalised": 0.3955961667017253,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6295611190289033,
+    "true_category": "Subscriptions",
+    "true_category_code": "461",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "HMRC COMPANIES HOUSE FEE VAR12",
+    "amount": -71.26,
+    "seed_id": "t023"
+  },
+  {
+    "transaction_id": "t008_syn_013",
+    "features": {
+      "confidence_score": 0.670509560544003,
+      "amount_normalised": 0.5543672852584066,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.670509560544003,
+    "true_category": "Subscriptions",
+    "true_category_code": "461",
+    "predicted_category": "Subscriptions",
+    "predicted_category_code": "461",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "LAW SOCIETY OF ENGLAND VAR14",
+    "amount": -401.68,
+    "seed_id": "t008"
+  },
+  {
+    "transaction_id": "t038_syn_010",
+    "features": {
+      "confidence_score": 0.7046389141587057,
+      "amount_normalised": 0.7049356905194502,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.7046389141587057,
+    "true_category": "Payroll Processing",
+    "true_category_code": "477",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "CAPITA PAYROLL BUREAU FEB24 VAR11",
+    "amount": -2052.42,
+    "seed_id": "t038"
+  },
+  {
+    "transaction_id": "t012",
+    "features": {
+      "confidence_score": 0.6304677984753125,
+      "amount_normalised": 0.3902516899054744,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6304677984753125,
+    "true_category": "Computer Equipment & Software",
+    "true_category_code": "404",
+    "predicted_category": "Computer Equipment & Software",
+    "predicted_category_code": "404",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": false,
+    "description": "CURRYS PC WORLD ONLINE",
+    "amount": -67.2,
+    "seed_id": "t012"
+  },
+  {
+    "transaction_id": "t031_syn_005",
+    "features": {
+      "confidence_score": 0.7231494499634965,
+      "amount_normalised": 0.4019471219664337,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.7231494499634965,
+    "true_category": "Entertainment & Hospitality",
+    "true_category_code": "429",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "WATERLOO FLOWERS & GIFTS VAR6",
+    "amount": -76.4,
+    "seed_id": "t031"
+  },
+  {
+    "transaction_id": "t032_syn_005",
+    "features": {
+      "confidence_score": 0.6749677204668961,
+      "amount_normalised": 0.7818252157279979,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6749677204668961,
+    "true_category": "Loan Repayment",
+    "true_category_code": "820",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "BARCLAYS BUSINESS LOAN REPMT VAR6",
+    "amount": -4717.24,
+    "seed_id": "t032"
+  },
+  {
+    "transaction_id": "t022_syn_014",
+    "features": {
+      "confidence_score": 0.6281552825835088,
+      "amount_normalised": 0.6261342842230309,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6281552825835088,
+    "true_category": "Recruitment",
+    "true_category_code": "477",
+    "predicted_category": "Recruitment",
+    "predicted_category_code": "477",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "REED RECRUITMENT SERVICES VAR15",
+    "amount": -874.37,
+    "seed_id": "t022"
+  },
+  {
+    "transaction_id": "t022_syn_004",
+    "features": {
+      "confidence_score": 0.5836187068457597,
+      "amount_normalised": 0.6169983788309686,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.5836187068457597,
+    "true_category": "Recruitment",
+    "true_category_code": "477",
+    "predicted_category": "Recruitment",
+    "predicted_category_code": "477",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "REED RECRUITMENT SERVICES VAR5",
+    "amount": -791.98,
+    "seed_id": "t022"
+  },
+  {
+    "transaction_id": "t046_syn_000",
+    "features": {
+      "confidence_score": 0.7194940092246122,
+      "amount_normalised": 0.593383340072313,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.7194940092246122,
+    "true_category": "Insurance",
+    "true_category_code": "462",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "BUPA HEALTH INSURANCE VAR1",
+    "amount": -613.18,
+    "seed_id": "t046"
+  },
+  {
+    "transaction_id": "t046_syn_001",
+    "features": {
+      "confidence_score": 0.5894923238790244,
+      "amount_normalised": 0.5762872944757108,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.5894923238790244,
+    "true_category": "Insurance",
+    "true_category_code": "462",
+    "predicted_category": "Insurance",
+    "predicted_category_code": "462",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "BUPA HEALTH INSURANCE VAR2",
+    "amount": -509.46,
+    "seed_id": "t046"
+  },
+  {
+    "transaction_id": "t021_syn_008",
+    "features": {
+      "confidence_score": 0.691327758472969,
+      "amount_normalised": 0.5472687150099095,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.691327758472969,
+    "true_category": "Training & Development",
+    "true_category_code": "463",
+    "predicted_category": "Training & Development",
+    "predicted_category_code": "463",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "ACCOUNTANCY AGE ANNUAL CONF VAR9",
+    "amount": -371.91,
+    "seed_id": "t021"
+  },
+  {
+    "transaction_id": "t049_syn_017",
+    "features": {
+      "confidence_score": 0.7240961213750663,
+      "amount_normalised": 0.46526063745875595,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.7240961213750663,
+    "true_category": "Advertising & Marketing",
+    "true_category_code": "412",
+    "predicted_category": "Advertising & Marketing",
+    "predicted_category_code": "412",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "CANVA PRO ANNUAL PLAN VAR18",
+    "amount": -152.55,
+    "seed_id": "t049"
+  },
+  {
+    "transaction_id": "t049_syn_004",
+    "features": {
+      "confidence_score": 0.6544038254000429,
+      "amount_normalised": 0.4609419046203439,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6544038254000429,
+    "true_category": "Advertising & Marketing",
+    "true_category_code": "412",
+    "predicted_category": "Advertising & Marketing",
+    "predicted_category_code": "412",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "CANVA PRO ANNUAL PLAN VAR5",
+    "amount": -145.54,
+    "seed_id": "t049"
+  },
+  {
+    "transaction_id": "t011_syn_004",
+    "features": {
+      "confidence_score": 0.5951952962838285,
+      "amount_normalised": 0.7624895202969912,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.5951952962838285,
+    "true_category": "Consultants & Contractors",
+    "true_category_code": "411",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "ACME CONSULTING LTD INV 1045 VAR5",
+    "amount": -3826.56,
+    "seed_id": "t011"
+  },
+  {
+    "transaction_id": "t038_syn_017",
+    "features": {
+      "confidence_score": 0.5864276551907346,
+      "amount_normalised": 0.6966877785515952,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.5864276551907346,
+    "true_category": "Payroll Processing",
+    "true_category_code": "477",
+    "predicted_category": "Payroll Processing",
+    "predicted_category_code": "477",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "CAPITA PAYROLL BUREAU FEB24 VAR18",
+    "amount": -1877.11,
+    "seed_id": "t038"
+  },
+  {
+    "transaction_id": "t047_syn_009",
+    "features": {
+      "confidence_score": 0.6811959245833827,
+      "amount_normalised": 0.49426699138944385,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6811959245833827,
+    "true_category": "Travel",
+    "true_category_code": "493",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "NCP CAR PARK MONTHLY PERMIT VAR10",
+    "amount": -209.16,
+    "seed_id": "t047"
+  },
+  {
+    "transaction_id": "t008_syn_010",
+    "features": {
+      "confidence_score": 0.5712336003909309,
+      "amount_normalised": 0.556697137760913,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.5712336003909309,
+    "true_category": "Subscriptions",
+    "true_category_code": "461",
+    "predicted_category": "Subscriptions",
+    "predicted_category_code": "461",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "LAW SOCIETY OF ENGLAND VAR11",
+    "amount": -411.96,
+    "seed_id": "t008"
+  },
+  {
+    "transaction_id": "t022_syn_018",
+    "features": {
+      "confidence_score": 0.584026550041774,
+      "amount_normalised": 0.6086944292163994,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.584026550041774,
+    "true_category": "Recruitment",
+    "true_category_code": "477",
+    "predicted_category": "Recruitment",
+    "predicted_category_code": "477",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "REED RECRUITMENT SERVICES VAR19",
+    "amount": -723.84,
+    "seed_id": "t022"
+  },
+  {
+    "transaction_id": "t011_syn_011",
+    "features": {
+      "confidence_score": 0.6722371735616036,
+      "amount_normalised": 0.726366854672591,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6722371735616036,
+    "true_category": "Consultants & Contractors",
+    "true_category_code": "411",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "ACME CONSULTING LTD INV 1045 VAR12",
+    "amount": -2588.3,
+    "seed_id": "t011"
+  },
+  {
+    "transaction_id": "t014_syn_005",
+    "features": {
+      "confidence_score": 0.5774689453572577,
+      "amount_normalised": 0.5695844033142439,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.5774689453572577,
+    "true_category": "Utilities",
+    "true_category_code": "445",
+    "predicted_category": "Utilities",
+    "predicted_category_code": "445",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "VEOLIA WASTE MANAGEMENT VAR6",
+    "amount": -473.75,
+    "seed_id": "t014"
+  },
+  {
+    "transaction_id": "t031_syn_002",
+    "features": {
+      "confidence_score": 0.6011190580489898,
+      "amount_normalised": 0.39658846898733147,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6011190580489898,
+    "true_category": "Entertainment & Hospitality",
+    "true_category_code": "429",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "WATERLOO FLOWERS & GIFTS VAR3",
+    "amount": -72.04,
+    "seed_id": "t031"
+  },
+  {
+    "transaction_id": "t014_syn_004",
+    "features": {
+      "confidence_score": 0.6886688948234382,
+      "amount_normalised": 0.550498034303542,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6886688948234382,
+    "true_category": "Utilities",
+    "true_category_code": "445",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "VEOLIA WASTE MANAGEMENT VAR5",
+    "amount": -385.17,
+    "seed_id": "t014"
+  },
+  {
+    "transaction_id": "t031_syn_007",
+    "features": {
+      "confidence_score": 0.715612749174656,
+      "amount_normalised": 0.4071362984480887,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.715612749174656,
+    "true_category": "Entertainment & Hospitality",
+    "true_category_code": "429",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "WATERLOO FLOWERS & GIFTS VAR8",
+    "amount": -80.87,
+    "seed_id": "t031"
+  },
+  {
+    "transaction_id": "t011_syn_006",
+    "features": {
+      "confidence_score": 0.701880506986276,
+      "amount_normalised": 0.7280361018884751,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.701880506986276,
+    "true_category": "Consultants & Contractors",
+    "true_category_code": "411",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "ACME CONSULTING LTD INV 1045 VAR7",
+    "amount": -2635.49,
+    "seed_id": "t011"
+  },
+  {
+    "transaction_id": "t014_syn_017",
+    "features": {
+      "confidence_score": 0.6425093848274611,
+      "amount_normalised": 0.5495647263193222,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6425093848274611,
+    "true_category": "Utilities",
+    "true_category_code": "445",
+    "predicted_category": "Utilities",
+    "predicted_category_code": "445",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "VEOLIA WASTE MANAGEMENT VAR18",
+    "amount": -381.29,
+    "seed_id": "t014"
+  },
+  {
+    "transaction_id": "t049",
+    "features": {
+      "confidence_score": 0.5811698472957221,
+      "amount_normalised": 0.47246608985461847,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.5811698472957221,
+    "true_category": "Advertising & Marketing",
+    "true_category_code": "412",
+    "predicted_category": "Advertising & Marketing",
+    "predicted_category_code": "412",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": false,
+    "description": "CANVA PRO ANNUAL PLAN",
+    "amount": -165.0,
+    "seed_id": "t049"
+  },
+  {
+    "transaction_id": "t049_syn_002",
+    "features": {
+      "confidence_score": 0.6180844384089444,
+      "amount_normalised": 0.4586882701064215,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6180844384089444,
+    "true_category": "Advertising & Marketing",
+    "true_category_code": "412",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "CANVA PRO ANNUAL PLAN VAR3",
+    "amount": -142.01,
+    "seed_id": "t049"
+  },
+  {
+    "transaction_id": "t046_syn_011",
+    "features": {
+      "confidence_score": 0.6295855812369258,
+      "amount_normalised": 0.6003618502398342,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6295855812369258,
+    "true_category": "Insurance",
+    "true_category_code": "462",
+    "predicted_category": "Insurance",
+    "predicted_category_code": "462",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "BUPA HEALTH INSURANCE VAR12",
+    "amount": -661.35,
+    "seed_id": "t046"
+  },
+  {
+    "transaction_id": "t013_syn_012",
+    "features": {
+      "confidence_score": 0.6911867629240251,
+      "amount_normalised": 0.2572282403499681,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6911867629240251,
+    "true_category": "Entertainment & Hospitality",
+    "true_category_code": "429",
+    "predicted_category": "Entertainment & Hospitality",
+    "predicted_category_code": "429",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "NETFLIX.COM VAR13",
+    "amount": -15.17,
+    "seed_id": "t013"
+  },
+  {
+    "transaction_id": "t014_syn_010",
+    "features": {
+      "confidence_score": 0.7136507514922964,
+      "amount_normalised": 0.570029143132497,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.7136507514922964,
+    "true_category": "Utilities",
+    "true_category_code": "445",
+    "predicted_category": "Utilities",
+    "predicted_category_code": "445",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "VEOLIA WASTE MANAGEMENT VAR11",
+    "amount": -476.04,
+    "seed_id": "t014"
+  },
+  {
+    "transaction_id": "t011_syn_016",
+    "features": {
+      "confidence_score": 0.6976112810771969,
+      "amount_normalised": 0.7397548351416152,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6976112810771969,
+    "true_category": "Consultants & Contractors",
+    "true_category_code": "411",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "ACME CONSULTING LTD INV 1045 VAR17",
+    "amount": -2991.9,
+    "seed_id": "t011"
+  },
+  {
+    "transaction_id": "t022_syn_003",
+    "features": {
+      "confidence_score": 0.6291615495094512,
+      "amount_normalised": 0.6286207730934829,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6291615495094512,
+    "true_category": "Recruitment",
+    "true_category_code": "477",
+    "predicted_category": "Recruitment",
+    "predicted_category_code": "477",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "REED RECRUITMENT SERVICES VAR4",
+    "amount": -898.24,
+    "seed_id": "t022"
+  },
+  {
+    "transaction_id": "t049_syn_010",
+    "features": {
+      "confidence_score": 0.7212885954854604,
+      "amount_normalised": 0.4727274001466506,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.7212885954854604,
+    "true_category": "Advertising & Marketing",
+    "true_category_code": "412",
+    "predicted_category": "Advertising & Marketing",
+    "predicted_category_code": "412",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "CANVA PRO ANNUAL PLAN VAR11",
+    "amount": -165.47,
+    "seed_id": "t049"
+  },
+  {
+    "transaction_id": "t042_syn_019",
+    "features": {
+      "confidence_score": 0.6443173888727389,
+      "amount_normalised": 0.38989867018951974,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6443173888727389,
+    "true_category": "Advertising & Marketing",
+    "true_category_code": "412",
+    "predicted_category": "Advertising & Marketing",
+    "predicted_category_code": "412",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "LINKEDIN PREMIUM BUSINESS VAR20",
+    "amount": -66.94,
+    "seed_id": "t042"
+  },
+  {
+    "transaction_id": "t046_syn_017",
+    "features": {
+      "confidence_score": 0.6342355152842217,
+      "amount_normalised": 0.5978856586862845,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6342355152842217,
+    "true_category": "Insurance",
+    "true_category_code": "462",
+    "predicted_category": "Insurance",
+    "predicted_category_code": "462",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "BUPA HEALTH INSURANCE VAR18",
+    "amount": -643.84,
+    "seed_id": "t046"
+  },
+  {
+    "transaction_id": "t032_syn_019",
+    "features": {
+      "confidence_score": 0.6492133590768262,
+      "amount_normalised": 0.7636186992153462,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6492133590768262,
+    "true_category": "Loan Repayment",
+    "true_category_code": "820",
+    "predicted_category": "Loan Repayment",
+    "predicted_category_code": "820",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "BARCLAYS BUSINESS LOAN REPMT VAR20",
+    "amount": -3873.61,
+    "seed_id": "t032"
+  },
+  {
+    "transaction_id": "t023_syn_006",
+    "features": {
+      "confidence_score": 0.5849503806096055,
+      "amount_normalised": 0.42096151174452623,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.5849503806096055,
+    "true_category": "Subscriptions",
+    "true_category_code": "461",
+    "predicted_category": "Subscriptions",
+    "predicted_category_code": "461",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "HMRC COMPANIES HOUSE FEE VAR7",
+    "amount": -94.08,
+    "seed_id": "t023"
+  },
+  {
+    "transaction_id": "t042_syn_004",
+    "features": {
+      "confidence_score": 0.6051844613878588,
+      "amount_normalised": 0.3897080226624675,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6051844613878588,
+    "true_category": "Advertising & Marketing",
+    "true_category_code": "412",
+    "predicted_category": "Advertising & Marketing",
+    "predicted_category_code": "412",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "LINKEDIN PREMIUM BUSINESS VAR5",
+    "amount": -66.8,
+    "seed_id": "t042"
+  },
+  {
+    "transaction_id": "t046_syn_003",
+    "features": {
+      "confidence_score": 0.6234156491878328,
+      "amount_normalised": 0.5895080575521333,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6234156491878328,
+    "true_category": "Insurance",
+    "true_category_code": "462",
+    "predicted_category": "Insurance",
+    "predicted_category_code": "462",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "BUPA HEALTH INSURANCE VAR4",
+    "amount": -587.96,
+    "seed_id": "t046"
+  },
+  {
+    "transaction_id": "t023_syn_019",
+    "features": {
+      "confidence_score": 0.7013932025786533,
+      "amount_normalised": 0.4227902084231036,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.7013932025786533,
+    "true_category": "Subscriptions",
+    "true_category_code": "461",
+    "predicted_category": "Subscriptions",
+    "predicted_category_code": "461",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "HMRC COMPANIES HOUSE FEE VAR20",
+    "amount": -95.98,
+    "seed_id": "t023"
+  },
+  {
+    "transaction_id": "t022_syn_016",
+    "features": {
+      "confidence_score": 0.6536126093300723,
+      "amount_normalised": 0.5990223911931778,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6536126093300723,
+    "true_category": "Recruitment",
+    "true_category_code": "477",
+    "predicted_category": "Recruitment",
+    "predicted_category_code": "477",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "REED RECRUITMENT SERVICES VAR17",
+    "amount": -651.82,
+    "seed_id": "t022"
+  },
+  {
+    "transaction_id": "t038_syn_012",
+    "features": {
+      "confidence_score": 0.5973574123451189,
+      "amount_normalised": 0.6859915333457308,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.5973574123451189,
+    "true_category": "Payroll Processing",
+    "true_category_code": "477",
+    "predicted_category": "Payroll Processing",
+    "predicted_category_code": "477",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "CAPITA PAYROLL BUREAU FEB24 VAR13",
+    "amount": -1671.86,
+    "seed_id": "t038"
+  },
+  {
+    "transaction_id": "t013_syn_019",
+    "features": {
+      "confidence_score": 0.6652297329859888,
+      "amount_normalised": 0.2771979739386753,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6652297329859888,
+    "true_category": "Entertainment & Hospitality",
+    "true_category_code": "429",
+    "predicted_category": "Entertainment & Hospitality",
+    "predicted_category_code": "429",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "NETFLIX.COM VAR20",
+    "amount": -19.07,
+    "seed_id": "t013"
+  },
+  {
+    "transaction_id": "t008_syn_009",
+    "features": {
+      "confidence_score": 0.6494955393928202,
+      "amount_normalised": 0.5488731236547982,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6494955393928202,
+    "true_category": "Subscriptions",
+    "true_category_code": "461",
+    "predicted_category": "Subscriptions",
+    "predicted_category_code": "461",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "LAW SOCIETY OF ENGLAND VAR10",
+    "amount": -378.44,
+    "seed_id": "t008"
+  },
+  {
+    "transaction_id": "t049_syn_018",
+    "features": {
+      "confidence_score": 0.665077609816695,
+      "amount_normalised": 0.4641037807494249,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.665077609816695,
+    "true_category": "Advertising & Marketing",
+    "true_category_code": "412",
+    "predicted_category": "Advertising & Marketing",
+    "predicted_category_code": "412",
+    "is_correct": true,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "CANVA PRO ANNUAL PLAN VAR19",
+    "amount": -150.64,
+    "seed_id": "t049"
+  },
+  {
+    "transaction_id": "t014_syn_006",
+    "features": {
+      "confidence_score": 0.5700646100732515,
+      "amount_normalised": 0.5664480937086727,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.5700646100732515,
+    "true_category": "Utilities",
+    "true_category_code": "445",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": true,
+    "description": "VEOLIA WASTE MANAGEMENT VAR7",
+    "amount": -457.91,
+    "seed_id": "t014"
+  },
+  {
+    "transaction_id": "t047",
+    "features": {
+      "confidence_score": 0.6715571938133921,
+      "amount_normalised": 0.5106798476266672,
+      "difficulty_tier": 1,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.6715571938133921,
+    "true_category": "Travel",
+    "true_category_code": "493",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 1,
+    "is_synthetic": false,
+    "description": "NCP CAR PARK MONTHLY PERMIT",
+    "amount": -250.0,
+    "seed_id": "t047"
+  },
+  {
+    "transaction_id": "t029_syn_026",
+    "features": {
+      "confidence_score": 0.3564125475407074,
+      "amount_normalised": 0.7822348810721125,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.3564125475407074,
+    "true_category": "Other Revenue",
+    "true_category_code": "260",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "GRANT RECEIVED INNOVATE UK VAR27",
+    "amount": 4738.2,
+    "seed_id": "t029"
+  },
+  {
+    "transaction_id": "t041_syn_017",
+    "features": {
+      "confidence_score": 0.32099942972679013,
+      "amount_normalised": 0.9550819949636599,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.32099942972679013,
+    "true_category": "Loan Receipt",
+    "true_category_code": "820",
+    "predicted_category": "Loan Receipt",
+    "predicted_category_code": "820",
+    "is_correct": true,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARCLAYS REVOLVING CREDIT VAR18",
+    "amount": 30753.59,
+    "seed_id": "t041"
+  },
+  {
+    "transaction_id": "t029_syn_031",
+    "features": {
+      "confidence_score": 0.40166631451151996,
+      "amount_normalised": 0.7751347840072325,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.40166631451151996,
+    "true_category": "Other Revenue",
+    "true_category_code": "260",
+    "predicted_category": "Other Revenue",
+    "predicted_category_code": "260",
+    "is_correct": true,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "GRANT RECEIVED INNOVATE UK VAR32",
+    "amount": 4387.76,
+    "seed_id": "t029"
+  },
+  {
+    "transaction_id": "t029_syn_008",
+    "features": {
+      "confidence_score": 0.3734223830286888,
+      "amount_normalised": 0.783465987705081,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.3734223830286888,
+    "true_category": "Other Revenue",
+    "true_category_code": "260",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "GRANT RECEIVED INNOVATE UK VAR9",
+    "amount": 4801.75,
+    "seed_id": "t029"
+  },
+  {
+    "transaction_id": "t041_syn_008",
+    "features": {
+      "confidence_score": 0.38135644989001655,
+      "amount_normalised": 0.9403053161872545,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.38135644989001655,
+    "true_category": "Loan Receipt",
+    "true_category_code": "820",
+    "predicted_category": "Loan Receipt",
+    "predicted_category_code": "820",
+    "is_correct": true,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARCLAYS REVOLVING CREDIT VAR9",
+    "amount": 26209.46,
+    "seed_id": "t041"
+  },
+  {
+    "transaction_id": "t029_syn_033",
+    "features": {
+      "confidence_score": 0.39228145586945706,
+      "amount_normalised": 0.7660439895279831,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.39228145586945706,
+    "true_category": "Other Revenue",
+    "true_category_code": "260",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "GRANT RECEIVED INNOVATE UK VAR34",
+    "amount": 3976.63,
+    "seed_id": "t029"
+  },
+  {
+    "transaction_id": "t024",
+    "features": {
+      "confidence_score": 0.3905282805039784,
+      "amount_normalised": 0.7529178556855687,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.3905282805039784,
+    "true_category": "General Expenses",
+    "true_category_code": "416",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": true,
+    "difficulty_tier": 2,
+    "is_synthetic": false,
+    "description": "BARKER SCAFFOLD HIRE LTD",
+    "amount": -3450.0,
+    "seed_id": "t024"
+  },
+  {
+    "transaction_id": "t029_syn_001",
+    "features": {
+      "confidence_score": 0.39365855343848916,
+      "amount_normalised": 0.7849055089173388,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.39365855343848916,
+    "true_category": "Other Revenue",
+    "true_category_code": "260",
+    "predicted_category": "Other Revenue",
+    "predicted_category_code": "260",
+    "is_correct": true,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "GRANT RECEIVED INNOVATE UK VAR2",
+    "amount": 4877.14,
+    "seed_id": "t029"
+  },
+  {
+    "transaction_id": "t029",
+    "features": {
+      "confidence_score": 0.30067386540915586,
+      "amount_normalised": 0.7710936610846739,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.30067386540915586,
+    "true_category": "Other Revenue",
+    "true_category_code": "260",
+    "predicted_category": "Other Revenue",
+    "predicted_category_code": "260",
+    "is_correct": true,
+    "difficulty_tier": 2,
+    "is_synthetic": false,
+    "description": "GRANT RECEIVED INNOVATE UK",
+    "amount": 4200.0,
+    "seed_id": "t029"
+  },
+  {
+    "transaction_id": "t029_syn_004",
+    "features": {
+      "confidence_score": 0.41768796867126595,
+      "amount_normalised": 0.7508668298587822,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.41768796867126595,
+    "true_category": "Other Revenue",
+    "true_category_code": "260",
+    "predicted_category": "Other Revenue",
+    "predicted_category_code": "260",
+    "is_correct": true,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "GRANT RECEIVED INNOVATE UK VAR5",
+    "amount": 3374.26,
+    "seed_id": "t029"
+  },
+  {
+    "transaction_id": "t024_syn_008",
+    "features": {
+      "confidence_score": 0.39937917735611983,
+      "amount_normalised": 0.7430428203712685,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.39937917735611983,
+    "true_category": "General Expenses",
+    "true_category_code": "416",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": true,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARKER SCAFFOLD HIRE LTD VAR9",
+    "amount": -3100.29,
+    "seed_id": "t024"
+  },
+  {
+    "transaction_id": "t041_syn_038",
+    "features": {
+      "confidence_score": 0.4359360397277425,
+      "amount_normalised": 0.9595502005525278,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.4359360397277425,
+    "true_category": "Loan Receipt",
+    "true_category_code": "820",
+    "predicted_category": "Loan Receipt",
+    "predicted_category_code": "820",
+    "is_correct": true,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARCLAYS REVOLVING CREDIT VAR39",
+    "amount": 32276.95,
+    "seed_id": "t041"
+  },
+  {
+    "transaction_id": "t028_syn_016",
+    "features": {
+      "confidence_score": 0.3727578845331261,
+      "amount_normalised": 0.5941222557037097,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.3727578845331261,
+    "true_category": "General Expenses",
+    "true_category_code": "416",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "TRAVIS PERKINS PLC VAR17",
+    "amount": -618.11,
+    "seed_id": "t028"
+  },
+  {
+    "transaction_id": "t029_syn_023",
+    "features": {
+      "confidence_score": 0.32877175160726035,
+      "amount_normalised": 0.78642122814631,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.32877175160726035,
+    "true_category": "Other Revenue",
+    "true_category_code": "260",
+    "predicted_category": "Other Revenue",
+    "predicted_category_code": "260",
+    "is_correct": true,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "GRANT RECEIVED INNOVATE UK VAR24",
+    "amount": 4957.8,
+    "seed_id": "t029"
+  },
+  {
+    "transaction_id": "t028_syn_005",
+    "features": {
+      "confidence_score": 0.3095879035311308,
+      "amount_normalised": 0.6004078863975316,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.3095879035311308,
+    "true_category": "General Expenses",
+    "true_category_code": "416",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "TRAVIS PERKINS PLC VAR6",
+    "amount": -661.68,
+    "seed_id": "t028"
+  },
+  {
+    "transaction_id": "t041_syn_027",
+    "features": {
+      "confidence_score": 0.36528425609062337,
+      "amount_normalised": 0.9537772034438403,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.36528425609062337,
+    "true_category": "Loan Receipt",
+    "true_category_code": "820",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARCLAYS REVOLVING CREDIT VAR28",
+    "amount": 30322.46,
+    "seed_id": "t041"
+  },
+  {
+    "transaction_id": "t024_syn_012",
+    "features": {
+      "confidence_score": 0.3235650378454701,
+      "amount_normalised": 0.7342816518423463,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.3235650378454701,
+    "true_category": "General Expenses",
+    "true_category_code": "416",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": true,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARKER SCAFFOLD HIRE LTD VAR13",
+    "amount": -2819.81,
+    "seed_id": "t024"
+  },
+  {
+    "transaction_id": "t041_syn_025",
+    "features": {
+      "confidence_score": 0.43614117905025573,
+      "amount_normalised": 0.9286739526091968,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.43614117905025573,
+    "true_category": "Loan Receipt",
+    "true_category_code": "820",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARCLAYS REVOLVING CREDIT VAR26",
+    "amount": 23110.02,
+    "seed_id": "t041"
+  },
+  {
+    "transaction_id": "t029_syn_014",
+    "features": {
+      "confidence_score": 0.4077926444674202,
+      "amount_normalised": 0.7656047213032193,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.4077926444674202,
+    "true_category": "Other Revenue",
+    "true_category_code": "260",
+    "predicted_category": "Other Revenue",
+    "predicted_category_code": "260",
+    "is_correct": true,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "GRANT RECEIVED INNOVATE UK VAR15",
+    "amount": 3957.77,
+    "seed_id": "t029"
+  },
+  {
+    "transaction_id": "t024_syn_016",
+    "features": {
+      "confidence_score": 0.3899414428313933,
+      "amount_normalised": 0.7439989566727162,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.3899414428313933,
+    "true_category": "General Expenses",
+    "true_category_code": "416",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARKER SCAFFOLD HIRE LTD VAR17",
+    "amount": -3132.54,
+    "seed_id": "t024"
+  },
+  {
+    "transaction_id": "t028_syn_008",
+    "features": {
+      "confidence_score": 0.3093986161042026,
+      "amount_normalised": 0.5814165316830507,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.3093986161042026,
+    "true_category": "General Expenses",
+    "true_category_code": "416",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": true,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "TRAVIS PERKINS PLC VAR9",
+    "amount": -538.59,
+    "seed_id": "t028"
+  },
+  {
+    "transaction_id": "t041_syn_010",
+    "features": {
+      "confidence_score": 0.34164577487780307,
+      "amount_normalised": 0.9299721761498897,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.34164577487780307,
+    "true_category": "Loan Receipt",
+    "true_category_code": "820",
+    "predicted_category": "Loan Receipt",
+    "predicted_category_code": "820",
+    "is_correct": true,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARCLAYS REVOLVING CREDIT VAR11",
+    "amount": 23436.94,
+    "seed_id": "t041"
+  },
+  {
+    "transaction_id": "t041_syn_029",
+    "features": {
+      "confidence_score": 0.4389051825686317,
+      "amount_normalised": 0.9374381221888667,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.4389051825686317,
+    "true_category": "Loan Receipt",
+    "true_category_code": "820",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARCLAYS REVOLVING CREDIT VAR30",
+    "amount": 25408.83,
+    "seed_id": "t041"
+  },
+  {
+    "transaction_id": "t024_syn_034",
+    "features": {
+      "confidence_score": 0.31890414057987015,
+      "amount_normalised": 0.7627935104372022,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.31890414057987015,
+    "true_category": "General Expenses",
+    "true_category_code": "416",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARKER SCAFFOLD HIRE LTD VAR35",
+    "amount": -3839.17,
+    "seed_id": "t024"
+  },
+  {
+    "transaction_id": "t041_syn_035",
+    "features": {
+      "confidence_score": 0.37918336062740365,
+      "amount_normalised": 0.9482268321002381,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.37918336062740365,
+    "true_category": "Loan Receipt",
+    "true_category_code": "820",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARCLAYS REVOLVING CREDIT VAR36",
+    "amount": 28555.02,
+    "seed_id": "t041"
+  },
+  {
+    "transaction_id": "t041_syn_012",
+    "features": {
+      "confidence_score": 0.45172518197445666,
+      "amount_normalised": 0.9550166391873702,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.45172518197445666,
+    "true_category": "Loan Receipt",
+    "true_category_code": "820",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARCLAYS REVOLVING CREDIT VAR13",
+    "amount": 30731.85,
+    "seed_id": "t041"
+  },
+  {
+    "transaction_id": "t024_syn_036",
+    "features": {
+      "confidence_score": 0.42350132204891466,
+      "amount_normalised": 0.7414493843024482,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.42350132204891466,
+    "true_category": "General Expenses",
+    "true_category_code": "416",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": true,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARKER SCAFFOLD HIRE LTD VAR37",
+    "amount": -3047.28,
+    "seed_id": "t024"
+  },
+  {
+    "transaction_id": "t028_syn_032",
+    "features": {
+      "confidence_score": 0.45751165236697583,
+      "amount_normalised": 0.585872106862464,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.45751165236697583,
+    "true_category": "General Expenses",
+    "true_category_code": "416",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "TRAVIS PERKINS PLC VAR33",
+    "amount": -565.24,
+    "seed_id": "t028"
+  },
+  {
+    "transaction_id": "t041_syn_031",
+    "features": {
+      "confidence_score": 0.378604803550601,
+      "amount_normalised": 0.9514799014549081,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.378604803550601,
+    "true_category": "Loan Receipt",
+    "true_category_code": "820",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARCLAYS REVOLVING CREDIT VAR32",
+    "amount": 29578.02,
+    "seed_id": "t041"
+  },
+  {
+    "transaction_id": "t029_syn_032",
+    "features": {
+      "confidence_score": 0.336789705373341,
+      "amount_normalised": 0.7871824378762776,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.336789705373341,
+    "true_category": "Other Revenue",
+    "true_category_code": "260",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "GRANT RECEIVED INNOVATE UK VAR33",
+    "amount": 4998.81,
+    "seed_id": "t029"
+  },
+  {
+    "transaction_id": "t024_syn_005",
+    "features": {
+      "confidence_score": 0.3399611215034192,
+      "amount_normalised": 0.742755086264899,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.3399611215034192,
+    "true_category": "General Expenses",
+    "true_category_code": "416",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": true,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARKER SCAFFOLD HIRE LTD VAR6",
+    "amount": -3090.65,
+    "seed_id": "t024"
+  },
+  {
+    "transaction_id": "t041_syn_033",
+    "features": {
+      "confidence_score": 0.34599405425401447,
+      "amount_normalised": 0.9290095863542417,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.34599405425401447,
+    "true_category": "Loan Receipt",
+    "true_category_code": "820",
+    "predicted_category": "Loan Receipt",
+    "predicted_category_code": "820",
+    "is_correct": true,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARCLAYS REVOLVING CREDIT VAR34",
+    "amount": 23194.1,
+    "seed_id": "t041"
+  },
+  {
+    "transaction_id": "t041_syn_016",
+    "features": {
+      "confidence_score": 0.4332485358526088,
+      "amount_normalised": 0.9423084041711856,
+      "difficulty_tier": 2,
+      "category_entropy": 0.0
+    },
+    "confidence_score": 0.4332485358526088,
+    "true_category": "Loan Receipt",
+    "true_category_code": "820",
+    "predicted_category": "General Expenses",
+    "predicted_category_code": "416",
+    "is_correct": false,
+    "difficulty_tier": 2,
+    "is_synthetic": true,
+    "description": "BARCLAYS REVOLVING CREDIT VAR17",
+    "amount": 26783.72,
+    "seed_id": "t041"
+  }
+]
