@@ -1,0 +1,45 @@
+name: Retrain Policy
+
+on:
+  workflow_dispatch:
+    inputs:
+      reward_variant:
+        description: "Reward variant to train (A, B, or C)"
+        required: true
+        default: "A"
+        type: choice
+        options:
+          - A
+          - B
+          - C
+
+jobs:
+  train:
+    name: Train PPO Variant ${{ github.event.inputs.reward_variant }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Train PPO policy
+        run: python -m agent.train --reward ${{ github.event.inputs.reward_variant }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Upload trained model
+        uses: actions/upload-artifact@v4
+        with:
+          name: trained-model-variant-${{ github.event.inputs.reward_variant }}
+          path: |
+            models/trained/ppo_variant_${{ github.event.inputs.reward_variant }}.zip
+            experiments/results/training_meta_${{ github.event.inputs.reward_variant }}.json
+          retention-days: 30
