@@ -1,39 +1,36 @@
 # PROGRESS.md — RL Routing Project Session Log
 
 ## Current Phase
-Phase 3 — Evaluation and Comparison
+Phase 4 — Integration and API
 
 ## Phase Status
 COMPLETE
 
 ## Last Completed Step
-Phase 3 complete. evaluate.py run on 177-transaction held-out set.
-comparison_report.md auto-generated. 4 analysis figures saved.
+Phase 4 complete. integration/router.py, api/main.py, api/schemas.py,
+integration/tests/test_router.py (4/4 passing), INTEGRATION_GUIDE.md.
 All committed.
 
 ## Next Step
-Phase 4, Step 1: Read parent project CLAUDE.md/ARCHITECTURE.md to understand
-API patterns. Create integration/router.py — LearnedRouter class with
-route(confidence_score, transaction_features) → RoutingDecision, fallback to
-threshold policy if model file missing. Then create api/main.py (FastAPI app
-with POST /route, GET /policy/info, GET /health, POST /policy/reload).
+Phase 5, Step 1: Create .github/workflows/ci.yml (test + lint + type-check jobs).
+Then .github/workflows/train.yml (manually triggered retraining workflow).
+Then railway.toml and Dockerfile. Then DEPLOYMENT.md.
 
 ## Completed Phases
 - [x] Phase 0 — Repository initialisation
 - [x] Phase 1 — Environment and synthetic data
 - [x] Phase 2 — RL agent training
 - [x] Phase 3 — Evaluation and comparison
-- [ ] Phase 4 — Integration and API
+- [x] Phase 4 — Integration and API
 - [ ] Phase 5 — CI/CD and deployment
 - [ ] Phase 6 — README and documentation
 
 ## Open Issues
 - data/synthetic/transactions.jsonl contains dry-run mock data (no real API calls).
   Run `python -m environment.transaction_simulator` with ANTHROPIC_API_KEY set
-  to generate real confidence scores. This explains the tier-based routing behaviour
-  in Phase 3 results (policy learned on coarse discrete features).
-- PPO-A and PPO-B produced identical evaluation results. On higher-load scenarios
-  their behaviour would diverge; evaluate separately if load-sensitive routing matters.
+  to generate real confidence scores for production-quality training.
+- PPO-A and PPO-B produced identical evaluation results at neutral load.
+  Variant B only differs at high vs low accountant_load values.
 
 ## Training Results Summary (Phase 2)
 | Variant | Description          | Final Mean Reward | Training Time |
@@ -50,8 +47,8 @@ with POST /route, GET /policy/info, GET /health, POST /policy/reload).
 | PPO-B    | 75.1%       | 81.2%     | 81.4%     | 18.8%      |
 | PPO-C    | 61.0%       | 90.1%     | 45.8%     |  9.9%      |
 
-Key finding: All PPO variants eliminated REJECT_FOR_MANUAL entirely.
-PPO-C is the best balance (highest precision, lowest error rate, no REJECT).
+Best model: PPO-C (highest precision, lowest error rate, no REJECT actions).
+Default in LearnedRouter.
 
 ## Session Log
 ### Session 1 — 2026-03-25
@@ -68,5 +65,13 @@ PPO-C is the best balance (highest precision, lowest error rate, no REJECT).
 ### Session 3 — 2026-03-25
 - Started: Phase 2 complete, Phase 3 not started
 - Completed: Phase 3 — evaluate.py, analysis.ipynb, comparison_report.md,
-  4 figures (fig1–4). Held-out evaluation on 177 transactions.
+  4 figures. Held-out evaluation on 177 transactions.
 - Ended: Phase 3 COMPLETE
+
+### Session 4 — 2026-03-25
+- Started: Phase 3 complete, Phase 4 not started
+- Completed: Phase 4 — integration/router.py (LearnedRouter with fallback),
+  api/main.py + api/schemas.py (FastAPI, 4 endpoints),
+  integration/tests/test_router.py (4/4 passing),
+  integration/INTEGRATION_GUIDE.md
+- Ended: Phase 4 COMPLETE
