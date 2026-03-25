@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <style>
+    @page {
+      size: A4;
+      margin: 2.2cm 2.5cm 3cm 2.5cm;
+      @bottom-center {
+        content: "AI-Assisted Draft — Not for Distribution  |  Page " counter(page) " of " counter(pages);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 7.5pt;
+        color: #9ca3af;
+      }
+    }
+
+    body {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 10pt;
+      color: #111827;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    /* Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #111827;
+      margin-bottom: 20px;
+    }
+    .logo-box {
+      width: 110px;
+      height: 36px;
+      border: 1px dashed #d1d5db;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7.5pt;
+      color: #9ca3af;
+    }
+    .header-meta {
+      text-align: right;
+      font-size: 8.5pt;
+      color: #6b7280;
+      line-height: 1.7;
+    }
+    .header-meta strong {
+      color: #111827;
+      font-size: 9pt;
+    }
+
+    /* Title */
+    h1 {
+      font-size: 20pt;
+      font-weight: 700;
+      margin: 0 0 4px 0;
+      letter-spacing: -0.5px;
+    }
+    .subtitle {
+      font-size: 9pt;
+      color: #6b7280;
+      margin-bottom: 18px;
+    }
+
+    /* Disclaimer banner */
+    .disclaimer {
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-left: 4px solid #f59e0b;
+      border-radius: 3px;
+      padding: 8px 12px;
+      font-size: 8.5pt;
+      color: #92400e;
+      margin-bottom: 22px;
+    }
+    .disclaimer strong { color: #78350f; }
+
+    /* Section headings */
+    h2 {
+      font-size: 12pt;
+      font-weight: 700;
+      color: #111827;
+      margin: 24px 0 8px 0;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    h3 {
+      font-size: 10pt;
+      font-weight: 600;
+      color: #374151;
+      margin: 16px 0 6px 0;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0 16px 0;
+      font-size: 9.5pt;
+    }
+    th {
+      background: #f3f4f6;
+      text-align: left;
+      padding: 6px 10px;
+      border: 1px solid #e5e7eb;
+      font-weight: 600;
+      font-size: 9pt;
+      color: #374151;
+    }
+    td {
+      padding: 5px 10px;
+      border: 1px solid #e5e7eb;
+      color: #111827;
+    }
+    tr:nth-child(even) td { background: #f9fafb; }
+    .amount { text-align: right; font-variant-numeric: tabular-nums; }
+    .positive { color: #065f46; font-weight: 600; }
+    .negative { color: #991b1b; font-weight: 600; }
+    .summary-row td { font-weight: 700; background: #f3f4f6 !important; font-size: 10pt; }
+
+    /* Narrative text */
+    .narrative {
+      font-size: 10pt;
+      line-height: 1.6;
+      color: #1f2937;
+      text-align: justify;
+    }
+    .narrative p { margin: 0 0 8px 0; }
+  </style>
+</head>
+<body>
+
+  <!-- Page header -->
+  <div class="page-header">
+    <div class="logo-box">Your Logo Here</div>
+    <div class="header-meta">
+      Generated: {{ generated_at }}<br>
+      Period: {{ period_start }} — {{ period_end }}<br>
+      <strong>{{ organisation_name }}</strong>
+    </div>
+  </div>
+
+  <!-- Document title -->
+  <h1>Management Letter</h1>
+  <div class="subtitle">For the period {{ period_start }} to {{ period_end }}</div>
+
+  <!-- AI disclaimer -->
+  <div class="disclaimer">
+    <strong>AI-Assisted Draft:</strong> This document was prepared using AI assistance and data sourced from Xero.
+    All figures should be independently verified before distribution or filing.
+    This letter does not constitute formal accounting advice.
+  </div>
+
+  <!-- Financial summary table -->
+  <h2>Financial Summary</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th class="amount">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Total Income</td>
+        <td class="amount positive">{{ fmt_money(figures.total_income) }}</td>
+      </tr>
+      <tr>
+        <td>Total Expenses</td>
+        <td class="amount negative">({{ fmt_money(figures.total_expenses_abs) }})</td>
+      </tr>
+      <tr class="summary-row">
+        <td>Net {{ net_label }}</td>
+        <td class="amount {% if net_positive %}positive{% else %}negative{% endif %}">
+          {{ fmt_money(figures.net) }}
+        </td>
+      </tr>
+      <tr>
+        <td>Transactions in Period</td>
+        <td class="amount">{{ figures.transaction_count }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Top expense categories -->
+  {% if figures.top_expense_categories %}
+  <h3>Top Expense Categories</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th class="amount">Total</th>
+        <th class="amount">% of Expenses</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cat in figures.top_expense_categories %}
+      <tr>
+        <td>{{ cat.name }}</td>
+        <td class="amount negative">({{ fmt_money(cat.total_abs) }})</td>
+        <td class="amount">{{ fmt_pct(cat.pct) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+
+  <!-- Largest transactions -->
+  {% if figures.largest_transactions %}
+  <h3>Largest Transactions</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Description</th>
+        <th class="amount">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for tx in figures.largest_transactions %}
+      <tr>
+        <td>{{ tx.date }}</td>
+        <td>{{ tx.description }}</td>
+        <td class="amount {% if tx.amount >= 0 %}positive{% else %}negative{% endif %}">
+          {{ fmt_money(tx.amount) }}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+
+  <!-- AI narrative sections -->
+  <h2>Executive Summary</h2>
+  <div class="narrative">
+    {% for line in narrative.executive_summary.split('\n') %}
+    {% if line.strip() %}<p>{{ line }}</p>{% endif %}
+    {% endfor %}
+  </div>
+
+  <h2>Income Analysis</h2>
+  <div class="narrative">
+    {% for line in narrative.income_analysis.split('\n') %}
+    {% if line.strip() %}<p>{{ line }}</p>{% endif %}
+    {% endfor %}
+  </div>
+
+  <h2>Expense Analysis</h2>
+  <div class="narrative">
+    {% for line in narrative.expense_analysis.split('\n') %}
+    {% if line.strip() %}<p>{{ line }}</p>{% endif %}
+    {% endfor %}
+  </div>
+
+  <h2>Cash Flow Observations</h2>
+  <div class="narrative">
+    {% for line in narrative.cash_flow_observations.split('\n') %}
+    {% if line.strip() %}<p>{{ line }}</p>{% endif %}
+    {% endfor %}
+  </div>
+
+  <h2>Recommendations</h2>
+  <div class="narrative">
+    {% for line in narrative.recommendations.split('\n') %}
+    {% if line.strip() %}<p>{{ line }}</p>{% endif %}
+    {% endfor %}
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  backend:
+    name: Backend tests
+    runs-on: ubuntu-22.04
+
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: aiaccountant
+          POSTGRES_PASSWORD: localdev123
+          POSTGRES_DB: aiaccountant
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql+asyncpg://aiaccountant:localdev123@localhost:5432/aiaccountant
+      DATABASE_URL_SYNC: postgresql://aiaccountant:localdev123@localhost:5432/aiaccountant
+      REDIS_URL: redis://localhost:6379
+      SECRET_KEY: ci-test-secret-key
+      XERO_CLIENT_ID: test-client-id
+      XERO_CLIENT_SECRET: test-client-secret
+      XERO_REDIRECT_URI: http://localhost:8000/auth/xero/callback
+      ANTHROPIC_API_KEY: test-api-key
+      FRONTEND_URL: http://localhost:3000
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install WeasyPrint system dependencies
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y libcairo2 libpango-1.0-0 libpangoft2-1.0-0 \
+            libpangocairo-1.0-0 libgdk-pixbuf2.0-0 libffi-dev shared-mime-info
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/pyproject.toml
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          pip install -e ".[dev,ai,docs]"
+
+      - name: Run Alembic migrations
+        run: |
+          cd backend
+          alembic upgrade head
+
+      - name: Run tests
+        run: |
+          cd backend
+          pytest -x -v --cov=app --cov-report=term-missing --cov-report=xml
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: backend/coverage.xml
+
+  frontend:
+    name: Frontend checks
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: TypeScript type check
+        run: |
+          cd frontend
+          npx tsc --noEmit
+
+      - name: ESLint
+        run: |
+          cd frontend
+          npm run lint

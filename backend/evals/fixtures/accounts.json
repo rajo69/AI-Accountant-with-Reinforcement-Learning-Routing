@@ -1,0 +1,22 @@
+[
+  {"code": "200", "name": "Sales", "type": "REVENUE"},
+  {"code": "260", "name": "Other Revenue", "type": "REVENUE"},
+  {"code": "401", "name": "Rent", "type": "EXPENSE"},
+  {"code": "404", "name": "Computer Equipment & Software", "type": "EXPENSE"},
+  {"code": "411", "name": "Consultants & Contractors", "type": "EXPENSE"},
+  {"code": "412", "name": "Advertising & Marketing", "type": "EXPENSE"},
+  {"code": "416", "name": "General Expenses", "type": "EXPENSE"},
+  {"code": "420", "name": "Legal & Accountancy Fees", "type": "EXPENSE"},
+  {"code": "429", "name": "Entertainment & Hospitality", "type": "EXPENSE"},
+  {"code": "445", "name": "Utilities", "type": "EXPENSE"},
+  {"code": "460", "name": "Office Supplies", "type": "EXPENSE"},
+  {"code": "461", "name": "Subscriptions", "type": "EXPENSE"},
+  {"code": "462", "name": "Insurance", "type": "EXPENSE"},
+  {"code": "463", "name": "Training & Development", "type": "EXPENSE"},
+  {"code": "469", "name": "Rates", "type": "EXPENSE"},
+  {"code": "477", "name": "Wages & Salaries", "type": "EXPENSE"},
+  {"code": "480", "name": "Cleaning", "type": "EXPENSE"},
+  {"code": "489", "name": "Postage & Freight", "type": "EXPENSE"},
+  {"code": "493", "name": "Travel", "type": "EXPENSE"},
+  {"code": "820", "name": "Tax & Statutory Payments", "type": "LIABILITY"}
+]
