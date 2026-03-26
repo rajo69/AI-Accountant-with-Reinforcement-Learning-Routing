@@ -27,9 +27,9 @@ the RL routing policy. It is derived from the 50-transaction eval fixture in
 
 | Tier   | Count | Correct (%) | Mean Confidence |
 |--------|-------|-------------|-----------------|
-| Easy   | 322 | 89.1% | 0.900 |
-| Medium | 252 | 77.0% | 0.650 |
-| Hard   | 131 | 55.0% | 0.376 |
+| Easy   | 322 | 82.6% | 0.938 |
+| Medium | 252 | 52.4% | 0.883 |
+| Hard   | 131 | 62.6% | 0.813 |
 
 ### Synthetic vs Real (training set)
 

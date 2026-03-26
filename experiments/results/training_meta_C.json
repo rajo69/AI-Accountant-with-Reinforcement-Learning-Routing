@@ -1,9 +1,9 @@
 {
   "reward_variant": "C",
   "total_timesteps": 100000,
-  "final_mean_reward": 67.3,
+  "final_mean_reward": -27.5,
   "final_std_reward": 0.0,
-  "training_time_seconds": 1440.5,
+  "training_time_seconds": 781.3,
   "n_transactions_in_dataset": 705,
   "config_snapshot": {
     "ppo": {

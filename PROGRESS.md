@@ -27,22 +27,25 @@ Project complete. No further phases.
   Run `python -m environment.transaction_simulator` with ANTHROPIC_API_KEY
   to generate real scores for production-quality replication.
 
-## Training Results Summary (Phase 2)
+## Training Results Summary (Phase 2 — re-run with real confidence scores)
 | Variant | Description          | Final Mean Reward | Training Time |
 |---------|----------------------|-------------------|---------------|
-| A       | Binary asymmetric    | 291.1 ± 0.0       | ~10 min       |
-| B       | Workload-weighted    | 281.1 ± 6.1       | ~24 min       |
-| C       | Conservative (-5.0)  | 67.3 ± 0.0        | ~24 min       |
+| A       | Binary asymmetric    | 140.5 ± 0.0       | ~9 min        |
+| B       | Workload-weighted    | 110.9 ± 18.3      | ~9 min        |
+| C       | Conservative (-5.0)  | -27.5 ± 0.0       | ~13 min       |
 
-## Evaluation Results Summary (Phase 3)
+*(Mock-score run for reference: A=291.1, B=281.1, C=67.3)*
+
+## Evaluation Results Summary (Phase 3 — real confidence scores)
 | Policy   | Routing Acc | Auto-Prec | Auto-Rate | Error Rate |
 |----------|-------------|-----------|-----------|------------|
-| Baseline | 44.6%       | 89.4%     | 37.3%     | 10.6%      |
-| PPO-A    | 75.1%       | 81.2%     | 81.4%     | 18.8%      |
-| PPO-B    | 75.1%       | 81.2%     | 81.4%     | 18.8%      |
-| PPO-C    | 61.0%       | 90.1%     | 45.8%     |  9.9%      |
+| Baseline | 66.7%       | 72.6%     | 63.8%     | 27.4%      |
+| PPO-A    | 63.3%       | 77.8%     | 45.8%     | 22.2%      |
+| PPO-B    | 63.3%       | 77.8%     | 45.8%     | 22.2%      |
+| PPO-C    | 63.3%       | 77.8%     | 45.8%     | 22.2%      |
 
-Best model: PPO-C. Deployed as default in LearnedRouter.
+All three PPO variants converged to the same policy: auto-approve easy tier, surface
+medium/hard. Best model: PPO-C (or any variant — results identical). Deployed as default.
 
 ## Session Log
 ### Session 1 — 2026-03-25

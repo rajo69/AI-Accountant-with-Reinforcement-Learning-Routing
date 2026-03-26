@@ -166,23 +166,25 @@ interpretation.
 
 ## Results
 
+*Run with real Claude Haiku confidence scores from the CategoriserAgent.*
+
 | Policy | Routing Accuracy | Auto-Approval Precision | Auto-Approval Rate | Error Rate |
 |--------|:---:|:---:|:---:|:---:|
-| Baseline (0.85/0.50) | 44.6% | 89.4% | 37.3% | 10.6% |
-| PPO Variant A | **75.1%** | 81.2% | 81.4% | 18.8% |
-| PPO Variant B | **75.1%** | 81.2% | 81.4% | 18.8% |
-| PPO Variant C | 61.0% | **90.1%** | 45.8% | **9.9%** |
+| Baseline (0.85/0.50) | **66.7%** | 72.6% | 63.8% | 27.4% |
+| PPO Variant A | 63.3% | **77.8%** | 45.8% | **22.2%** |
+| PPO Variant B | 63.3% | **77.8%** | 45.8% | **22.2%** |
+| PPO Variant C | 63.3% | **77.8%** | 45.8% | **22.2%** |
 
 **Error rate by difficulty tier (auto-approved transactions only):**
 
 | Tier | Baseline | PPO-A | PPO-B | PPO-C |
 |------|:---:|:---:|:---:|:---:|
-| Easy | 10.6% | 9.9% | 9.9% | 9.9% |
-| Medium | N/A† | 30.2% | 30.2% | N/A† |
-| Hard | N/A† | N/A‡ | N/A‡ | N/A† |
+| Easy | 19.4% | 22.2%† | 22.2%† | 22.2%† |
+| Medium | 54.8% | N/A‡ | N/A‡ | N/A‡ |
+| Hard | 0.0% | N/A‡ | N/A‡ | N/A‡ |
 
-† Baseline / PPO-C surface all medium transactions for review (none auto-approved).
-‡ All policies surface hard transactions for review (none auto-approved).
+† All 81 easy-tier transactions auto-approved; 18 wrong.
+‡ All PPO variants surface 100% of medium and hard transactions for review.
 
 Analysis figures: [`experiments/results/figures/`](experiments/results/figures/)
 
@@ -190,42 +192,53 @@ Analysis figures: [`experiments/results/figures/`](experiments/results/figures/)
 
 ## Key Findings
 
-1. **All PPO variants eliminated REJECT_FOR_MANUAL entirely.** The baseline
-   routes every hard-tier transaction to REJECT; all three PPO agents learned
-   that SURFACE_FOR_REVIEW strictly dominates REJECT in expected reward. This
-   dominance was not specified — the agent discovered it through experience.
+1. **All PPO variants eliminated REJECT_FOR_MANUAL and converged to the same
+   policy.** With real Claude API confidence scores, all three reward variants
+   learned identical tier-based routing: auto-approve all easy-tier transactions,
+   surface all medium and hard for review. The intended A/B/C differentiation did
+   not materialise — real confidence scores (clustering at 0.95/0.85/0.75) provide
+   less tier separation than mock scores, leaving less room for reward shaping to
+   produce different behaviours.
 
-2. **PPO-A/B achieved the highest routing accuracy (75.1%)** by aggressively
-   auto-approving medium-tier transactions, but at the cost of a 30% error rate
-   on those auto-approvals. This is the throughput-vs-precision tradeoff made
-   explicit.
+2. **Real confidence scores render the fixed-threshold baseline significantly worse.**
+   With mock scores the baseline auto-approved 37.3% at 10.6% error. With real
+   scores the same thresholds auto-approve 63.8% at 27.4% error — because Claude
+   Haiku outputs ≥0.85 confidence for nearly all transactions, including many
+   incorrect medium-tier predictions (54.8% error rate among those auto-approved).
 
-3. **PPO-C is the recommended default for compliance contexts.** It matches the
-   baseline's precision (90.1% vs 89.4%), achieves a lower error rate (9.9% vs
-   10.6%), improves routing accuracy by 16 percentage points, and never rejects.
+3. **PPO variants beat the baseline on the metrics that matter most.** Despite
+   lower routing accuracy (63.3% vs 66.7%), all PPO variants achieve better
+   precision (77.8% vs 72.6%) and lower error rate (22.2% vs 27.4%). They do this
+   by learning to refuse auto-approval of medium-tier transactions, which the
+   threshold baseline incorrectly auto-approves at high volume.
 
-4. **Reward function design is the operational lever for calibrating oversight.**
-   The Variant A → Variant C transition demonstrates that operators can select
-   their desired point on the accuracy/precision tradeoff purely through reward
-   shaping, without changing any other part of the system.
+4. **The binding constraint is confidence score calibration, not the RL method.**
+   Single-sample Claude Haiku confidence scores are poorly calibrated — high
+   values appear regardless of whether the prediction is correct. A well-calibrated
+   uncertainty signal (multi-sample prompting, or a classifier with a native
+   probability output) would give the policy enough signal to learn fine-grained
+   intra-tier routing. The RL infrastructure is sound; the signal quality limits it.
 
-5. **The baseline's low routing accuracy (44.6%) is partly a metric artefact.**
-   If REJECT and SURFACE are scored equally for wrong predictions, baseline
-   accuracy rises to ~63%, competitive with PPO-C. The more meaningful comparisons
-   are auto-approval precision (PPO-C matches baseline) and error rate (PPO-C
-   beats baseline by 0.7pp).
+5. **REJECT elimination is robust across both data regimes.** The dominance of
+   SURFACE_FOR_REVIEW over REJECT_FOR_MANUAL holds whether training uses mock or
+   real confidence scores. This is the most reliable finding: reward-driven routing
+   consistently eliminates the costliest escalation action without explicit guidance.
 
 ---
 
 ## Limitations and Future Work
 
-**Synthetic data and mock confidence scores.** All training used mock confidence
-scores (easy≈0.90, medium≈0.65, hard≈0.38) rather than real CategoriserAgent
-outputs. All four policies learned to route primarily on `difficulty_tier` — a
-coarse discrete signal — rather than on the continuous confidence score. With
-real outputs that vary continuously within each tier, the policies would exhibit
-finer-grained routing behaviour. Re-running with live CategoriserAgent outputs
-is the single highest-impact improvement available.
+**Confidence score calibration is the binding constraint.** Real Claude Haiku
+confidence scores cluster at round values (0.95, 0.85, 0.75) regardless of
+difficulty tier. The resulting within-tier variance is too small for the policy
+to learn confidence-based routing at 100k training steps. All three PPO variants
+converge to the same tier-based strategy. A well-calibrated uncertainty estimate
+— from multi-sample prompting, top-k probability distributions, or a native
+classifier — would unlock finer-grained routing.
+
+**All reward variants converged to the same policy** with real scores, removing
+the intended A/B/C tradeoff surface. Longer training (500k–1M steps) or harder
+reward gradients may be needed to recover differentiation.
 
 **Small evaluation set.** 177 transactions is insufficient for statistically
 robust conclusions (especially hard tier, n=33). All results are indicative.
@@ -234,12 +247,9 @@ robust conclusions (especially hard tier, n=33). All results are indicative.
 `is_correct` flag, not from actual accountant corrections. Production deployment
 would require online learning from genuine human feedback.
 
-**PPO-A and PPO-B are identical on this evaluation set** because the load-sensitive
-penalty only manifests at non-neutral accountant load values.
-
-**Future work:** Re-run with real confidence scores; online learning from
-accountant corrections; multi-load evaluation for Variant B; longer training
-(500k–1M steps); extending to the ReconcilerAgent (also uses fixed thresholds).
+**Future work:** Multi-sample confidence estimation; online learning from
+accountant corrections; multi-load evaluation for Variant B; longer training;
+extending to the ReconcilerAgent (also uses fixed thresholds).
 
 ---
 
