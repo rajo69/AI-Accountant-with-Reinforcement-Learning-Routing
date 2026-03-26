@@ -16,11 +16,11 @@ Can a lightweight Proximal Policy Optimisation (PPO) agent learn to make better
 routing decisions than a fixed confidence threshold in a multi-agent AI pipeline?
 Specifically: given a transaction categorisation agent that outputs a confidence
 score, should the system auto-approve the prediction, surface it for human review,
-or flag it for manual re-categorisation — and can a learned policy calibrate this
+or flag it for manual re-categorisation and can a learned policy calibrate this
 decision more effectively than a hand-chosen threshold?
 
-This question matters because confidence-gated autonomy — deciding when an AI
-should act versus escalate to a human — is an unsolved problem across all
+This question matters because confidence-gated autonomy, deciding when an AI
+should act versus escalate to a human, is an unsolved problem across all
 production agentic systems. The findings here bear directly on clinical decision
 support, autonomous compliance checking, and any pipeline where human oversight
 must be calibrated against throughput.
