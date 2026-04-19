@@ -246,9 +246,6 @@ class TransactionSimulator:
         if self.dry_run:
             return self._mock_variants(seed, n)
 
-        accounts_str = "\n".join(
-            f"  {a['code']}: {a['name']}" for a in self._accounts
-        )
         amount = float(seed.amount)
         prompt = f"""You are generating synthetic UK business bank transaction records for AI research.
 
@@ -631,7 +628,7 @@ def main() -> None:
     print(f"  Seeds in training  : {summary['n_seeds_train']}")
     print(f"  Synthetic          : {summary['n_synthetic_train']}")
     print(f"  Overall % correct  : {summary['overall_pct_correct']:.1f}%")
-    print(f"\n  Training by tier:")
+    print("\n  Training by tier:")
     for tier_name, stats in zip(("Easy", "Medium", "Hard"), summary["train_by_tier"]):
         print(
             f"    {tier_name:8s}: n={stats['count']:4d}  "
@@ -639,9 +636,9 @@ def main() -> None:
             f"mean_conf={stats['mean_conf']:.3f}"
         )
     print("\n  Files written:")
-    print(f"    data/synthetic/transactions.jsonl")
-    print(f"    data/evaluation/held_out_set.json")
-    print(f"    data/synthetic/README.md")
+    print("    data/synthetic/transactions.jsonl")
+    print("    data/evaluation/held_out_set.json")
+    print("    data/synthetic/README.md")
 
 
 if __name__ == "__main__":

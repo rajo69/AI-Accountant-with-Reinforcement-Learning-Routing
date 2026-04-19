@@ -132,17 +132,17 @@ parent project's evaluation framework:
 
 1. The Claude API generated 10 variations of each seed transaction, varying
    amount, date, merchant phrasing, and description while preserving category.
-2. Each synthetic transaction was processed by the CategoriserAgent to obtain
-   real confidence scores. (In the current repository, mock confidence scores
-   are used due to API cost; see Limitations.)
+2. Each synthetic transaction was processed by a simplified CategoriserAgent
+   prompt (same Claude model as production, without pgvector few-shot context)
+   to obtain real Claude confidence scores. See `data/synthetic/README.md`.
 3. Final dataset: **882 transactions** (705 training / 177 evaluation), stratified
    by difficulty tier across all 50 seed categories.
 
-| Tier | Train | Eval | Agent Accuracy |
+| Tier | Train | Eval | Agent Accuracy (eval) |
 |------|-------|------|---------------|
-| Easy | ~258 | 81 | ~90% |
-| Medium | ~202 | 63 | ~70% |
-| Hard | ~105 | 33 | ~52% |
+| Easy | 322 | 81 | 78% |
+| Medium | 252 | 63 | 48% |
+| Hard | 131 | 33 | 52% |
 
 ### Training
 
@@ -168,30 +168,57 @@ This definition penalises REJECT_FOR_MANUAL even for wrong predictions (SURFACE
 is less costly). See Key Findings and Limitations for how this affects
 interpretation.
 
+### Statistical methods
+
+All headline rates are reported with Wilson score 95% confidence intervals.
+Policy comparisons use two-sided two-proportion z-tests (pooled variance).
+Per-tier rates are reported with their subset sample size; small-n tiers
+(e.g., baseline auto-approvals in the hard tier, n=10) have wide intervals and
+are flagged rather than interpreted. The analysis is fully reproducible from
+the committed `experiments/results/evaluation_results.json` via
+`python -m experiments.statistical_analysis`, which writes
+`statistical_summary.json` (machine-readable) and `statistical_summary.md`
+(human-readable) alongside the evaluation file.
+
 ---
 
 ## Results
 
-*Run with real Claude Haiku confidence scores from the CategoriserAgent.*
+*Run with real Claude Haiku confidence scores from the CategoriserAgent. All
+three PPO variants produce identical action sequences on the held-out set, so
+they are reported as a single "PPO" column.*
 
-| Policy | Routing Accuracy | Auto-Approval Precision | Auto-Approval Rate | Error Rate |
-|--------|:---:|:---:|:---:|:---:|
-| Baseline (0.85/0.50) | **66.7%** | 72.6% | 63.8% | 27.4% |
-| PPO Variant A | 63.3% | **77.8%** | 45.8% | **22.2%** |
-| PPO Variant B | 63.3% | **77.8%** | 45.8% | **22.2%** |
-| PPO Variant C | 63.3% | **77.8%** | 45.8% | **22.2%** |
+### Headline metrics (n=177)
 
-**Error rate by difficulty tier (auto-approved transactions only):**
+Ranges are Wilson score 95% confidence intervals. P-values are two-sided
+two-proportion z-tests comparing Baseline and PPO. See `experiments/statistical_analysis.py`.
 
-| Tier | Baseline | PPO-A | PPO-B | PPO-C |
-|------|:---:|:---:|:---:|:---:|
-| Easy | 19.4% | 22.2% | 22.2% | 22.2% |
-| Medium | 54.8% | N/A (none auto-approved) | N/A | N/A |
-| Hard | 0.0% | N/A | N/A | N/A |
+| Metric | Baseline (0.85/0.50) | PPO (A/B/C identical) | Significance |
+|---|:---:|:---:|:---:|
+| Routing accuracy (over 177)   | 66.7% [59.4%, 73.2%] | 63.3% [56.0%, 70.0%] | p=0.50 |
+| Auto-approval precision       | 72.6% [63.7%, 79.9%] | 77.8% [67.6%, 85.5%] | p=0.41 |
+| Auto-approval error rate      | 27.4% [20.1%, 36.3%] | 22.2% [14.5%, 32.4%] | p=0.41 |
+| **Auto-approval rate**        | **63.8% [56.5%, 70.6%]** | **45.8% [38.6%, 53.1%]** | **p=0.001** |
 
-All PPO variants surface 100% of medium and hard transactions for review.
+Of the four metrics, only the auto-approval *rate* differs significantly at
+n=177. The apparent accuracy and precision differences are directionally
+favourable to PPO but underpowered on this eval set.
 
-Analysis figures: [`experiments/results/figures/`](experiments/results/figures/)
+### Per-tier auto-approval error rate (auto-approved subset only)
+
+| Tier | Baseline | PPO |
+|---|:---:|:---:|
+| Easy   | 19.4% [12.0%, 30.0%] (n=72) | 22.2% [14.5%, 32.4%] (n=81) |
+| Medium | **54.8% [37.8%, 70.8%]** (n=31) | N/A — PPO auto-approves zero |
+| Hard   | 0.0% [0.0%, 27.8%] (n=10)   | N/A — PPO auto-approves zero |
+
+The single most consequential row is Medium: the baseline auto-approves 31
+medium-tier transactions with a **54.8% error rate** (more wrong than right),
+while PPO auto-approves zero. This is what the significant auto-approval-rate
+difference is buying.
+
+Analysis figures: [`experiments/results/figures/`](experiments/results/figures/).
+Reproducible CIs and p-values: `python -m experiments.statistical_analysis`.
 
 ---
 
@@ -214,11 +241,18 @@ Analysis figures: [`experiments/results/figures/`](experiments/results/figures/)
    broader evidence that verbally elicited LLM confidence scores are
    systematically overconfident and poorly calibrated [6, 7, 8].
 
-3. **PPO variants beat the baseline on the metrics that matter most.** Despite
-   lower routing accuracy (63.3% vs 66.7%), all PPO variants achieve better
-   precision (77.8% vs 72.6%) and lower error rate (22.2% vs 27.4%). They do
-   this by learning to refuse auto-approval of medium-tier transactions, which
-   the threshold baseline incorrectly auto-approves at high volume.
+3. **PPO's apparent accuracy and precision gains are not statistically
+   significant at n=177, but PPO learns a qualitatively different and safer
+   strategy.** Two-proportion z-tests on the held-out set show no significant
+   difference in overall routing accuracy (p=0.50), auto-approval precision
+   (p=0.41), or auto-approval error rate (p=0.41) — the confidence intervals
+   overlap heavily. What *is* highly significant is the auto-approval *rate*:
+   63.8% [56.5%, 70.6%] for the baseline versus 45.8% [38.6%, 53.1%] for PPO
+   (p=0.001). The per-tier breakdown shows the mechanism: the baseline
+   auto-approves 31 medium-tier transactions at a 54.8% [37.8%, 70.8%] error
+   rate — more wrong than right — while PPO auto-approves zero medium-tier.
+   The defensible contribution is not "PPO improves accuracy" but "PPO learns
+   to not auto-approve the tier where the baseline is dangerously wrong."
 
 4. **The binding constraint is confidence score calibration, not the RL method.**
    Single-sample Claude Haiku confidence scores are poorly calibrated: high
@@ -228,10 +262,18 @@ Analysis figures: [`experiments/results/figures/`](experiments/results/figures/)
    fine-grained intra-tier routing. The RL infrastructure is sound; the signal
    quality limits it.
 
-5. **REJECT elimination is robust across both data regimes.** The dominance of
-   SURFACE_FOR_REVIEW over REJECT_FOR_MANUAL holds whether training uses mock or
-   real confidence scores. This is the most reliable finding: reward-driven routing
-   consistently eliminates the costliest escalation action without explicit guidance.
+5. **REJECT elimination is a learned policy-level property.** All three PPO
+   variants assign zero probability to REJECT_FOR_MANUAL under their trained
+   policies, regardless of input confidence; this dominance of
+   SURFACE_FOR_REVIEW over REJECT_FOR_MANUAL holds across both mock and real
+   confidence-score regimes during training. The hand-tuned baseline also emits
+   zero rejects on the held-out set, but for a different reason: real Claude
+   Haiku confidences never fall below the baseline's 0.5 reject threshold.
+   The PPO result is therefore stronger than the eval-set coincidence suggests
+   — PPO would continue to never reject even if confidence scores dropped below
+   0.5, whereas the baseline would begin rejecting. A data regime that exposes
+   lower-confidence transactions would separate these two policies on this
+   axis.
 
 ---
 

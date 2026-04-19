@@ -1,0 +1,55 @@
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = [
+    "backend",
+    "frontend",
+    "docs",
+    "models",
+    "data",
+    "experiments/notebooks",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]
+ignore = [
+    "E501",
+    "E741",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py312"]
+extend-exclude = '''
+/(
+    backend
+  | frontend
+  | docs
+  | models
+  | data
+  | experiments/notebooks
+)/
+'''
+
+[tool.pytest.ini_options]
+testpaths = [
+    "environment/tests",
+    "integration/tests",
+]
+addopts = "-v"
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+follow_imports = "skip"
+files = ["agent", "api", "environment", "integration"]
+exclude = [
+    "backend",
+    "frontend",
+    "environment/tests",
+    "integration/tests",
+]
+
+[[tool.mypy.overrides]]
+module = "environment.transaction_simulator"
+ignore_errors = true

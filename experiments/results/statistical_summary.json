@@ -1,0 +1,165 @@
+{
+  "baseline_name": "Baseline (threshold 0.85/0.50)",
+  "ppo_name": "PPO Variant A (A/B/C identical on eval)",
+  "n_eval": 177,
+  "metrics": {
+    "baseline": {
+      "routing_accuracy": {
+        "x": 118,
+        "n": 177,
+        "rate": 0.6666666666666666,
+        "ci95": [
+          0.594329444967389,
+          0.7319231764433849
+        ]
+      },
+      "auto_precision": {
+        "x": 82,
+        "n": 113,
+        "rate": 0.7256637168141593,
+        "ci95": [
+          0.637003024173307,
+          0.7994858772385199
+        ]
+      },
+      "auto_error_rate": {
+        "x": 31,
+        "n": 113,
+        "rate": 0.2743362831858407,
+        "ci95": [
+          0.2005141227614801,
+          0.362996975826693
+        ]
+      },
+      "auto_approval_rate": {
+        "x": 113,
+        "n": 177,
+        "rate": 0.6384180790960452,
+        "ci95": [
+          0.5653907717789753,
+          0.7055647951553964
+        ]
+      },
+      "error_rate_by_tier": {
+        "easy": {
+          "x": 14,
+          "n": 72,
+          "rate": 0.19444444444444445,
+          "ci95": [
+            0.1195147937945056,
+            0.3003275894588853
+          ]
+        },
+        "medium": {
+          "x": 17,
+          "n": 31,
+          "rate": 0.5483870967741935,
+          "ci95": [
+            0.37772167637354503,
+            0.7083826401947998
+          ]
+        },
+        "hard": {
+          "x": 0,
+          "n": 10,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.2775327998628892
+          ]
+        }
+      }
+    },
+    "ppo": {
+      "routing_accuracy": {
+        "x": 112,
+        "n": 177,
+        "rate": 0.632768361581921,
+        "ci95": [
+          0.5596341852705398,
+          0.7002619707685516
+        ]
+      },
+      "auto_precision": {
+        "x": 63,
+        "n": 81,
+        "rate": 0.7777777777777778,
+        "ci95": [
+          0.6758471376953772,
+          0.8545539259532811
+        ]
+      },
+      "auto_error_rate": {
+        "x": 18,
+        "n": 81,
+        "rate": 0.2222222222222222,
+        "ci95": [
+          0.14544607404671892,
+          0.3241528623046228
+        ]
+      },
+      "auto_approval_rate": {
+        "x": 81,
+        "n": 177,
+        "rate": 0.4576271186440678,
+        "ci95": [
+          0.3859103744766434,
+          0.5311440438087531
+        ]
+      },
+      "error_rate_by_tier": {
+        "easy": {
+          "x": 18,
+          "n": 81,
+          "rate": 0.2222222222222222,
+          "ci95": [
+            0.14544607404671892,
+            0.3241528623046228
+          ]
+        },
+        "medium": {
+          "x": 0,
+          "n": 0,
+          "rate": null,
+          "ci95": [
+            null,
+            null
+          ]
+        },
+        "hard": {
+          "x": 0,
+          "n": 0,
+          "rate": null,
+          "ci95": [
+            null,
+            null
+          ]
+        }
+      }
+    }
+  },
+  "comparisons": {
+    "auto_error_rate": {
+      "z": 0.8238638967701599,
+      "p_value": 0.4100168963427884
+    },
+    "auto_precision": {
+      "z": -0.8238638967701599,
+      "p_value": 0.4100168963427884
+    },
+    "routing_accuracy": {
+      "z": 0.6684641499553986,
+      "p_value": 0.5038373586133815
+    },
+    "auto_approval_rate": {
+      "z": 3.4173601676533774,
+      "p_value": 0.0006323156708418765
+    }
+  },
+  "notes": [
+    "PPO A/B/C produce identical action sequences on the eval set (total AUTO=81, SURFACE=96, REJECT=0), so only one PPO column needs reporting in comparison tables.",
+    "Both policies emit 0 REJECT_FOR_MANUAL on this eval set because real Claude Haiku confidences never fall below 0.5 (baseline's reject threshold). PPO's REJECT-elimination is a learned policy-level property; the baseline coincidence reflects the data distribution, not the threshold design.",
+    "The Baseline-vs-PPO difference in auto-approval error rate is NOT statistically significant at alpha=0.05 (the headline README framing overstates this finding).",
+    "The Baseline-vs-PPO difference in auto-approval RATE IS highly significant: PPO auto-approves substantially less. Combined with the baseline's 54.8% medium-tier error rate among its auto-approvals, this is the defensible headline: PPO learns to not auto-approve the tier where the baseline is wrong more often than right."
+  ]
+}

@@ -67,10 +67,8 @@ import numpy as np
 from gymnasium import spaces
 
 from environment.reward_functions import (
-    AUTO_APPROVE,
-    SURFACE_FOR_REVIEW,
-    REJECT_FOR_MANUAL,
     ACTION_NAMES,
+    RewardFn,
     get_reward_function,
 )
 
@@ -110,7 +108,7 @@ class RoutingEnv(gym.Env):
             raise ValueError(f"reward_variant must be 'A', 'B', or 'C', got '{reward_variant}'")
 
         self.reward_variant = reward_variant
-        self._reward_fn = get_reward_function(reward_variant)
+        self._reward_fn: RewardFn = get_reward_function(reward_variant)
 
         # Load transaction dataset
         if transactions is not None:
@@ -128,7 +126,7 @@ class RoutingEnv(gym.Env):
         # Variant B adds accountant_load as a 5th dimension so the agent can
         # learn load-sensitive routing behaviour.
         obs_dim = 5 if reward_variant == "B" else 4
-        low = np.zeros(obs_dim, dtype=np.float32)
+        low: np.ndarray = np.zeros(obs_dim, dtype=np.float32)
         high = np.array(
             [1.0, 1.0, 2.0, 1.0] + ([1.0] if reward_variant == "B" else []),
             dtype=np.float32,

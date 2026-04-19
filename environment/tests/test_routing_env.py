@@ -18,14 +18,13 @@ import pytest
 from environment.reward_functions import (
     AUTO_APPROVE,
     SURFACE_FOR_REVIEW,
-    REJECT_FOR_MANUAL,
     reward_a,
     reward_b,
     reward_c,
     get_reward_function,
     REWARD_FUNCTIONS,
 )
-from environment.routing_env import RoutingEnv, _minimal_test_transactions
+from environment.routing_env import RoutingEnv
 
 
 # ---------------------------------------------------------------------------

@@ -41,6 +41,10 @@ This multi-variant approach is the primary research contribution.
 
 from __future__ import annotations
 
+from typing import Callable
+
+RewardFn = Callable[..., float]
+
 # ---------------------------------------------------------------------------
 # Action space constants
 # ---------------------------------------------------------------------------
@@ -254,14 +258,14 @@ def reward_c(action: int, is_correct: bool, **kwargs: float) -> float:
 # Registry
 # ---------------------------------------------------------------------------
 
-REWARD_FUNCTIONS: dict[str, callable] = {
+REWARD_FUNCTIONS: dict[str, RewardFn] = {
     "A": reward_a,
     "B": reward_b,
     "C": reward_c,
 }
 
 
-def get_reward_function(variant: str) -> callable:
+def get_reward_function(variant: str) -> RewardFn:
     """Return the reward function for a given variant string ('A', 'B', or 'C')."""
     if variant not in REWARD_FUNCTIONS:
         raise ValueError(f"Unknown reward variant '{variant}'. Choose from: {list(REWARD_FUNCTIONS)}")

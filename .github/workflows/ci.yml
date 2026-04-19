@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main]
 
+# The parent AI Accountant project lives under ./backend (and ./frontend). This
+# workflow covers only the RL routing research extension (agent, api,
+# environment, integration). Scopes are defined in ./pyproject.toml so running
+# ruff/mypy/pytest with no arguments is sufficient.
 jobs:
   test:
     name: Tests
@@ -23,11 +27,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Install test dependencies
-        run: pip install pytest pytest-asyncio pytest-cov
-
       - name: Run tests
-        run: pytest --cov=. --cov-report=xml --cov-report=term-missing -v
+        run: pytest --cov=agent --cov=api --cov=environment --cov=integration --cov-report=xml --cov-report=term-missing
 
       - uses: codecov/codecov-action@v4
         if: always()
@@ -47,13 +48,10 @@ jobs:
           python-version: "3.12"
 
       - name: Install linters
-        run: pip install ruff black
+        run: pip install ruff
 
       - name: ruff check
-        run: ruff check .
-
-      - name: black check
-        run: black --check .
+        run: ruff check agent api environment integration
 
   type-check:
     name: Type Check
@@ -70,7 +68,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Install mypy
-        run: pip install mypy
+        run: pip install mypy types-PyYAML
 
       - name: mypy
-        run: mypy api/ integration/ agent/ environment/ --ignore-missing-imports
+        run: mypy

@@ -92,7 +92,7 @@ def train(reward_variant: str) -> None:
     train_env = make_env(reward_variant, seed)
     eval_env = make_eval_env(reward_variant, seed)
 
-    n_transactions = train_env.unwrapped.n_transactions
+    n_transactions = train_env.unwrapped.n_transactions  # type: ignore[attr-defined]
     print(f"  Training dataset: {n_transactions} transactions per episode")
     print()
 
@@ -161,13 +161,16 @@ def train(reward_variant: str) -> None:
         n_eval_episodes=n_eval_episodes,
         deterministic=True,
     )
+    # evaluate_policy returns float when return_episode_rewards is False (default).
+    mean_reward_f: float = float(mean_reward)  # type: ignore[arg-type]
+    std_reward_f: float = float(std_reward)  # type: ignore[arg-type]
 
     # ── Training metadata ─────────────────────────────────────────────────────
     meta = {
         "reward_variant": reward_variant,
         "total_timesteps": total_timesteps,
-        "final_mean_reward": round(float(mean_reward), 4),
-        "final_std_reward": round(float(std_reward), 4),
+        "final_mean_reward": round(mean_reward_f, 4),
+        "final_std_reward": round(std_reward_f, 4),
         "training_time_seconds": round(training_time, 1),
         "n_transactions_in_dataset": n_transactions,
         "config_snapshot": {
@@ -185,7 +188,7 @@ def train(reward_variant: str) -> None:
     print(f"\n{'='*60}")
     print(f"Training complete — Variant {reward_variant}")
     print(f"{'='*60}")
-    print(f"  Final mean reward : {mean_reward:.4f} ± {std_reward:.4f}")
+    print(f"  Final mean reward : {mean_reward_f:.4f} ± {std_reward_f:.4f}")
     print(f"  Training time     : {training_time:.1f}s")
     print(f"  Model path        : {final_model_path}")
     print(f"  Metadata path     : {meta_path}")

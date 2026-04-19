@@ -13,9 +13,8 @@ from __future__ import annotations
 from pathlib import Path
 
 import numpy as np
-import pytest
 
-from agent.baseline import ThresholdPolicy, make_baseline_policy
+from agent.baseline import make_baseline_policy
 from integration.router import (
     AUTO_APPROVE,
     SURFACE_FOR_REVIEW,

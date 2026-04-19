@@ -38,8 +38,7 @@ from typing import Any
 import numpy as np
 from stable_baselines3 import PPO
 
-from agent.baseline import make_baseline_policy, ThresholdPolicy
-from environment.routing_env import RoutingEnv
+from agent.baseline import make_baseline_policy
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -257,7 +256,6 @@ def print_comparison_table(results: list[dict[str, Any]]) -> None:
         row = f"  {action_name:<33}"
         for r in results:
             totals = r.get("action_totals", {})
-            n = r.get("n_transactions", 1)
             count = totals.get(action_name, 0)
             row += f"{count:>{col_width-2}}  " if col_width > 2 else f"{count:>{col_width}}"
         print(row)
@@ -277,8 +275,8 @@ def main() -> None:
     records = load_held_out_set()
     print(f"  Loaded {len(records)} transactions")
 
-    tier_counts = defaultdict(int)
-    correct_counts = defaultdict(int)
+    tier_counts: defaultdict[int, int] = defaultdict(int)
+    correct_counts: defaultdict[int, int] = defaultdict(int)
     for rec in records:
         tier_counts[rec["difficulty_tier"]] += 1
         if rec["is_correct"]:
