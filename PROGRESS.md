@@ -1,19 +1,22 @@
 # PROGRESS.md — RL Routing Project Session Log
 
 ## Current Phase
-Phase 10 — Repository cleanup (remove parent project from this repo)
+Between phases. All critical research phases (0–8b) and defensibility work
+are complete and merged to main. Phase 9 (multi-seed robustness) is the
+remaining planned phase; next candidate is a Docker-reproducibility pass
+to make the headline numbers regenerable with one command.
 
 ## Phase Status
-In progress. Initial project tag v1.0.0 was cut after Phase 6; subsequent
-phases strengthen the evaluation and defensibility rather than add features.
-The repository is usable as-is at HEAD and also at v1.0.0, with the HEAD
-framing being substantially more defensible.
+All research phases complete. Initial project tag v1.0.0 was cut after
+Phase 6; subsequent phases strengthen the evaluation and defensibility
+rather than add features. The repository is usable as-is at HEAD and also
+at v1.0.0, with the HEAD framing being substantially more defensible.
 
 ## Last Completed Step
-Regime probe shipped on both calibrated and raw confidence (commits 894cf82
-+ 2e80cb4): Variant C diverges from A/B exactly as the EV math predicts on
-both signal regimes, supporting the EV-invariance explanation for
-natural-regime convergence.
+Phase 10 repository cleanup shipped via PR #1 (merge commit 404f8fb):
+vendored parent project removed (~1MB), CLAUDE.md and RL_ROUTING_PROJECT.md
+trimmed to current-state scaffolding, seed fixtures relocated to data/seeds/.
+The RL extension is now fully decoupled from the parent project's source.
 
 ## Completed Phases
 - [x] Phase 0 — Repository initialisation
@@ -62,8 +65,8 @@ All three PPO variants produced identical action distributions on the
 | Baseline     | 66.7% [59, 73] | 72.6% [64, 80] | 63.8% [57, 71] | 27.4% [20, 36]  |
 | PPO-A / B / C| 63.3% [56, 70] | 77.8% [68, 86] | 45.8% [39, 53] | 22.2% [15, 32]  |
 
-Two-proportion z-tests: routing accuracy p=0.50, precision p=0.41, error rate
-p=0.41 (none significant at n=177). Auto-approval rate p=0.001 (highly
+Two-proportion z-tests: routing accuracy p=0.504, precision p=0.410, error
+rate p=0.410 (none significant at n=177). Auto-approval rate p<0.001 (highly
 significant). All three PPO variants are identical on the eval set, reported
 as one column. See `experiments/results/statistical_summary.md`.
 

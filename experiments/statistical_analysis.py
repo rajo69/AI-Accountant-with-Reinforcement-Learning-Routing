@@ -40,6 +40,13 @@ RESULTS_DIR = REPO_ROOT / "experiments" / "results"
 Z_95 = 1.959963984540054  # standard-normal 97.5th percentile
 
 
+def _fmt_p(p: float) -> str:
+    """Format a p-value in standard biostats convention: 3dp or p<0.001."""
+    if p < 0.001:
+        return "p<0.001"
+    return f"p={p:.3f}"
+
+
 # ---------------------------------------------------------------------------
 # Primitives
 # ---------------------------------------------------------------------------
@@ -359,7 +366,7 @@ def print_report(report: dict) -> None:
         pv = report["comparisons"][cmp_key]["p_value"] if cmp_key else None
         bcell = f"{fmt_pct(bm['rate'])} {fmt_ci(*bm['ci95'])}"
         pcell = f"{fmt_pct(pm['rate'])} {fmt_ci(*pm['ci95'])}"
-        pvcell = f"p={pv:.3f}" if pv is not None else ""
+        pvcell = _fmt_p(pv) if pv is not None else ""
         print(f"  {label:<35} {bcell:<22} {pcell:<22} {pvcell}")
     print()
 
@@ -396,7 +403,7 @@ def write_markdown(report: dict, path: Path) -> None:
         pm = p[key]
         cmp_key = key if key in report["comparisons"] else None
         pv = report["comparisons"][cmp_key]["p_value"] if cmp_key else None
-        pvcell = f"p={pv:.2f}" if pv is not None else ""
+        pvcell = _fmt_p(pv) if pv is not None else ""
         return (
             f"| {label} | "
             f"{bm['rate']*100:.1f}% [{bm['ci95'][0]*100:.1f}, {bm['ci95'][1]*100:.1f}] | "
