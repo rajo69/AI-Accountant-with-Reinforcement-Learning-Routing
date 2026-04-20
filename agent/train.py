@@ -38,33 +38,45 @@ CHECKPOINT_DIR = REPO_ROOT / "models" / "checkpoints"
 TRAINED_DIR = REPO_ROOT / "models" / "trained"
 RESULTS_DIR = REPO_ROOT / "experiments" / "results"
 
+# Datasets: "raw" uses the original Claude Haiku confidence scores; "calibrated"
+# uses the Platt-scaled calibrator output from experiments/calibrate.py.
+DATASETS = {
+    "raw":        REPO_ROOT / "data" / "synthetic" / "transactions.jsonl",
+    "calibrated": REPO_ROOT / "data" / "synthetic" / "transactions_calibrated.jsonl",
+}
+
 
 def load_config() -> dict:
     with open(CONFIG_PATH, "r") as f:
         return yaml.safe_load(f)
 
 
-def make_env(reward_variant: str, seed: int) -> Monitor:
+def make_env(reward_variant: str, seed: int, data_path: str, tag: str) -> Monitor:
     """Create a monitored RoutingEnv for training."""
-    log_dir = TENSORBOARD_DIR / f"variant_{reward_variant}"
+    log_dir = TENSORBOARD_DIR / f"variant_{reward_variant}{tag}"
     log_dir.mkdir(parents=True, exist_ok=True)
-    env = RoutingEnv(reward_variant=reward_variant, seed=seed)
+    env = RoutingEnv(reward_variant=reward_variant, seed=seed, data_path=data_path)
     return Monitor(env, filename=str(log_dir / "monitor"))
 
 
-def make_eval_env(reward_variant: str, seed: int) -> Monitor:
+def make_eval_env(reward_variant: str, seed: int, data_path: str, tag: str) -> Monitor:
     """Create a separate monitored RoutingEnv for evaluation callbacks."""
-    eval_log_dir = TENSORBOARD_DIR / f"variant_{reward_variant}_eval"
+    eval_log_dir = TENSORBOARD_DIR / f"variant_{reward_variant}{tag}_eval"
     eval_log_dir.mkdir(parents=True, exist_ok=True)
-    env = RoutingEnv(reward_variant=reward_variant, seed=seed + 1000)
+    env = RoutingEnv(reward_variant=reward_variant, seed=seed + 1000, data_path=data_path)
     return Monitor(env, filename=str(eval_log_dir / "eval_monitor"))
 
 
-def train(reward_variant: str) -> None:
+def train(reward_variant: str, dataset: str = "raw") -> None:
     """Train a PPO policy for the given reward variant."""
     cfg = load_config()
     ppo_cfg = cfg["ppo"]
     train_cfg = cfg["training"]
+
+    if dataset not in DATASETS:
+        raise ValueError(f"Unknown dataset '{dataset}'. Choose from: {list(DATASETS)}")
+    data_path = str(DATASETS[dataset])
+    tag = "" if dataset == "raw" else f"_{dataset}"
 
     seed: int = train_cfg["seed"]
     total_timesteps: int = ppo_cfg["total_timesteps"]
@@ -78,8 +90,9 @@ def train(reward_variant: str) -> None:
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
     print(f"\n{'='*60}")
-    print(f"Training PPO — Reward Variant {reward_variant}")
+    print(f"Training PPO — Reward Variant {reward_variant} ({dataset})")
     print(f"{'='*60}")
+    print(f"  Dataset         : {dataset}  ({data_path})")
     print(f"  Total timesteps : {total_timesteps:,}")
     print(f"  Seed            : {seed}")
     print(f"  Net arch        : {ppo_cfg['net_arch']}")
@@ -89,8 +102,8 @@ def train(reward_variant: str) -> None:
     print()
 
     # ── Environments ──────────────────────────────────────────────────────────
-    train_env = make_env(reward_variant, seed)
-    eval_env = make_eval_env(reward_variant, seed)
+    train_env = make_env(reward_variant, seed, data_path, tag)
+    eval_env = make_eval_env(reward_variant, seed, data_path, tag)
 
     n_transactions = train_env.unwrapped.n_transactions  # type: ignore[attr-defined]
     print(f"  Training dataset: {n_transactions} transactions per episode")
@@ -100,11 +113,11 @@ def train(reward_variant: str) -> None:
     checkpoint_cb = CheckpointCallback(
         save_freq=save_freq,
         save_path=str(CHECKPOINT_DIR),
-        name_prefix=f"ppo_variant_{reward_variant}",
+        name_prefix=f"ppo_variant_{reward_variant}{tag}",
         verbose=1,
     )
 
-    best_model_path = str(TRAINED_DIR / f"best_ppo_variant_{reward_variant}")
+    best_model_path = str(TRAINED_DIR / f"best_ppo_variant_{reward_variant}{tag}")
     eval_cb = EvalCallback(
         eval_env,
         best_model_save_path=best_model_path,
@@ -141,14 +154,14 @@ def train(reward_variant: str) -> None:
     model.learn(
         total_timesteps=total_timesteps,
         callback=[checkpoint_cb, eval_cb],
-        tb_log_name=f"ppo_variant_{reward_variant}",
+        tb_log_name=f"ppo_variant_{reward_variant}{tag}",
         progress_bar=True,
     )
 
     training_time = time.time() - start_time
 
     # ── Save final model ──────────────────────────────────────────────────────
-    final_model_path = TRAINED_DIR / f"ppo_variant_{reward_variant}.zip"
+    final_model_path = TRAINED_DIR / f"ppo_variant_{reward_variant}{tag}.zip"
     model.save(str(final_model_path))
     print(f"\nFinal model saved: {final_model_path}")
 
@@ -168,6 +181,8 @@ def train(reward_variant: str) -> None:
     # ── Training metadata ─────────────────────────────────────────────────────
     meta = {
         "reward_variant": reward_variant,
+        "dataset": dataset,
+        "data_path": data_path,
         "total_timesteps": total_timesteps,
         "final_mean_reward": round(mean_reward_f, 4),
         "final_std_reward": round(std_reward_f, 4),
@@ -179,7 +194,7 @@ def train(reward_variant: str) -> None:
         },
     }
 
-    meta_path = RESULTS_DIR / f"training_meta_{reward_variant}.json"
+    meta_path = RESULTS_DIR / f"training_meta_{reward_variant}{tag}.json"
     with open(meta_path, "w") as f:
         json.dump(meta, f, indent=2)
     print(f"Training metadata saved: {meta_path}")
@@ -208,8 +223,16 @@ def main() -> None:
         required=True,
         help="Reward variant to train with (A=binary, B=workload-weighted, C=conservative)",
     )
+    parser.add_argument(
+        "--dataset",
+        choices=list(DATASETS),
+        default="raw",
+        help="Which transaction dataset to train on. 'raw' uses the original "
+             "Claude Haiku confidence scores; 'calibrated' uses the Platt-scaled "
+             "output from experiments/calibrate.py.",
+    )
     args = parser.parse_args()
-    train(args.reward)
+    train(args.reward, dataset=args.dataset)
 
 
 if __name__ == "__main__":

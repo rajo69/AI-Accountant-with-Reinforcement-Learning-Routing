@@ -20,6 +20,6 @@ All intervals are Wilson score 95% CIs. p-values are two-sided two-proportion z-
 ### Interpretation
 
 - PPO A/B/C produce identical action sequences on the eval set (total AUTO=81, SURFACE=96, REJECT=0), so only one PPO column needs reporting in comparison tables.
-- Both policies emit 0 REJECT_FOR_MANUAL on this eval set because real Claude Haiku confidences never fall below 0.5 (baseline's reject threshold). PPO's REJECT-elimination is a learned policy-level property; the baseline coincidence reflects the data distribution, not the threshold design.
-- The Baseline-vs-PPO difference in auto-approval error rate is NOT statistically significant at alpha=0.05 (the headline README framing overstates this finding).
-- The Baseline-vs-PPO difference in auto-approval RATE IS highly significant: PPO auto-approves substantially less. Combined with the baseline's 54.8% medium-tier error rate among its auto-approvals, this is the defensible headline: PPO learns to not auto-approve the tier where the baseline is wrong more often than right.
+- Both policies emit 0 REJECT_FOR_MANUAL on this eval set. For the raw-confidence regime, this is because real Claude Haiku confidences never fall below 0.5 (the baseline's reject threshold); PPO's REJECT-elimination is a learned policy-level property invariant to input confidence, whereas the baseline's zero rejects reflect the data distribution.
+- The Baseline-vs-PPO difference in auto-approval error rate is NOT statistically significant at alpha=0.05.
+- The Baseline-vs-PPO difference in auto-approval RATE is highly significant: the two policies sit at very different points on the coverage/precision tradeoff curve.

@@ -1,0 +1,38 @@
+{
+  "reward_variant": "B",
+  "dataset": "calibrated",
+  "data_path": "C:\\Users\\Rajo\\Desktop\\projects_2026\\github_exp\\proj_ver\\agentic_ai_rl_routing\\AI-Accountant-with-Reinforcement-Learning-Routing\\data\\synthetic\\transactions_calibrated.jsonl",
+  "total_timesteps": 100000,
+  "final_mean_reward": 110.8746,
+  "final_std_reward": 18.2685,
+  "training_time_seconds": 492.1,
+  "n_transactions_in_dataset": 705,
+  "config_snapshot": {
+    "ppo": {
+      "learning_rate": 0.0003,
+      "n_steps": 2048,
+      "batch_size": 64,
+      "n_epochs": 10,
+      "gamma": 0.99,
+      "gae_lambda": 0.95,
+      "clip_range": 0.2,
+      "total_timesteps": 100000,
+      "policy": "MlpPolicy",
+      "net_arch": [
+        64,
+        64
+      ]
+    },
+    "training": {
+      "reward_variants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "n_eval_episodes": 100,
+      "eval_freq": 5000,
+      "save_freq": 10000,
+      "seed": 42
+    }
+  }
+}

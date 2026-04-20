@@ -5,67 +5,67 @@
   "metrics": {
     "baseline": {
       "routing_accuracy": {
-        "x": 118,
+        "x": 75,
         "n": 177,
-        "rate": 0.6666666666666666,
+        "rate": 0.423728813559322,
         "ci95": [
-          0.594329444967389,
-          0.7319231764433849
+          0.3533101874379408,
+          0.49738776547577274
         ]
       },
       "auto_precision": {
-        "x": 82,
-        "n": 113,
-        "rate": 0.7256637168141593,
+        "x": 15,
+        "n": 15,
+        "rate": 1.0,
         "ci95": [
-          0.637003024173307,
-          0.7994858772385199
+          0.7961166989641515,
+          1.0
         ]
       },
       "auto_error_rate": {
-        "x": 31,
-        "n": 113,
-        "rate": 0.2743362831858407,
+        "x": 0,
+        "n": 15,
+        "rate": 0.0,
         "ci95": [
-          0.2005141227614801,
-          0.362996975826693
+          0.0,
+          0.20388330103584862
         ]
       },
       "auto_approval_rate": {
-        "x": 113,
+        "x": 15,
         "n": 177,
-        "rate": 0.6384180790960452,
+        "rate": 0.0847457627118644,
         "ci95": [
-          0.5653907717789753,
-          0.7055647951553964
+          0.052028337992235246,
+          0.1351049612046498
         ]
       },
       "error_rate_by_tier": {
         "easy": {
-          "x": 14,
-          "n": 72,
-          "rate": 0.19444444444444445,
+          "x": 0,
+          "n": 15,
+          "rate": 0.0,
           "ci95": [
-            0.1195147937945056,
-            0.3003275894588853
+            0.0,
+            0.20388330103584862
           ]
         },
         "medium": {
-          "x": 17,
-          "n": 31,
-          "rate": 0.5483870967741935,
+          "x": 0,
+          "n": 0,
+          "rate": null,
           "ci95": [
-            0.37772167637354503,
-            0.7083826401947998
+            null,
+            null
           ]
         },
         "hard": {
           "x": 0,
-          "n": 10,
-          "rate": 0.0,
+          "n": 0,
+          "rate": null,
           "ci95": [
-            0.0,
-            0.2775327998628892
+            null,
+            null
           ]
         }
       }
@@ -140,26 +140,25 @@
   },
   "comparisons": {
     "auto_error_rate": {
-      "z": 0.8238638967701599,
-      "p_value": 0.4100168963427884
+      "z": -2.0254787341673333,
+      "p_value": 0.04281822995121054
     },
     "auto_precision": {
-      "z": -0.8238638967701599,
-      "p_value": 0.4100168963427884
+      "z": 2.0254787341673333,
+      "p_value": 0.04281822995121054
     },
     "routing_accuracy": {
-      "z": 0.6684641499553986,
-      "p_value": 0.5038373586133815
+      "z": -3.9393477131871,
+      "p_value": 8.170344403612972e-05
     },
     "auto_approval_rate": {
-      "z": 3.4173601676533774,
-      "p_value": 0.0006323156708418765
+      "z": -7.8904195661721666,
+      "p_value": 3.1086244689504383e-15
     }
   },
   "notes": [
     "PPO A/B/C produce identical action sequences on the eval set (total AUTO=81, SURFACE=96, REJECT=0), so only one PPO column needs reporting in comparison tables.",
-    "Both policies emit 0 REJECT_FOR_MANUAL on this eval set. For the raw-confidence regime, this is because real Claude Haiku confidences never fall below 0.5 (the baseline's reject threshold); PPO's REJECT-elimination is a learned policy-level property invariant to input confidence, whereas the baseline's zero rejects reflect the data distribution.",
-    "The Baseline-vs-PPO difference in auto-approval error rate is NOT statistically significant at alpha=0.05.",
+    "The baseline emits 18 REJECT_FOR_MANUAL decisions on this eval set while PPO emits 0. The PPO policies assign zero probability to REJECT regardless of input; the baseline uses REJECT whenever the thresholded score falls below its lower threshold (0.50 on raw, not recalibrated for calibrated input).",
     "The Baseline-vs-PPO difference in auto-approval RATE is highly significant: the two policies sit at very different points on the coverage/precision tradeoff curve."
   ]
 }

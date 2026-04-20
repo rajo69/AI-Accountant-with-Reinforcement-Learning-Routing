@@ -29,14 +29,13 @@ Output:
 
 from __future__ import annotations
 
+import argparse
 import json
 import math
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-RESULTS_PATH = REPO_ROOT / "experiments" / "results" / "evaluation_results.json"
-SUMMARY_JSON = REPO_ROOT / "experiments" / "results" / "statistical_summary.json"
-SUMMARY_MD = REPO_ROOT / "experiments" / "results" / "statistical_summary.md"
+RESULTS_DIR = REPO_ROOT / "experiments" / "results"
 
 Z_95 = 1.959963984540054  # standard-normal 97.5th percentile
 
@@ -255,25 +254,37 @@ def analyse(policies: list[dict]) -> dict:
         f"(total AUTO={ppo['auto']}, SURFACE={ppo['surface']}, REJECT={ppo['reject']}), "
         f"so only one PPO column needs reporting in comparison tables."
     )
-    report["notes"].append(
-        "Both policies emit 0 REJECT_FOR_MANUAL on this eval set because real "
-        "Claude Haiku confidences never fall below 0.5 (baseline's reject threshold). "
-        "PPO's REJECT-elimination is a learned policy-level property; the baseline "
-        "coincidence reflects the data distribution, not the threshold design."
-    )
+
+    # REJECT behaviour is data-dependent. Only flag the "learned-property" framing
+    # when both policies happen to emit zero rejects on this eval set.
+    if baseline["reject"] == 0 and ppo["reject"] == 0:
+        report["notes"].append(
+            "Both policies emit 0 REJECT_FOR_MANUAL on this eval set. For the raw-"
+            "confidence regime, this is because real Claude Haiku confidences "
+            "never fall below 0.5 (the baseline's reject threshold); PPO's "
+            "REJECT-elimination is a learned policy-level property invariant to "
+            "input confidence, whereas the baseline's zero rejects reflect the "
+            "data distribution."
+        )
+    elif baseline["reject"] > 0 and ppo["reject"] == 0:
+        report["notes"].append(
+            f"The baseline emits {baseline['reject']} REJECT_FOR_MANUAL "
+            f"decisions on this eval set while PPO emits 0. The PPO policies "
+            f"assign zero probability to REJECT regardless of input; the baseline "
+            f"uses REJECT whenever the thresholded score falls below its lower "
+            f"threshold (0.50 on raw, not recalibrated for calibrated input)."
+        )
+
     if comparisons["auto_error_rate"]["p_value"] > 0.05:
         report["notes"].append(
             "The Baseline-vs-PPO difference in auto-approval error rate is NOT "
-            "statistically significant at alpha=0.05 (the headline README framing "
-            "overstates this finding)."
+            "statistically significant at alpha=0.05."
         )
     if comparisons["auto_approval_rate"]["p_value"] < 0.05:
         report["notes"].append(
-            "The Baseline-vs-PPO difference in auto-approval RATE IS highly "
-            "significant: PPO auto-approves substantially less. Combined with "
-            "the baseline's 54.8% medium-tier error rate among its auto-approvals, "
-            "this is the defensible headline: PPO learns to not auto-approve the "
-            "tier where the baseline is wrong more often than right."
+            "The Baseline-vs-PPO difference in auto-approval RATE is highly "
+            "significant: the two policies sit at very different points on the "
+            "coverage/precision tradeoff curve."
         )
 
     return report
@@ -396,7 +407,24 @@ def write_markdown(report: dict, path: Path) -> None:
 
 
 def main() -> None:
-    with open(RESULTS_PATH, "r", encoding="utf-8") as f:
+    parser = argparse.ArgumentParser(
+        description="Wilson CIs + two-proportion tests over an evaluation_results JSON."
+    )
+    parser.add_argument(
+        "--dataset",
+        choices=["raw", "calibrated"],
+        default="raw",
+        help="Which evaluation_results JSON to analyse. 'raw' reads "
+             "evaluation_results.json; 'calibrated' reads "
+             "evaluation_results_calibrated.json.",
+    )
+    args = parser.parse_args()
+    tag = "" if args.dataset == "raw" else f"_{args.dataset}"
+    results_path = RESULTS_DIR / f"evaluation_results{tag}.json"
+    summary_json = RESULTS_DIR / f"statistical_summary{tag}.json"
+    summary_md = RESULTS_DIR / f"statistical_summary{tag}.md"
+
+    with open(results_path, "r", encoding="utf-8") as f:
         raw = json.load(f)
 
     counts = [extract_policy_counts(p) for p in raw["policies"]]
@@ -404,12 +432,12 @@ def main() -> None:
 
     print_report(report)
 
-    with open(SUMMARY_JSON, "w", encoding="utf-8") as f:
+    with open(summary_json, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2)
-    print(f"\nSaved machine-readable summary: {SUMMARY_JSON}")
+    print(f"\nSaved machine-readable summary: {summary_json}")
 
-    write_markdown(report, SUMMARY_MD)
-    print(f"Saved README-pasteable markdown:  {SUMMARY_MD}")
+    write_markdown(report, summary_md)
+    print(f"Saved README-pasteable markdown:  {summary_md}")
 
 
 if __name__ == "__main__":

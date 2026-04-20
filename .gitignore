@@ -44,6 +44,8 @@ models/checkpoints/
 # trained model zips are committed (small, ~140KB each)
 # training metadata JSON files are committed for reproducibility
 # evaluation results are committed; large raw outputs are not
+# best-during-training checkpoints from SB3 EvalCallback are not committed
+models/trained/best_ppo_variant_*/
 experiments/results/figures/.gitkeep
 .env
 .env.local

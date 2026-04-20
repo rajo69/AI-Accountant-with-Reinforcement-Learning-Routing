@@ -30,6 +30,7 @@ Metrics computed per policy:
 
 from __future__ import annotations
 
+import argparse
 import json
 from collections import defaultdict
 from pathlib import Path
@@ -44,9 +45,15 @@ from agent.baseline import make_baseline_policy
 # Paths
 # ---------------------------------------------------------------------------
 REPO_ROOT = Path(__file__).resolve().parent.parent
-HELD_OUT_PATH = REPO_ROOT / "data" / "evaluation" / "held_out_set.json"
 TRAINED_DIR = REPO_ROOT / "models" / "trained"
 RESULTS_DIR = REPO_ROOT / "experiments" / "results"
+
+# Held-out sets: "raw" uses original Claude Haiku confidences; "calibrated"
+# uses the Platt-scaled output from experiments/calibrate.py.
+EVAL_DATASETS = {
+    "raw":        REPO_ROOT / "data" / "evaluation" / "held_out_set.json",
+    "calibrated": REPO_ROOT / "data" / "evaluation" / "held_out_set_calibrated.json",
+}
 
 DIFFICULTY_NAMES = {0: "easy", 1: "medium", 2: "hard"}
 ACTION_NAMES = {0: "AUTO_APPROVE", 1: "SURFACE_FOR_REVIEW", 2: "REJECT_FOR_MANUAL"}
@@ -61,8 +68,8 @@ OPTIMAL_ACTION = {True: 0, False: 1}
 # Data loading
 # ---------------------------------------------------------------------------
 
-def load_held_out_set() -> list[dict]:
-    with open(HELD_OUT_PATH, "r") as f:
+def load_held_out_set(path: Path) -> list[dict]:
+    with open(path, "r") as f:
         data = json.load(f)
     # Normalise: held_out records may have features nested or flat
     records = []
@@ -186,8 +193,8 @@ def evaluate_baseline(records: list[dict]) -> dict[str, Any]:
     return compute_metrics(records, actions, policy_name="Baseline (threshold 0.85/0.50)")
 
 
-def evaluate_ppo(records: list[dict], variant: str) -> dict[str, Any]:
-    model_path = TRAINED_DIR / f"ppo_variant_{variant}.zip"
+def evaluate_ppo(records: list[dict], variant: str, tag: str = "") -> dict[str, Any]:
+    model_path = TRAINED_DIR / f"ppo_variant_{variant}{tag}.zip"
     if not model_path.exists():
         print(f"  [WARN] Model not found: {model_path} — skipping variant {variant}")
         return {"policy": f"PPO Variant {variant}", "error": "model not found"}
@@ -269,10 +276,29 @@ def print_comparison_table(results: list[dict[str, Any]]) -> None:
 # ---------------------------------------------------------------------------
 
 def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Evaluate baseline and PPO routing policies on the held-out set."
+    )
+    parser.add_argument(
+        "--dataset",
+        choices=list(EVAL_DATASETS),
+        default="raw",
+        help="Which held-out set and PPO models to evaluate. 'raw' uses the "
+             "original Claude Haiku confidences and ppo_variant_{A,B,C}.zip; "
+             "'calibrated' uses the Platt-scaled eval set and "
+             "ppo_variant_{A,B,C}_calibrated.zip.",
+    )
+    args = parser.parse_args()
+    dataset: str = args.dataset
+    held_out_path = EVAL_DATASETS[dataset]
+    tag = "" if dataset == "raw" else f"_{dataset}"
+    results_filename = f"evaluation_results{tag}.json"
+
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
+    print(f"Dataset: {dataset}  ({held_out_path})")
     print("Loading held-out evaluation set...")
-    records = load_held_out_set()
+    records = load_held_out_set(held_out_path)
     print(f"  Loaded {len(records)} transactions")
 
     tier_counts: defaultdict[int, int] = defaultdict(int)
@@ -296,17 +322,18 @@ def main() -> None:
 
     for i, variant in enumerate(["A", "B", "C"], start=2):
         print(f"  [{i}/4] PPO Variant {variant}...")
-        all_results.append(evaluate_ppo(records, variant))
+        all_results.append(evaluate_ppo(records, variant, tag=tag))
 
     print_comparison_table(all_results)
 
     # Save results
     output = {
-        "held_out_set_path": str(HELD_OUT_PATH),
+        "dataset": dataset,
+        "held_out_set_path": str(held_out_path),
         "n_transactions": len(records),
         "policies": all_results,
     }
-    results_path = RESULTS_DIR / "evaluation_results.json"
+    results_path = RESULTS_DIR / results_filename
     with open(results_path, "w") as f:
         json.dump(output, f, indent=2)
     print(f"Results saved: {results_path}")
