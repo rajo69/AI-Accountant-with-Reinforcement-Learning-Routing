@@ -329,6 +329,40 @@ reproduction: `python -m experiments.regime_probe --source {calibrated,raw}`
 then the corresponding train/evaluate/stats commands with
 `--dataset {regime,regime_raw}`.
 
+### Multi-seed robustness
+
+To test whether the headline policy is sensitive to random-seed
+initialisation — the standard reviewer hygiene question — we retrained
+every (variant, regime) combination with five additional seeds (0–4,
+alongside the canonical seed=42 used elsewhere in this README). All other
+hyperparameters, the training dataset, and the held-out evaluation set
+were held constant. 30 total trainings (3 variants × 5 seeds × 2 regimes).
+
+| Regime | PPO-A | PPO-B | PPO-C | Distinct action totals across 5 seeds |
+|---|:---:|:---:|:---:|---|
+| Raw    | 63.3% (0.00pp) | 63.3% (0.00pp) | 63.3% (0.00pp) | 1: (81 / 96 / 0) for all three variants |
+| Regime | 59.4% (0.00pp) | 59.4% (0.00pp) | 41.9% (0.00pp) | A/B: 1 of (64 / 96 / 0); C: 1 of (0 / 160 / 0) |
+
+Rows show routing accuracy (mean across 5 seeds, with population standard
+deviation in percentage points). All other headline metrics (auto-approval
+precision, rate, and error rate) are identically invariant across seeds.
+See [`experiments/results/multi_seed_summary_raw.md`](experiments/results/multi_seed_summary_raw.md)
+and [`multi_seed_summary_regime.md`](experiments/results/multi_seed_summary_regime.md)
+for per-seed numbers.
+
+**Result: the tier-level policy is seed-invariant on this problem.**
+Every one of the 30 trained PPO policies produced exactly the same action
+sequence as its canonical (seed=42) counterpart. Standard deviations are
+0.00 percentage points across every headline metric, on every regime,
+for every variant. This is consistent with the EV-invariance mechanism
+reported in Key Finding #4: at the observed per-tier accuracies, the
+reward-optimal tier-level action is well-defined, so PPO's convergence
+depends on reaching it, not on random initialisation.
+
+Reproduce via `make multi-seed` (~5 hours on a consumer CPU) or
+`python -m experiments.multi_seed --datasets raw regime --variants A B C
+--seeds 0 1 2 3 4`.
+
 ---
 
 ## Key Findings

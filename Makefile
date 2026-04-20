@@ -9,7 +9,7 @@
 # from scratch. ~4 hours on a consumer CPU. Useful for verifying the committed
 # models, not something a reviewer should sit through.
 
-.PHONY: help reproduce-fast reproduce-full test lint clean
+.PHONY: help reproduce-fast reproduce-full multi-seed test lint clean
 .DEFAULT_GOAL := help
 
 DATASETS := raw calibrated regime regime_raw
@@ -19,6 +19,7 @@ help:
 	@echo "Reproducibility:"
 	@echo "  make reproduce-fast   Regenerate all eval JSONs + statistical summaries (~1 min)"
 	@echo "  make reproduce-full   Retrain all variants on all regimes, then reproduce-fast (~4 h)"
+	@echo "  make multi-seed       Multi-seed robustness sweep (5 seeds x 3 variants x 2 regimes, ~5 h)"
 	@echo ""
 	@echo "Development:"
 	@echo "  make test             Run the pytest suite"
@@ -42,6 +43,9 @@ reproduce-full:
 		done; \
 	done
 	$(MAKE) reproduce-fast
+
+multi-seed:
+	python -m experiments.multi_seed --datasets raw regime --variants A B C --seeds 0 1 2 3 4
 
 test:
 	python -m pytest -x -v
