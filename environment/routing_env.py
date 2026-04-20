@@ -278,8 +278,8 @@ def _load_transactions(data_path: str) -> list[dict]:
     if path.exists():
         return _read_jsonl(path)
 
-    # Fixture fallback for testing
-    fixture_path = Path("backend/evals/fixtures/transactions.json")
+    # Seed fallback for testing
+    fixture_path = Path("data/seeds/transactions.json")
     if fixture_path.exists():
         return _transactions_from_fixtures(fixture_path)
 
