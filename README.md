@@ -31,7 +31,8 @@ human oversight must be calibrated against throughput.
 
 ### The Parent Project
 
-The AI Accountant is a production-grade FastAPI and LangGraph system that
+The [AI Accountant](https://github.com/rajo69/agentic-ai-accounting) is a
+production-grade FastAPI and LangGraph system that
 automates transaction categorisation for UK accountants connected via the Xero
 API. Its core component is a `CategoriserAgent` that uses Anthropic's Claude API
 (via the Instructor library) to predict a category for each bank transaction,

@@ -1,18 +1,19 @@
 # PROGRESS.md — RL Routing Project Session Log
 
 ## Current Phase
-Phase 8 — Probe experiments (calibration and EV-divergence regime)
+Phase 10 — Repository cleanup (remove parent project from this repo)
 
 ## Phase Status
 In progress. Initial project tag v1.0.0 was cut after Phase 6; subsequent
-phases strengthen the evaluation rather than add features. The repository is
-usable as-is at HEAD and also at v1.0.0, with the HEAD framing being
-substantially more defensible.
+phases strengthen the evaluation and defensibility rather than add features.
+The repository is usable as-is at HEAD and also at v1.0.0, with the HEAD
+framing being substantially more defensible.
 
 ## Last Completed Step
-Calibration probe shipped (commits 9baba1c, 04f3c2e). Regime probe on
-calibrated confidence shipped (variant divergence confirmed). Regime probe
-on raw confidence running as a robustness check.
+Regime probe shipped on both calibrated and raw confidence (commits 894cf82
++ 2e80cb4): Variant C diverges from A/B exactly as the EV math predicts on
+both signal regimes, supporting the EV-invariance explanation for
+natural-regime convergence.
 
 ## Completed Phases
 - [x] Phase 0 — Repository initialisation
@@ -26,9 +27,13 @@ on raw confidence running as a robustness check.
       Key Finding #3 reframe)
 - [x] Phase 7b — 1-page technical note companion (paper/)
 - [x] Phase 8a — Calibration probe (Platt scaling; Key Finding #4 reframe)
-- [ ] Phase 8b — Regime probe on calibrated and raw confidence (in progress)
+- [x] Phase 8b — Regime probe on calibrated and raw confidence (EV-invariance
+      mechanism confirmed on both signal regimes; commits 894cf82 + 2e80cb4)
+- [x] Phase 10 — Repository cleanup: removed vendored parent project
+      (backend/, frontend/, deployment configs); trimmed CLAUDE.md and
+      RL_ROUTING_PROJECT.md to current-state scaffolding; seed fixtures
+      relocated to data/seeds/
 - [ ] Phase 9 — Multi-seed training (planned; hygiene)
-- [ ] Phase 10 — Repository cleanup (remove parent project from this repo)
 
 ## Open Issues
 - Small evaluation set: 177 transactions (33 hard) from 50 labelled seeds
@@ -71,11 +76,14 @@ action sequences (AUTO 81 / SURFACE 96 / REJECT 0). Calibration alone does
 not resolve the A/B/C convergence. See Results → Calibration probe in the
 main README.
 
-## Regime Probe Summary (Phase 8b, in progress)
+## Regime Probe Summary (Phase 8b)
 Reshapes the easy tier to p=0.72 (inside the A-vs-C EV-divergence band of
-(0.64, 0.80)). On the calibrated regime, Variant C diverges from A/B as the
-EV math predicts: A and B auto-approve all 64 easy; C auto-approves zero and
-surfaces all 160. Raw-confidence robustness check pending.
+(0.64, 0.80)). On BOTH the calibrated and raw regimes, Variant C diverges
+from A/B exactly as the EV math predicts: A and B auto-approve all 64 easy;
+C auto-approves zero and surfaces all 160. Divergence replicating on both
+signal regimes rules out a calibration-specific artefact and supports the
+EV-invariance explanation for natural-regime convergence. See README
+"Regime probe" subsection.
 
 ## Session Log
 ### Session 1 — 2026-03-25
@@ -106,4 +114,7 @@ surfaces all 160. Raw-confidence robustness check pending.
 - Completed: Calibration probe — Platt-scaled logistic regression on training set, full retrain of A/B/C, Key Finding #4 reframe from "calibration is the binding constraint" to "necessary but not sufficient" (commits 9baba1c, 04f3c2e)
 
 ### Session 10 — 2026-04-20
-- In progress: Regime probe — reshape easy tier to 0.72 (EV-divergence band), retrain A/B/C on calibrated and raw regimes, confirm variant divergence exactly as EV math predicts
+- Completed: Regime probe — reshape easy tier to 0.72 (EV-divergence band), retrain A/B/C on calibrated and raw regimes, confirm variant divergence exactly as EV math predicts on BOTH regimes (commits 894cf82 + 2e80cb4, including a defensibility sweep across README / RESEARCH_NOTES / data card / paper / superseded comparison report)
+
+### Session 11 — 2026-04-20
+- Completed: Phase 10 repository cleanup — removed vendored parent project (backend/, frontend/, Dockerfile, docker-compose.yml, railway.toml, DEPLOYMENT.md, docs/ARCHITECTURE.md); trimmed CLAUDE.md to a 31-line pointer and RL_ROUTING_PROJECT.md to 73 lines of research framing; relocated seed fixtures to data/seeds/ so the synthetic-data regeneration pipeline still works; added prerequisite pointer to the parent repository in integration/INTEGRATION_GUIDE.md
