@@ -73,3 +73,19 @@ jobs:
 
       - name: mypy
         run: mypy
+
+  reproduce:
+    name: Reproduce
+    runs-on: ubuntu-latest
+
+    # Keeps the reproducibility claim in the README CI-enforced: the image
+    # must build and `make reproduce-fast` must regenerate every eval JSON
+    # and statistical summary for all four regimes from committed models.
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build reproducibility image
+        run: docker build -f Dockerfile.reproduce -t rl-routing-reproduce .
+
+      - name: Run reproduce-fast inside container
+        run: docker run --rm rl-routing-reproduce make reproduce-fast

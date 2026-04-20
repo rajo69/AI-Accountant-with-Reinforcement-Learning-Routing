@@ -487,21 +487,54 @@ See full annotated tree in [PROGRESS.md](PROGRESS.md).
 
 ## Quickstart
 
+### One-command reproduction (Docker)
+
+No local Python install needed. Regenerates every headline number in this
+README and in `paper/one_pager.md` from the committed PPO models and
+datasets, for all four regimes (raw, calibrated, regime, regime_raw):
+
+```bash
+git clone https://github.com/rajo69/AI-Accountant-with-Reinforcement-Learning-Routing.git
+cd AI-Accountant-with-Reinforcement-Learning-Routing
+docker build -f Dockerfile.reproduce -t rl-routing-reproduce .
+docker run --rm rl-routing-reproduce
+```
+
+Build takes ~5 minutes (dominated by the PyTorch dependency); `reproduce-fast`
+runs in ~1 minute. To also retrain every variant from scratch (~4 hours):
+
+```bash
+docker run --rm rl-routing-reproduce make reproduce-full
+```
+
+To extract the regenerated `experiments/results/` files back to the host:
+
+```bash
+docker run --rm -v "$PWD/experiments/results":/app/experiments/results \
+    rl-routing-reproduce
+```
+
+### Local Python install
+
 ```bash
 git clone https://github.com/rajo69/AI-Accountant-with-Reinforcement-Learning-Routing.git
 cd AI-Accountant-with-Reinforcement-Learning-Routing
 pip install -r requirements.txt
 
 python -m agent.evaluate          # evaluate pre-trained models on held-out set
+python -m experiments.statistical_analysis   # regenerate CIs and p-values
 uvicorn api.main:app --reload     # serve the routing API at localhost:8000/docs
 ```
 
-To retrain from scratch:
+With GNU Make installed, `make reproduce-fast` runs the full evaluate +
+statistical-analysis pipeline for all four regimes in one command. To
+retrain from scratch:
 
 ```bash
 python -m agent.train --reward A  # approximately 10 min on CPU
 python -m agent.train --reward B
 python -m agent.train --reward C
+# or: make reproduce-full  (all variants, all regimes)
 ```
 
 ---
