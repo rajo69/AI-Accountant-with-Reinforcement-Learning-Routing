@@ -182,17 +182,19 @@ auto-approval volume the PPO agents correctly reject.
 
 ## Data Generation Decisions
 
-### Why use mock confidence scores in the repository?
+### Why commit the confidence scores rather than regenerate them in CI?
 
-Generating real confidence scores requires running 882 transactions through
+Generating confidence scores requires running 882 transactions through
 the CategoriserAgent, which calls the Anthropic API at ~$0.01–0.05 per
-transaction. Total cost: ~$9–44. This is acceptable for a research project
-but not for a public repository where CI would re-run it on every push.
+transaction. Total cost: ~$9–44. This is acceptable for a one-time research
+run but not for a public repository where CI would re-run it on every push.
 
 The committed data files (`data/synthetic/transactions.jsonl` and
 `data/evaluation/held_out_set.json`) use **real** Claude Haiku confidence scores
 from a one-time API run (2026-03-26). These are committed to the repo so that
-results are reproducible without re-running the API. CI does not regenerate them.
+results are reproducible without re-running the API. CI does not regenerate
+them; the simulator is run manually with `ANTHROPIC_API_KEY` when the seed
+fixture or model changes.
 
 The real scores turned out to cluster at round values (0.95, 0.85, 0.75)
 rather than varying continuously. This is documented in the Real Confidence

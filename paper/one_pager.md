@@ -22,10 +22,10 @@ The parent system is an AI bookkeeping assistant for UK accountants. A `Categori
 
 | Metric | Baseline | PPO (A/B/C identical) | p |
 |---|:---:|:---:|:---:|
-| Routing accuracy (all 177) | 66.7% [59.4, 73.2] | 63.3% [56.0, 70.0] | 0.50 |
-| Auto-approval precision | 72.6% [63.7, 79.9] | 77.8% [67.6, 85.5] | 0.41 |
-| Auto-approval error rate | 27.4% [20.1, 36.3] | 22.2% [14.5, 32.4] | 0.41 |
-| **Auto-approval rate** | **63.8% [56.5, 70.6]** | **45.8% [38.6, 53.1]** | **0.001** |
+| Routing accuracy (all 177) | 66.7% [59.4, 73.2] | 63.3% [56.0, 70.0] | 0.504 |
+| Auto-approval precision | 72.6% [63.7, 79.9] | 77.8% [67.6, 85.5] | 0.410 |
+| Auto-approval error rate | 27.4% [20.1, 36.3] | 22.2% [14.5, 32.4] | 0.410 |
+| **Auto-approval rate** | **63.8% [56.5, 70.6]** | **45.8% [38.6, 53.1]** | **<0.001** |
 
 All three PPO variants produce **identical** action sequences on the eval set. Of the four metrics, only auto-approval *rate* differs significantly. The mechanism is visible in the per-tier breakdown among auto-approved transactions: the baseline auto-approves 31 medium-tier transactions at a **54.8% [37.8, 70.8]** error rate (more wrong than right), while the PPO policies auto-approve **zero** medium-tier.
 

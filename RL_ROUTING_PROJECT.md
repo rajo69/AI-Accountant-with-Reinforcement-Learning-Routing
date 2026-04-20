@@ -54,7 +54,7 @@ See `README.md` for full numbers with confidence intervals. In summary:
 - On the natural evaluation regime, all three PPO variants converge to the
   same action sequence. Accuracy and precision gains over the hand-tuned
   baseline are not statistically significant at n=177.
-- The auto-approval *rate* difference IS highly significant (p=0.001), driven
+- The auto-approval *rate* difference IS highly significant (p<0.001), driven
   by PPO's refusal to auto-approve medium-difficulty transactions where the
   baseline has 54.8% error.
 - A calibration probe (Platt-scaled logistic regression) improves Brier and

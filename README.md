@@ -206,10 +206,10 @@ two-proportion z-tests comparing Baseline and PPO. See `experiments/statistical_
 
 | Metric | Baseline (0.85/0.50) | PPO (A/B/C identical) | Significance |
 |---|:---:|:---:|:---:|
-| Routing accuracy (over 177)   | 66.7% [59.4%, 73.2%] | 63.3% [56.0%, 70.0%] | p=0.50 |
-| Auto-approval precision       | 72.6% [63.7%, 79.9%] | 77.8% [67.6%, 85.5%] | p=0.41 |
-| Auto-approval error rate      | 27.4% [20.1%, 36.3%] | 22.2% [14.5%, 32.4%] | p=0.41 |
-| **Auto-approval rate**        | **63.8% [56.5%, 70.6%]** | **45.8% [38.6%, 53.1%]** | **p=0.001** |
+| Routing accuracy (over 177)   | 66.7% [59.4%, 73.2%] | 63.3% [56.0%, 70.0%] | p=0.504 |
+| Auto-approval precision       | 72.6% [63.7%, 79.9%] | 77.8% [67.6%, 85.5%] | p=0.410 |
+| Auto-approval error rate      | 27.4% [20.1%, 36.3%] | 22.2% [14.5%, 32.4%] | p=0.410 |
+| **Auto-approval rate**        | **63.8% [56.5%, 70.6%]** | **45.8% [38.6%, 53.1%]** | **p<0.001** |
 
 Of the four metrics, only the auto-approval *rate* differs significantly at
 n=177. The apparent accuracy and precision differences are directionally
@@ -353,11 +353,11 @@ then the corresponding train/evaluate/stats commands with
 3. **PPO's apparent accuracy and precision gains are not statistically
    significant at n=177, but PPO learns a qualitatively different and safer
    strategy.** Two-proportion z-tests on the held-out set show no significant
-   difference in overall routing accuracy (p=0.50), auto-approval precision
-   (p=0.41), or auto-approval error rate (p=0.41) — the confidence intervals
+   difference in overall routing accuracy (p=0.504), auto-approval precision
+   (p=0.410), or auto-approval error rate (p=0.410) — the confidence intervals
    overlap heavily. What *is* highly significant is the auto-approval *rate*:
    63.8% [56.5%, 70.6%] for the baseline versus 45.8% [38.6%, 53.1%] for PPO
-   (p=0.001). The per-tier breakdown shows the mechanism: the baseline
+   (p<0.001). The per-tier breakdown shows the mechanism: the baseline
    auto-approves 31 medium-tier transactions at a 54.8% [37.8%, 70.8%] error
    rate — more wrong than right — while PPO auto-approves zero medium-tier.
    The defensible contribution is not "PPO improves accuracy" but "PPO learns
@@ -444,7 +444,7 @@ relatively small training sets.
 coverage/precision curve in a way that hand-tuned thresholds do not naturally
 expose. On the held-out set, the hand-tuned baseline auto-approves 63.8% of
 transactions at 72.6% precision, while the PPO policies auto-approve 45.8% at
-77.8%; the difference in coverage is statistically significant (p=0.001). The
+77.8%; the difference in coverage is statistically significant (p<0.001). The
 tradeoff is not an improvement in one number but a principled choice of
 operating point, which is useful when downstream costs of false auto-approvals
 and unnecessary escalations are asymmetric and known.
@@ -514,7 +514,9 @@ curl -X POST http://localhost:8000/route \
   -d '{"confidence_score": 0.88, "transaction_features": {"amount": 450.0}}'
 ```
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for Railway, Docker, and production instructions.
+See [`integration/INTEGRATION_GUIDE.md`](integration/INTEGRATION_GUIDE.md) for
+instructions on swapping the learned router into the
+[parent project](https://github.com/rajo69/agentic-ai-accounting).
 
 ---
 

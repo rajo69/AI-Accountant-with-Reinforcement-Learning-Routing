@@ -4,10 +4,10 @@ All intervals are Wilson score 95% CIs. p-values are two-sided two-proportion z-
 
 | Metric | Baseline (0.85/0.50) | PPO (A representative; A/B/C diverge — see notes) | Significance |
 |---|:---:|:---:|:---:|
-| Routing accuracy (over 160) | 63.7% [56.1, 70.8] | 59.4% [51.6, 66.7] | p=0.42 |
-| Auto-approval precision | 68.0% [58.2, 76.5] | 71.9% [59.9, 81.4] | p=0.60 |
-| Auto-approval error rate | 32.0% [23.5, 41.8] | 28.1% [18.6, 40.1] | p=0.60 |
-| Auto-approval rate | 60.6% [52.9, 67.9] | 40.0% [32.7, 47.7] | p=0.00 |
+| Routing accuracy (over 160) | 63.7% [56.1, 70.8] | 59.4% [51.6, 66.7] | p=0.421 |
+| Auto-approval precision | 68.0% [58.2, 76.5] | 71.9% [59.9, 81.4] | p=0.605 |
+| Auto-approval error rate | 32.0% [23.5, 41.8] | 28.1% [18.6, 40.1] | p=0.605 |
+| Auto-approval rate | 60.6% [52.9, 67.9] | 40.0% [32.7, 47.7] | p<0.001 |
 
 ### Per-tier auto-approval error rate (auto-approved subset only)
 

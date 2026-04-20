@@ -49,6 +49,8 @@ companion. To submit to arXiv as a short technical note:
 3. Submit as source (LaTeX + `experiments/results/figures/*.png`) rather
    than PDF.
 
-Do this after the calibration probe (see the repository Limitations and
-Future Work section) — the expanded version will be stronger with that
-follow-up as a positive-result component.
+The calibration probe and regime probe have since shipped and are
+summarised in the current 1-pager; any arXiv expansion should lead with the
+regime-probe result (EV-invariance confirmed on both raw and calibrated
+signals) as the positive-result component, and treat the natural-regime
+convergence as the motivating negative result rather than the headline.
