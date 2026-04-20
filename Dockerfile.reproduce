@@ -1,0 +1,43 @@
+# Dockerfile.reproduce — reproducibility image for the RL routing extension.
+#
+# This image contains the full source tree, the committed PPO models, and the
+# committed synthetic/held-out datasets. Running it regenerates every headline
+# number in the README and in paper/one_pager.md from scratch.
+#
+# Build:   docker build -f Dockerfile.reproduce -t rl-routing-reproduce .
+# Run:     docker run --rm rl-routing-reproduce                 # reproduce-fast (default)
+#          docker run --rm rl-routing-reproduce make test       # run the pytest suite
+#          docker run --rm rl-routing-reproduce make lint       # ruff + mypy
+#          docker run --rm -v "$PWD/experiments/results":/app/experiments/results \
+#                         rl-routing-reproduce                   # write regenerated
+#                                                                # JSONs/MDs back to host
+#
+# Image size is ~2 GB (dominated by PyTorch, a Stable Baselines3 dependency).
+# This is a reproducibility build, not a deployment build.
+
+FROM python:3.12-slim
+
+# System dependencies. `make` is the reproducibility entrypoint; `build-essential`
+# is needed by some scientific-Python wheels that fall back to source builds.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        make \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install Python dependencies first so the layer is cached across source edits.
+COPY requirements.txt ./
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the repository. .dockerignore excludes caches, the virtualenv,
+# and other non-reproducibility artefacts.
+COPY . .
+
+# The evaluate / statistical_analysis pipelines import from `agent`, `experiments`,
+# and `environment` as top-level packages, so PYTHONPATH must include the repo root.
+ENV PYTHONPATH=/app
+
+# Default: regenerate all four regimes' evaluation JSONs + statistical summaries.
+CMD ["make", "reproduce-fast"]

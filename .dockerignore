@@ -1,0 +1,45 @@
+# .dockerignore — keep the reproducibility image minimal.
+#
+# We include the full source tree, committed PPO models, and committed
+# datasets (those are the point of the image). We exclude caches, editor
+# droppings, and anything that is regenerable or user-local.
+
+# Python caches
+__pycache__
+*.py[cod]
+*$py.class
+.pytest_cache
+.mypy_cache
+.ruff_cache
+*.egg-info
+
+# Virtualenvs
+.venv
+venv
+env
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+
+# Git — the image does not need commit history
+.git
+.github
+
+# Notebooks' output
+experiments/notebooks/.ipynb_checkpoints
+
+# Claude Code local state
+.claude
+
+# TensorBoard logs from prior training runs (regenerable, large)
+tensorboard_logs
+
+# Don't ship the user's .env file if one exists
+.env
+.env.local
+
+# Cached artefacts that regenerate on `make reproduce-fast`
+experiments/results/evaluations.npz
