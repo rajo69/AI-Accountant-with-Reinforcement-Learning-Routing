@@ -49,10 +49,13 @@ TRAINED_DIR = REPO_ROOT / "models" / "trained"
 RESULTS_DIR = REPO_ROOT / "experiments" / "results"
 
 # Held-out sets: "raw" uses original Claude Haiku confidences; "calibrated"
-# uses the Platt-scaled output from experiments/calibrate.py.
+# uses the Platt-scaled output from experiments/calibrate.py; "regime" is the
+# easy-tier-reshaped calibrated set from experiments/regime_probe.py.
 EVAL_DATASETS = {
-    "raw":        REPO_ROOT / "data" / "evaluation" / "held_out_set.json",
-    "calibrated": REPO_ROOT / "data" / "evaluation" / "held_out_set_calibrated.json",
+    "raw":         REPO_ROOT / "data" / "evaluation" / "held_out_set.json",
+    "calibrated":  REPO_ROOT / "data" / "evaluation" / "held_out_set_calibrated.json",
+    "regime":      REPO_ROOT / "data" / "evaluation" / "held_out_set_regime.json",
+    "regime_raw":  REPO_ROOT / "data" / "evaluation" / "held_out_set_regime_raw.json",
 }
 
 DIFFICULTY_NAMES = {0: "easy", 1: "medium", 2: "hard"}

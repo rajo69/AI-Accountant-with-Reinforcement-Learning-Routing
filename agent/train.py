@@ -39,10 +39,13 @@ TRAINED_DIR = REPO_ROOT / "models" / "trained"
 RESULTS_DIR = REPO_ROOT / "experiments" / "results"
 
 # Datasets: "raw" uses the original Claude Haiku confidence scores; "calibrated"
-# uses the Platt-scaled calibrator output from experiments/calibrate.py.
+# uses the Platt-scaled calibrator output from experiments/calibrate.py;
+# "regime" is the easy-tier-reshaped calibrated set from experiments/regime_probe.py.
 DATASETS = {
-    "raw":        REPO_ROOT / "data" / "synthetic" / "transactions.jsonl",
-    "calibrated": REPO_ROOT / "data" / "synthetic" / "transactions_calibrated.jsonl",
+    "raw":         REPO_ROOT / "data" / "synthetic" / "transactions.jsonl",
+    "calibrated":  REPO_ROOT / "data" / "synthetic" / "transactions_calibrated.jsonl",
+    "regime":      REPO_ROOT / "data" / "synthetic" / "transactions_regime.jsonl",
+    "regime_raw":  REPO_ROOT / "data" / "synthetic" / "transactions_regime_raw.jsonl",
 }
 
 

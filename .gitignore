@@ -46,6 +46,9 @@ models/checkpoints/
 # evaluation results are committed; large raw outputs are not
 # best-during-training checkpoints from SB3 EvalCallback are not committed
 models/trained/best_ppo_variant_*/
+# SB3 EvalCallback numpy log — overwritten on every training run, not useful
+# as a versioned artefact (the training metadata JSONs are committed instead).
+experiments/results/evaluations.npz
 experiments/results/figures/.gitkeep
 .env
 .env.local

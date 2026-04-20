@@ -1,71 +1,71 @@
 {
   "baseline_name": "Baseline (threshold 0.85/0.50)",
-  "ppo_name": "PPO Variant A (A/B/C identical on eval)",
-  "variants_converge": true,
+  "ppo_name": "PPO Variant A (PPO-A shown; A/B/C DIVERGE \u2014 see per-variant block)",
+  "variants_converge": false,
   "variant_action_totals": {
     "A": {
-      "AUTO": 81,
+      "AUTO": 64,
       "SURFACE": 96,
       "REJECT": 0
     },
     "B": {
-      "AUTO": 81,
+      "AUTO": 64,
       "SURFACE": 96,
       "REJECT": 0
     },
     "C": {
-      "AUTO": 81,
-      "SURFACE": 96,
+      "AUTO": 0,
+      "SURFACE": 160,
       "REJECT": 0
     }
   },
-  "n_eval": 177,
+  "n_eval": 160,
   "metrics": {
     "baseline": {
       "routing_accuracy": {
-        "x": 75,
-        "n": 177,
-        "rate": 0.423728813559322,
+        "x": 69,
+        "n": 160,
+        "rate": 0.43125,
         "ci95": [
-          0.3533101874379408,
-          0.49738776547577274
+          0.3570112358013636,
+          0.5087126160347185
         ]
       },
       "auto_precision": {
-        "x": 15,
-        "n": 15,
+        "x": 9,
+        "n": 9,
         "rate": 1.0,
         "ci95": [
-          0.7961166989641515,
+          0.7008549515804559,
           1.0
         ]
       },
       "auto_error_rate": {
         "x": 0,
-        "n": 15,
+        "n": 9,
         "rate": 0.0,
         "ci95": [
-          0.0,
-          0.20388330103584862
+          2.7755575615628914e-17,
+          0.29914504841954404
         ]
       },
       "auto_approval_rate": {
-        "x": 15,
-        "n": 177,
-        "rate": 0.0847457627118644,
+        "x": 9,
+        "n": 160,
+        "rate": 0.05625,
         "ci95": [
-          0.052028337992235246,
-          0.1351049612046498
+          0.029872301755764163,
+          0.10343619645894672
         ]
       },
       "error_rate_by_tier": {
         "easy": {
           "x": 0,
-          "n": 15,
+          "n": 9,
           "rate": 0.0,
           "ci95": [
-            0.0,
-            0.20388330103584862
+            2.7755575615628914e-17,
+            0.29914504841954404
           ]
         },
         "medium": {
@@ -90,49 +90,49 @@
     },
     "ppo": {
       "routing_accuracy": {
-        "x": 112,
-        "n": 177,
-        "rate": 0.632768361581921,
+        "x": 95,
+        "n": 160,
+        "rate": 0.59375,
         "ci95": [
-          0.5596341852705398,
-          0.7002619707685516
+          0.5163168856257644,
+          0.6667869527795783
         ]
       },
       "auto_precision": {
-        "x": 63,
-        "n": 81,
-        "rate": 0.7777777777777778,
+        "x": 46,
+        "n": 64,
+        "rate": 0.71875,
         "ci95": [
-          0.6758471376953772,
-          0.8545539259532811
+          0.5986606971779259,
+          0.8140662766627217
         ]
       },
       "auto_error_rate": {
         "x": 18,
-        "n": 81,
-        "rate": 0.2222222222222222,
+        "n": 64,
+        "rate": 0.28125,
         "ci95": [
-          0.14544607404671892,
-          0.3241528623046228
+          0.18593372333727837,
+          0.40133930282207403
         ]
       },
       "auto_approval_rate": {
-        "x": 81,
-        "n": 177,
-        "rate": 0.4576271186440678,
+        "x": 64,
+        "n": 160,
+        "rate": 0.4,
         "ci95": [
-          0.3859103744766434,
-          0.5311440438087531
+          0.3272940760025201,
+          0.47739516303178114
         ]
       },
       "error_rate_by_tier": {
         "easy": {
           "x": 18,
-          "n": 81,
-          "rate": 0.2222222222222222,
+          "n": 64,
+          "rate": 0.28125,
           "ci95": [
-            0.14544607404671892,
-            0.3241528623046228
+            0.18593372333727837,
+            0.40133930282207403
           ]
         },
         "medium": {
@@ -158,25 +158,26 @@
   },
   "comparisons": {
     "auto_error_rate": {
-      "z": -2.0254787341673333,
-      "p_value": 0.04281822995121054
+      "z": -1.8329372850452608,
+      "p_value": 0.06681189816086519
     },
     "auto_precision": {
-      "z": 2.0254787341673333,
-      "p_value": 0.04281822995121054
+      "z": 1.8329372850452608,
+      "p_value": 0.06681189816086519
     },
     "routing_accuracy": {
-      "z": -3.9393477131871,
-      "p_value": 8.170344403612972e-05
+      "z": -2.907797199401211,
+      "p_value": 0.0036398429822845912
     },
     "auto_approval_rate": {
-      "z": -7.8904195661721666,
-      "p_value": 3.1086244689504383e-15
+      "z": -7.327026663465651,
+      "p_value": 2.353672812205332e-13
     }
   },
   "notes": [
-    "PPO A/B/C produce identical action sequences on the eval set (total AUTO=81, SURFACE=96, REJECT=0), so only one PPO column needs reporting in comparison tables.",
+    "PPO A/B/C DIVERGE on this eval set. Per-variant action totals (AUTO/SURFACE/REJECT): A=64/96/0, B=64/96/0, C=0/160/0. The main Baseline-vs-PPO table below uses Variant A as the PPO representative; the per-variant divergence is the headline finding.",
     "The baseline emits 18 REJECT_FOR_MANUAL decisions on this eval set while PPO emits 0. The PPO policies assign zero probability to REJECT regardless of input; the baseline uses REJECT whenever the thresholded score falls below its lower threshold (0.50 on raw, not recalibrated for calibrated input).",
+    "The Baseline-vs-PPO difference in auto-approval error rate is NOT statistically significant at alpha=0.05.",
     "The Baseline-vs-PPO difference in auto-approval RATE is highly significant: the two policies sit at very different points on the coverage/precision tradeoff curve."
   ]
 }

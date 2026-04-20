@@ -150,13 +150,35 @@ def extract_policy_counts(policy: dict) -> dict:
 # Build the statistical report
 # ---------------------------------------------------------------------------
 
+def _action_signature(p: dict) -> tuple[int, int, int]:
+    return (p["auto"], p["surface"], p["reject"])
+
+
 def analyse(policies: list[dict]) -> dict:
     baseline = policies[0]
-    ppo = policies[1]  # all three PPO variants are identical → compare against one
+    ppo_a, ppo_b, ppo_c = policies[1], policies[2], policies[3]
+
+    sigs = {v: _action_signature(p) for v, p in zip("ABC", (ppo_a, ppo_b, ppo_c))}
+    variants_converge = len({sigs["A"], sigs["B"], sigs["C"]}) == 1
+
+    # For the main Baseline-vs-PPO comparison we use Variant A as the PPO
+    # representative. When A/B/C diverge, we also emit a separate
+    # per-variant block so the divergence is visible in the output.
+    ppo = ppo_a
 
     report: dict = {
         "baseline_name": baseline["policy"],
-        "ppo_name": f"{ppo['policy']} (A/B/C identical on eval)",
+        "ppo_name": (
+            f"{ppo['policy']} (A/B/C identical on eval)"
+            if variants_converge else
+            f"{ppo['policy']} (PPO-A shown; A/B/C DIVERGE — see per-variant block)"
+        ),
+        "variants_converge": variants_converge,
+        "variant_action_totals": {
+            "A": {"AUTO": ppo_a["auto"], "SURFACE": ppo_a["surface"], "REJECT": ppo_a["reject"]},
+            "B": {"AUTO": ppo_b["auto"], "SURFACE": ppo_b["surface"], "REJECT": ppo_b["reject"]},
+            "C": {"AUTO": ppo_c["auto"], "SURFACE": ppo_c["surface"], "REJECT": ppo_c["reject"]},
+        },
         "n_eval": baseline["n"],
         "metrics": {},
         "comparisons": {},
@@ -249,11 +271,23 @@ def analyse(policies: list[dict]) -> dict:
     report["comparisons"] = comparisons
 
     # --- Qualitative notes ----------------------------------------------------
-    report["notes"].append(
-        f"PPO A/B/C produce identical action sequences on the eval set "
-        f"(total AUTO={ppo['auto']}, SURFACE={ppo['surface']}, REJECT={ppo['reject']}), "
-        f"so only one PPO column needs reporting in comparison tables."
-    )
+    if variants_converge:
+        report["notes"].append(
+            f"PPO A/B/C produce identical action sequences on the eval set "
+            f"(total AUTO={ppo['auto']}, SURFACE={ppo['surface']}, REJECT={ppo['reject']}), "
+            f"so only one PPO column needs reporting in comparison tables."
+        )
+    else:
+        totals = report["variant_action_totals"]
+        report["notes"].append(
+            "PPO A/B/C DIVERGE on this eval set. Per-variant action totals "
+            f"(AUTO/SURFACE/REJECT): "
+            f"A={totals['A']['AUTO']}/{totals['A']['SURFACE']}/{totals['A']['REJECT']}, "
+            f"B={totals['B']['AUTO']}/{totals['B']['SURFACE']}/{totals['B']['REJECT']}, "
+            f"C={totals['C']['AUTO']}/{totals['C']['SURFACE']}/{totals['C']['REJECT']}. "
+            "The main Baseline-vs-PPO table below uses Variant A as the PPO "
+            "representative; the per-variant divergence is the headline finding."
+        )
 
     # REJECT behaviour is data-dependent. Only flag the "learned-property" framing
     # when both policies happen to emit zero rejects on this eval set.
@@ -306,8 +340,9 @@ def print_report(report: dict) -> None:
     b = report["metrics"]["baseline"]
     p = report["metrics"]["ppo"]
 
+    n = report["n_eval"]
     metrics = [
-        ("Routing accuracy (all 177)",    "routing_accuracy"),
+        (f"Routing accuracy (all {n})",   "routing_accuracy"),
         ("Auto-approval precision",       "auto_precision"),
         ("Auto-approval error rate",      "auto_error_rate"),
         ("Auto-approval rate",            "auto_approval_rate"),
@@ -369,14 +404,16 @@ def write_markdown(report: dict, path: Path) -> None:
             f"{pvcell} |"
         )
 
+    n = report["n_eval"]
     lines = []
-    lines.append(f"## Results with 95% confidence intervals (n={report['n_eval']})")
+    lines.append(f"## Results with 95% confidence intervals (n={n})")
     lines.append("")
     lines.append("All intervals are Wilson score 95% CIs. p-values are two-sided two-proportion z-tests (Baseline vs PPO).")
     lines.append("")
-    lines.append("| Metric | Baseline (0.85/0.50) | PPO (A/B/C identical) | Significance |")
+    ppo_hdr = "PPO (A/B/C identical)" if report.get("variants_converge", True) else "PPO (A representative; A/B/C diverge — see notes)"
+    lines.append(f"| Metric | Baseline (0.85/0.50) | {ppo_hdr} | Significance |")
     lines.append("|---|:---:|:---:|:---:|")
-    lines.append(row("Routing accuracy (over 177)", "routing_accuracy"))
+    lines.append(row(f"Routing accuracy (over {n})", "routing_accuracy"))
     lines.append(row("Auto-approval precision",      "auto_precision"))
     lines.append(row("Auto-approval error rate",     "auto_error_rate"))
     lines.append(row("Auto-approval rate",           "auto_approval_rate"))
@@ -412,11 +449,11 @@ def main() -> None:
     )
     parser.add_argument(
         "--dataset",
-        choices=["raw", "calibrated"],
+        choices=["raw", "calibrated", "regime", "regime_raw"],
         default="raw",
         help="Which evaluation_results JSON to analyse. 'raw' reads "
-             "evaluation_results.json; 'calibrated' reads "
-             "evaluation_results_calibrated.json.",
+             "evaluation_results.json; other choices read the correspondingly "
+             "suffixed files.",
     )
     args = parser.parse_args()
     tag = "" if args.dataset == "raw" else f"_{args.dataset}"

@@ -1,0 +1,95 @@
+{
+  "config": {
+    "source": "raw",
+    "source_train": "C:\\Users\\Rajo\\Desktop\\projects_2026\\github_exp\\proj_ver\\agentic_ai_rl_routing\\AI-Accountant-with-Reinforcement-Learning-Routing\\data\\synthetic\\transactions.jsonl",
+    "source_eval": "C:\\Users\\Rajo\\Desktop\\projects_2026\\github_exp\\proj_ver\\agentic_ai_rl_routing\\AI-Accountant-with-Reinforcement-Learning-Routing\\data\\evaluation\\held_out_set.json",
+    "target_easy_accuracy": 0.72,
+    "random_state": 42,
+    "ev_divergence_band": {
+      "variant_a_min_p": 0.6389,
+      "variant_b_min_p_at_E_load_0p5": 0.6133,
+      "variant_c_min_p": 0.803,
+      "rationale": "With target easy accuracy = 0.72, Variants A and B should prefer AUTO_APPROVE on easy tier while Variant C should prefer SURFACE_FOR_REVIEW. Medium and hard tiers are unchanged (expected SURFACE for all variants)."
+    }
+  },
+  "pre_reshape": {
+    "train": {
+      "easy": {
+        "n": 322,
+        "correct": 266,
+        "accuracy": 0.8260869565217391
+      },
+      "medium": {
+        "n": 252,
+        "correct": 132,
+        "accuracy": 0.5238095238095238
+      },
+      "hard": {
+        "n": 131,
+        "correct": 82,
+        "accuracy": 0.6259541984732825
+      }
+    },
+    "eval": {
+      "easy": {
+        "n": 81,
+        "correct": 63,
+        "accuracy": 0.7777777777777778
+      },
+      "medium": {
+        "n": 63,
+        "correct": 30,
+        "accuracy": 0.47619047619047616
+      },
+      "hard": {
+        "n": 33,
+        "correct": 17,
+        "accuracy": 0.5151515151515151
+      }
+    }
+  },
+  "post_reshape": {
+    "train": {
+      "easy": {
+        "n": 200,
+        "correct": 144,
+        "accuracy": 0.72
+      },
+      "medium": {
+        "n": 252,
+        "correct": 132,
+        "accuracy": 0.5238095238095238
+      },
+      "hard": {
+        "n": 131,
+        "correct": 82,
+        "accuracy": 0.6259541984732825
+      }
+    },
+    "eval": {
+      "easy": {
+        "n": 64,
+        "correct": 46,
+        "accuracy": 0.71875
+      },
+      "medium": {
+        "n": 63,
+        "correct": 30,
+        "accuracy": 0.47619047619047616
+      },
+      "hard": {
+        "n": 33,
+        "correct": 17,
+        "accuracy": 0.5151515151515151
+      }
+    }
+  },
+  "n_train_before_after": [
+    705,
+    583
+  ],
+  "n_eval_before_after": [
+    177,
+    160
+  ]
+}
