@@ -2,8 +2,9 @@
 #
 # `reproduce-fast` is the one a reviewer should run. It re-evaluates the
 # committed PPO models on the committed held-out sets for all four regimes
-# (raw, calibrated, regime, regime_raw) and regenerates the statistical
-# summaries. Runs in ~1 minute on a laptop CPU.
+# (raw, calibrated, regime, regime_raw), regenerates the statistical
+# summaries, and re-evaluates the 30 multi-seed models without retraining.
+# Runs in ~2 minutes on a laptop CPU.
 #
 # `reproduce-full` additionally retrains every (variant × regime) combination
 # from scratch. ~4 hours on a consumer CPU. Useful for verifying the committed
@@ -17,9 +18,9 @@ VARIANTS := A B C
 
 help:
 	@echo "Reproducibility:"
-	@echo "  make reproduce-fast   Regenerate all eval JSONs + statistical summaries (~1 min)"
+	@echo "  make reproduce-fast   Regenerate all eval JSONs + statistical + multi-seed summaries (~2 min)"
 	@echo "  make reproduce-full   Retrain all variants on all regimes, then reproduce-fast (~4 h)"
-	@echo "  make multi-seed       Multi-seed robustness sweep (5 seeds x 3 variants x 2 regimes, ~5 h)"
+	@echo "  make multi-seed       Multi-seed robustness sweep — retrains 30 models (~5-6 h)"
 	@echo ""
 	@echo "Development:"
 	@echo "  make test             Run the pytest suite"
@@ -32,6 +33,8 @@ reproduce-fast:
 		python -m agent.evaluate --dataset $$ds || exit 1; \
 		python -m experiments.statistical_analysis --dataset $$ds || exit 1; \
 	done
+	@echo "=== Regenerating multi-seed summaries (30 committed models, no retrain) ==="
+	python -m experiments.multi_seed --datasets raw regime --variants A B C --seeds 0 1 2 3 4 --eval-only
 	@echo ""
 	@echo "Done. See experiments/results/ for updated JSONs and .md summaries."
 
