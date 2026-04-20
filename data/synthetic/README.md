@@ -50,8 +50,27 @@ the RL routing policy. It is derived from the 50-transaction eval fixture in
 4. **Static difficulty labels**: Difficulty tiers are from the manually-labelled
    eval fixture, not derived empirically from confidence distributions.
 
+## Derived datasets
+
+Several reshaped versions of this dataset are also committed, produced by
+downstream probes rather than by re-running the simulator:
+
+| File | How produced | Purpose |
+|---|---|---|
+| `transactions.jsonl`            | `environment/transaction_simulator.py` with the Anthropic API | Primary training set. Raw Claude Haiku confidence scores. |
+| `transactions_calibrated.jsonl` | `experiments/calibrate.py` | Replaces `confidence_score` with Platt-scaled output (5-fold stratified-by-tier CV); preserves `confidence_score_raw`. Calibration probe. |
+| `transactions_regime.jsonl`     | `experiments/regime_probe.py --source calibrated` | Subsamples calibrated training set so easy-tier accuracy lands at 0.72 (inside the A-vs-C EV-divergence band). Regime probe. |
+| `transactions_regime_raw.jsonl` | `experiments/regime_probe.py --source raw` | Same subsampling on the raw-confidence training set as a robustness check. |
+
+Matching held-out eval files live under `data/evaluation/`.
+
 ## Reproduction
 ```bash
-python -m environment.transaction_simulator
+python -m environment.transaction_simulator           # primary, needs ANTHROPIC_API_KEY
+python -m experiments.calibrate                        # calibrated (no API calls)
+python -m experiments.regime_probe --source calibrated # regime probe
+python -m experiments.regime_probe --source raw        # regime probe, robustness
 ```
-Requires `ANTHROPIC_API_KEY` in environment. See `.env.example`.
+The simulator requires `ANTHROPIC_API_KEY` in environment; see `.env.example`.
+The calibrate and regime_probe scripts operate on committed data and require
+no external API.

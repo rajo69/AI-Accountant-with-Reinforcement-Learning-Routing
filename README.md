@@ -128,7 +128,8 @@ models the catastrophic risk of a silent misclassification in a regulated contex
 ### Synthetic Data Generation
 
 The training dataset was generated from the 50 labelled seed transactions in the
-parent project's evaluation framework:
+parent project's evaluation framework by
+[`environment/transaction_simulator.py`](environment/transaction_simulator.py):
 
 1. The Claude API generated 10 variations of each seed transaction, varying
    amount, date, merchant phrasing, and description while preserving category.
@@ -143,6 +144,15 @@ parent project's evaluation framework:
 | Easy | 322 | 81 | 78% |
 | Medium | 252 | 63 | 48% |
 | Hard | 131 | 33 | 52% |
+
+**Effective unit of diversity.** The 882 transactions derive from **50 hand-
+labelled seed scenarios × ~18 Claude-generated variants each**, not from 882
+independent draws. Variants within a seed share vendor family and category; they
+differ in amount, date, merchant phrasing, and reference. Claims about
+statistical power on this dataset should be read accordingly — small-n caveats
+in the eval set (177 total, 33 hard) compound with this seed-level dependence.
+Additional variation from a larger, seed-independent distribution is listed as
+future work.
 
 ### Training
 
@@ -264,6 +274,59 @@ Reproduce the probe: `python -m experiments.calibrate` followed by
 `python -m agent.evaluate --dataset calibrated`. Full diagnostics in
 `experiments/results/calibration_report.json` and
 `experiments/results/statistical_summary_calibrated.md`.
+
+### Regime probe (EV-invariance test)
+
+The calibration probe's candidate explanation (Key Finding #4) predicts that
+all three PPO variants converge because the observed per-tier accuracies
+(easy 82.6% / medium 52.4% / hard 62.6%) place every tier outside the A-vs-C
+divergence band (0.64, 0.80) derived from the reward tables. We test this
+directly by reshaping the easy tier to 72% accuracy (via subsampling;
+medium and hard kept unchanged) and retraining all three PPO variants on the
+matching reshaped training set (72% easy / 52% medium / 63% hard, seed=42,
+100k steps). We run the probe on **both** the Platt-calibrated and raw
+confidence regimes as a robustness check.
+
+**EV break-even thresholds** (accuracy above which AUTO_APPROVE beats
+SURFACE_FOR_REVIEW for each variant; B evaluated at E[accountant_load]=0.5):
+
+| Variant | Break-even p |
+|---|:---:|
+| A (AUTO penalty −2) | 0.639 |
+| B (E[load]=0.5)     | 0.613 |
+| C (AUTO penalty −5) | 0.803 |
+
+At p=0.72, A and B should prefer AUTO_APPROVE on easy tier; C should prefer
+SURFACE_FOR_REVIEW. All three should surface medium and hard.
+
+**Result: Variant C diverges from Variants A and B exactly as predicted, on
+both signal regimes.** Per-variant action totals (AUTO / SURFACE / REJECT) on
+the reshaped eval set (n=160):
+
+| Variant | Calibrated regime | Raw regime |
+|---|:---:|:---:|
+| PPO-A | 64 / 96 / 0 | 64 / 96 / 0 |
+| PPO-B | 64 / 96 / 0 | 64 / 96 / 0 |
+| **PPO-C** | **0 / 160 / 0** | **0 / 160 / 0** |
+
+PPO-A and PPO-B each auto-approve all 64 easy-tier transactions (and zero
+others); PPO-C auto-approves zero and surfaces all 160. The result replicates
+identically across the two signal regimes, which rules out calibration as the
+primary driver and supports the EV-invariance mechanism.
+
+Variants A and B remain indistinguishable at this sample size because their
+break-even thresholds differ by only 0.026; A-vs-B divergence would require a
+tier with accuracy precisely in (0.613, 0.639), narrower than the sampling
+noise allows at n≈64 per tier. We flag this as future work.
+
+This probe confirms the EV-invariance explanation from Key Finding #4:
+reward-driven policies differ when and only when the reward tables produce
+different EV-optimal tier-level actions at the observed per-tier accuracies.
+On the natural data regime, all three reward tables agreed; on the constructed
+regime where reward tables disagree, the policies diverge accordingly. Full
+reproduction: `python -m experiments.regime_probe --source {calibrated,raw}`
+then the corresponding train/evaluate/stats commands with
+`--dataset {regime,regime_raw}`.
 
 ---
 

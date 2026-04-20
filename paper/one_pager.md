@@ -33,11 +33,13 @@ All three PPO variants produce **identical** action sequences on the eval set. O
 
 ## Interpretation
 
-The apparent accuracy and precision gains of PPO over the baseline are **not** statistically significant at n=177. The defensible contribution is not "PPO improves accuracy" but "PPO learns to refuse to auto-approve the tier where the baseline is dangerously wrong." That all three reward variants collapse to the same policy is itself a finding: real Claude Haiku confidences cluster at round values (0.95, 0.85, 0.75) regardless of correctness, providing insufficient within-tier variance for reward shaping to produce different routing behaviours. The **binding constraint is confidence-score calibration, not the RL method**. This is consistent with the broader literature on overconfident verbally-elicited LLM confidences.
+The apparent accuracy and precision gains of PPO over the baseline are **not** statistically significant at n=177. The defensible contribution on the natural data regime is not "PPO improves accuracy" but "PPO learns to refuse to auto-approve the tier where the baseline is dangerously wrong."
+
+Two probes refine the mechanistic story. A **calibration probe** (Platt-scaled logistic regression on [confidence, amount, tier_onehot] → is_correct) improves proper scoring rules on eval (Brier 0.295 → 0.215) but does not resolve the A/B/C convergence — all three variants still produce identical action sequences. A **regime probe** reshapes easy-tier accuracy to 0.72, placing it inside the EV-divergence band (0.64, 0.80) where Variant A and B prefer AUTO_APPROVE but Variant C prefers SURFACE_FOR_REVIEW. On the reshaped set the variants diverge exactly as the EV break-even math predicts: A and B auto-approve the entire easy tier while C auto-approves nothing. The binding constraint on variant divergence is therefore the **per-tier accuracy structure**, not calibration quality alone: reward-driven policies differ when the reward tables disagree on the tier-level EV-optimal action at the observed accuracies, and agree otherwise.
 
 ## Next work
 
-A calibration probe: re-train each variant with a well-calibrated uncertainty signal (multi-sample self-consistency or a Platt-scaled auxiliary classifier) on the same 705 transactions. If the three variants *diverge* on calibrated scores but *converge* on raw Claude confidences, this isolates calibration as the binding constraint rather than the RL horizon or reward design. Multi-seed training and extension to the parent pipeline's reconciliation agent follow.
+Multi-sample self-consistency for a fundamentally different uncertainty signal; multi-seed training for reviewer-hygiene robustness; a larger seed-independent eval set to separate statistical power from seed-level dependence; extension to the parent pipeline's reconciliation agent.
 
 ## Code, data, reproducibility
 

@@ -19,9 +19,15 @@ with the threshold logic's implicit assumption.
 
 Variant C's −5.0 was chosen to set the break-even at ~83% (P(correct) > 5/6),
 which is close to the 0.85 hand-tuned threshold. The expectation was that the
-Variant C policy would learn an effective threshold near 0.85. The result
-(PPO-C auto-approves all easy tier at ~90% confidence and nothing else) was
-consistent with this expectation.
+Variant C policy would learn an effective threshold near 0.85. On the raw-
+confidence and Platt-calibrated eval sets PPO-C's action distribution is
+identical to PPO-A and PPO-B (81/96/0), because the observed per-tier
+accuracies (easy 82.6% / medium 52.4% / hard 62.6%) happen to place every
+tier outside C's divergence band, so C's EV-optimal tier-level action
+coincides with A's and B's. The regime probe (Results → Regime probe in
+the README) verifies this by reshaping easy-tier accuracy to 0.72, where
+C's EV-optimal action flips to SURFACE while A/B still prefer AUTO —
+producing the expected divergence.
 
 ### Why is SURFACE_FOR_REVIEW penalised symmetrically (+0.3 / −0.3)?
 
@@ -145,9 +151,16 @@ auto-approves 81 easy transactions — so the negative training reward reflects 
 easy transactions during the training episodes, while the eval (deterministic, fixed
 seed) converges to the same action.
 
-The convergence across variants suggests the action landscape with real scores has one
-dominant strategy rather than a tradeoff surface. This is different from the mock-score
-run where Variant C occupied a distinct point (45.8% auto-rate, 9.9% error).
+The convergence across variants on raw and calibrated confidence is not evidence of a
+single dominant strategy in general — it is evidence that the observed per-tier
+accuracies (82.6% / 52.4% / 62.6%) place every tier outside the A-vs-C EV-divergence
+band (0.64, 0.80). The subsequent regime probe (see Results → Regime probe in the
+README) confirms this: reshaping easy-tier accuracy to 0.72 (inside the divergence
+band) produces the expected A/B vs C variant divergence exactly as the EV break-even
+math predicts, with Variant C refusing all auto-approvals while A and B auto-approve
+the entire easy tier. The prior mock-score run's apparent "Variant C at 45.8% auto-
+rate, 9.9% error" distinct-point result is now understood as an artefact of the mock
+score distribution and not load-bearing.
 
 ### Baseline degradation with real scores
 
@@ -203,12 +216,16 @@ be treated with caution.
 
 ### Why PPO-C as the default in LearnedRouter?
 
-Phase 3 evaluation showed PPO-C achieves the best precision (90.1%) and lowest
-error rate (9.9%) — the metrics that matter most in an accounting context where
-incorrect auto-approvals are the most damaging errors. PPO-A/B's higher routing
-accuracy (75.1%) comes at the cost of auto-approving medium transactions with a
-30% error rate, which is too high for financial data. PPO-C's profile (46%
-auto-rate, 90% precision) is strictly safer for production.
+On the original mock-score run Phase 3 evaluation PPO-C showed the best precision
+and lowest error rate and was selected as the production default. On the subsequent
+real-confidence and Platt-calibrated evaluations PPO-A, PPO-B, and PPO-C produce
+identical action sequences, so the choice of default among the three is immaterial
+on the natural data regime. PPO-C remains the integration default because it is
+the most conservative under data regimes that fall into its divergence band (as the
+regime probe demonstrates — there C auto-approves nothing while A/B auto-approve
+the easy tier). For an accounting deployment where false auto-approvals carry
+outsized cost, the more conservative default is the defensible choice, even when
+it is empirically equal on the natural-regime eval.
 
 ### Why a module-level singleton for LearnedRouter in the API?
 
