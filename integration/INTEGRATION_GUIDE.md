@@ -3,12 +3,20 @@
 This guide explains exactly how to replace the hand-tuned confidence threshold
 logic in the parent project's CategoriserAgent with the LearnedRouter.
 
+## Prerequisites
+
+This guide assumes you have the parent
+[AI Accountant](https://github.com/rajo69/agentic-ai-accounting) repository
+cloned alongside this one. All `backend/...` paths below refer to files in the
+parent repository, not in this repository. This repository no longer vendors
+the parent code.
+
 ---
 
 ## What to change
 
-The routing logic lives in **`backend/app/agents/categoriser.py`** in the
-`decide` node of the LangGraph graph.
+The routing logic lives in **`backend/app/agents/categoriser.py`** (in the
+parent repository) in the `decide` node of the LangGraph graph.
 
 ### Current code (hand-tuned thresholds)
 
