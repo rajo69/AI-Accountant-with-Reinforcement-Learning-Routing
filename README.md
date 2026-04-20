@@ -220,6 +220,51 @@ difference is buying.
 Analysis figures: [`experiments/results/figures/`](experiments/results/figures/).
 Reproducible CIs and p-values: `python -m experiments.statistical_analysis`.
 
+### Calibration probe
+
+To test whether the variant convergence in Key Finding #1 is explained by
+uncalibrated confidence, we re-trained all three PPO variants on a Platt-scaled
+calibrated confidence signal (scikit-learn logistic regression fit on
+`[raw_confidence, amount_normalised, tier_onehot]` via 5-fold stratified CV
+for training-set scores; full-training-set fit for eval scores). The calibrator
+materially improves proper scoring rules on the eval set and produces a
+continuous-looking signal rather than the ~7-value clusters of raw Claude
+confidence.
+
+| Signal | Brier (↓) | Log-loss (↓) | Unique values on eval (easy / medium / hard) |
+|---|:---:|:---:|:---:|
+| Raw Claude Haiku confidence | 0.295 | 0.910 | 7 / 7 / 4 |
+| Platt-scaled (this probe) | **0.215** | **0.616** | 74 / 60 / 32 |
+
+All three PPO variants nevertheless produce **identical** action sequences on
+the calibrated eval set: the same 81 auto-approvals / 96 surfacings / 0 rejects
+as under raw confidence, the same 63.3% routing accuracy, and the same 77.8%
+auto-approval precision. The same-policy-collapse observed in Key Finding #1
+is not resolved by this particular calibration approach.
+
+The hand-tuned baseline, applied to calibrated confidences without retuning
+its 0.85/0.50 thresholds, drops to 42.4% routing accuracy and 8.5%
+auto-approval rate (it auto-approves only 15 transactions, all correct, and
+now emits 18 rejects). This is a mis-tuned-baseline artefact and not a fair
+head-to-head with PPO on the calibrated regime; the meaningful comparison here
+is PPO-A vs PPO-B vs PPO-C, which are equal.
+
+A working hypothesis for why the variants remain equal under calibration: at
+the observed per-tier agent accuracies (easy 82.6% / medium 52.4% / hard 62.6%
+on the training set), the EV-optimal tier-level action is the same for all
+three reward variants — easy-tier expected reward from AUTO_APPROVE is
+positive even under Variant C's 5:1 loss ratio, and medium- and hard-tier
+expected reward from AUTO_APPROVE is negative even under Variant A's 2:1
+ratio. A data regime with per-tier accuracies in a narrower band
+(e.g. easy-tier accuracy ~0.75, medium-tier ~0.75) would be expected to
+change this calculus; we list this as future work.
+
+Reproduce the probe: `python -m experiments.calibrate` followed by
+`python -m agent.train --reward {A,B,C} --dataset calibrated` and
+`python -m agent.evaluate --dataset calibrated`. Full diagnostics in
+`experiments/results/calibration_report.json` and
+`experiments/results/statistical_summary_calibrated.md`.
+
 ---
 
 ## Key Findings
@@ -228,9 +273,9 @@ Reproducible CIs and p-values: `python -m experiments.statistical_analysis`.
    policy.** With real Claude API confidence scores, all three reward variants
    learned identical tier-based routing: auto-approve all easy-tier transactions,
    surface all medium and hard for review. The intended A/B/C differentiation did
-   not materialise. Real confidence scores (clustering at 0.95/0.85/0.75) provide
-   less tier separation than mock scores, leaving less room for reward shaping to
-   produce different behaviours.
+   not materialise. The convergence persists after Platt-scaled calibration of
+   the confidence signal (see the Calibration probe subsection under Results);
+   calibration alone does not produce variant divergence in this probe.
 
 2. **Real confidence scores render the fixed-threshold baseline significantly
    worse.** With mock scores the baseline auto-approved 37.3% at 10.6% error.
@@ -254,13 +299,21 @@ Reproducible CIs and p-values: `python -m experiments.statistical_analysis`.
    The defensible contribution is not "PPO improves accuracy" but "PPO learns
    to not auto-approve the tier where the baseline is dangerously wrong."
 
-4. **The binding constraint is confidence score calibration, not the RL method.**
-   Single-sample Claude Haiku confidence scores are poorly calibrated: high
-   values appear regardless of whether the prediction is correct [6, 7, 8]. A
-   well-calibrated uncertainty signal (multi-sample prompting, or a classifier
-   with a native probability output) would give the policy enough signal to learn
-   fine-grained intra-tier routing. The RL infrastructure is sound; the signal
-   quality limits it.
+4. **Confidence calibration is necessary but not sufficient for variant
+   divergence.** Single-sample Claude Haiku confidence scores are poorly
+   calibrated [6, 7, 8], and Platt-scaled calibration on the same features
+   materially improves proper scoring rules (Brier 0.295 → 0.215 on eval).
+   But applying that calibrated signal does not by itself break the
+   A/B/C convergence (see Calibration probe). A candidate explanation,
+   supported by the observed per-tier accuracies (82.6% / 52.4% / 62.6% on the
+   training set), is that the EV-optimal tier-level action is the same for all
+   three reward variants in this accuracy regime — easy-tier AUTO_APPROVE
+   remains positive-EV even under Variant C's 5:1 loss ratio, and medium- and
+   hard-tier AUTO_APPROVE remain negative-EV even under Variant A's 2:1 ratio.
+   Whether variants would diverge under richer uncertainty signals (multi-sample
+   self-consistency, top-k log-probabilities) or under data regimes with
+   different per-tier accuracy profiles is an open empirical question we flag
+   as future work.
 
 5. **REJECT elimination is a learned policy-level property.** All three PPO
    variants assign zero probability to REJECT_FOR_MANUAL under their trained
@@ -279,13 +332,16 @@ Reproducible CIs and p-values: `python -m experiments.statistical_analysis`.
 
 ## Limitations and Future Work
 
-**Confidence score calibration is the binding constraint.** Real Claude Haiku
+**Calibration alone did not resolve variant convergence.** Real Claude Haiku
 confidence scores cluster at round values (0.95, 0.85, 0.75) regardless of
-difficulty tier [6, 7, 8]. The resulting within-tier variance is too small for
-the policy to learn confidence-based routing at 100k training steps. All three
-PPO variants converge to the same tier-based strategy. A well-calibrated
-uncertainty estimate from multi-sample prompting, top-k probability distributions,
-or a native classifier would unlock finer-grained routing.
+difficulty tier [6, 7, 8], and Platt-scaled calibration on available features
+improves proper scoring rules but does not change the learned tier-based
+policy (Calibration probe, above). A candidate explanation is that the
+per-tier accuracy structure (easy 82.6% / medium 52.4% / hard 62.6%) makes the
+tier-level EV-optimal action invariant across reward variants in this regime.
+Testing this requires either richer uncertainty signals (multi-sample
+self-consistency, top-k log-probabilities) or data with different per-tier
+accuracies; both are listed below.
 
 **All reward variants converged to the same policy** with real scores, removing
 the intended A/B/C tradeoff surface. Longer training (500k to 1M steps) or harder
@@ -299,7 +355,10 @@ robust conclusions (especially hard tier, n=33). All results are indicative.
 would require online learning from genuine human feedback, as studied in the
 learning-to-defer literature [1, 9].
 
-**Future work:** Multi-sample confidence estimation; online learning from
+**Future work:** Multi-sample self-consistency or top-k log-probability
+confidence estimation to test richer signals than Platt scaling; a probe on
+a dataset with deliberately different per-tier agent accuracies to test the
+EV-invariance explanation for variant convergence; online learning from
 accountant corrections; multi-load evaluation for Variant B; longer training;
 extending to the ReconcilerAgent (which also uses fixed thresholds).
 
@@ -307,20 +366,40 @@ extending to the ReconcilerAgent (which also uses fixed thresholds).
 
 ## Implications for Agentic AI Systems
 
-The central result (that reward-driven routing discovers action dominance
-relationships without explicit specification) has a direct practical implication:
-the action space of your routing layer likely contains dominated actions that a
-hand-tuned policy uses suboptimally. A learned policy will discover and eliminate
-them.
+Two practical implications can be stated with the evidence collected here; a
+third often-claimed implication was not supported and is flagged honestly.
 
-The accuracy-vs-precision tradeoff between Variant A and Variant C demonstrates
-that reward function design is not merely a hyperparameter but an operational
-policy decision. Making this tradeoff explicit and parameterisable, rather than
-encoded opaquely in a threshold value, is a step toward responsible deployment
-of autonomous systems in high-stakes domains. As confidence-gated autonomy
-becomes a standard component of agentic AI pipelines (including systems that
-route queries between different models [10]), the methodology described here
-offers a principled, data-driven alternative to hand-tuned thresholds [1].
+**Supported.** Reward-driven routing can discover dominated actions in the
+routing action space without explicit specification: all three PPO variants
+learn to avoid REJECT_FOR_MANUAL entirely, regardless of input confidence. For
+a designer of a routing layer, this suggests that asymmetric reward tables are
+a useful way to surface which actions are practically dominated, even on
+relatively small training sets.
+
+**Supported.** Learned routing can change the operating point on the
+coverage/precision curve in a way that hand-tuned thresholds do not naturally
+expose. On the held-out set, the hand-tuned baseline auto-approves 63.8% of
+transactions at 72.6% precision, while the PPO policies auto-approve 45.8% at
+77.8%; the difference in coverage is statistically significant (p=0.001). The
+tradeoff is not an improvement in one number but a principled choice of
+operating point, which is useful when downstream costs of false auto-approvals
+and unnecessary escalations are asymmetric and known.
+
+**Not supported by this experiment.** That reward-function design
+*automatically* produces differentiated policies. All three reward variants in
+this study produced identical action distributions on the eval set under both
+raw and Platt-scaled calibrated confidences. A plausible explanation (EV-
+invariance at the observed per-tier accuracies) suggests differentiation may
+appear in other data regimes, but we did not demonstrate this here. Readers
+considering reward shaping as a policy-tuning knob should not assume that
+varying the reward table is sufficient to change the learned policy — whether
+it does depends on the empirical error structure of the underlying classifier.
+
+As confidence-gated autonomy becomes a standard component of agentic AI
+pipelines (including systems that route queries between different models [10]),
+the methodology described here offers a reproducible, data-driven baseline
+for evaluating learned vs hand-tuned routing, and a template for the kind of
+calibration-probe and EV analysis that should accompany such comparisons [1].
 
 ---
 
