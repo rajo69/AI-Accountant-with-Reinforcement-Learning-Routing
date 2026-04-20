@@ -105,9 +105,14 @@ accuracies, and agree otherwise.
 
 \textbf{Next work.}
 Multi-sample self-consistency for a fundamentally different uncertainty
-signal [Kadavath+2022, Xiong+2024]; multi-seed training; a larger
-seed-independent eval set to separate statistical power from seed-level
-dependence; extension to the parent pipeline's reconciliation agent.
+signal [Kadavath+2022, Xiong+2024]; a larger seed-independent eval set to
+separate statistical power from seed-level dependence; extension to the
+parent pipeline's reconciliation agent. (A five-seed robustness sweep has
+since shipped alongside the code: every trained PPO policy produces an
+identical action sequence across seeds 0--4 and 42 on both the natural
+raw regime and the constructed divergence regime, confirming the
+tier-level policy is seed-invariant on this problem; see the repository
+README.)
 
 \textbf{Code, data, reproducibility.} Full code, held-out eval set, trained PPO
 models, and a reproducible statistical-analysis script are at the GitHub link

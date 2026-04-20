@@ -47,7 +47,7 @@ here are relevant to clinical decision support, autonomous compliance
 checking, and any multi-agent pipeline where human oversight must be
 calibrated against throughput.
 
-### What the repository now reports (as of 2026-04-20)
+### What the repository now reports (as of 2026-04-21)
 
 See `README.md` for full numbers with confidence intervals. In summary:
 
@@ -64,6 +64,11 @@ See `README.md` for full numbers with confidence intervals. In summary:
   expected divergence on both calibrated and raw confidence. This supports
   an expected-value-invariance explanation for the natural-regime
   convergence.
+- A five-seed robustness sweep (3 variants x 5 seeds x {raw, regime} = 30
+  trainings) confirms the tier-level policy is seed-invariant on this
+  problem: every trained model produces an action sequence identical to
+  the canonical seed=42 policy, with population standard deviation 0.00
+  percentage points across every headline metric on both regimes.
 
 ### Integration with the parent project
 

@@ -39,7 +39,7 @@ Two probes refine the mechanistic story. A **calibration probe** (Platt-scaled l
 
 ## Next work
 
-Multi-sample self-consistency for a fundamentally different uncertainty signal; multi-seed training for reviewer-hygiene robustness; a larger seed-independent eval set to separate statistical power from seed-level dependence; extension to the parent pipeline's reconciliation agent.
+Multi-sample self-consistency for a fundamentally different uncertainty signal; a larger seed-independent eval set to separate statistical power from seed-level dependence; extension to the parent pipeline's reconciliation agent. (A five-seed robustness sweep has since shipped alongside the code: every trained PPO policy produces an identical action sequence across seeds 0–4 and 42 on both the natural raw regime and the constructed divergence regime, confirming the tier-level policy is seed-invariant on this problem; see the repository README's "Multi-seed robustness" subsection.)
 
 ## Code, data, reproducibility
 

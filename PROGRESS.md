@@ -1,10 +1,10 @@
 # PROGRESS.md — RL Routing Project Session Log
 
 ## Current Phase
-Between phases. All critical research phases (0–8b) and defensibility work
-are complete and merged to main. Phase 9 (multi-seed robustness) is the
-remaining planned phase; next candidate is a Docker-reproducibility pass
-to make the headline numbers regenerable with one command.
+Between phases. All planned research phases (0–9) and all defensibility
+work are complete and merged to main. Remaining candidates are either
+compute-expensive research extensions (multi-sample self-consistency
+probe) or user-facing polish (arXiv expansion of the 1-pager).
 
 ## Phase Status
 All research phases complete. Initial project tag v1.0.0 was cut after
@@ -13,10 +13,12 @@ rather than add features. The repository is usable as-is at HEAD and also
 at v1.0.0, with the HEAD framing being substantially more defensible.
 
 ## Last Completed Step
-Phase 10 repository cleanup shipped via PR #1 (merge commit 404f8fb):
-vendored parent project removed (~1MB), CLAUDE.md and RL_ROUTING_PROJECT.md
-trimmed to current-state scaffolding, seed fixtures relocated to data/seeds/.
-The RL extension is now fully decoupled from the parent project's source.
+Phase 9 multi-seed robustness sweep shipped. 30 trainings (3 variants x
+5 seeds x 2 regimes) all converge to actions identical to the canonical
+seed=42 models (std = 0.00pp across every headline metric on both raw
+and regime datasets). The tier-level policy is seed-invariant on this
+problem, which is consistent with the EV-invariance mechanism reported
+in Key Finding #4.
 
 ## Completed Phases
 - [x] Phase 0 — Repository initialisation
@@ -36,7 +38,9 @@ The RL extension is now fully decoupled from the parent project's source.
       (backend/, frontend/, deployment configs); trimmed CLAUDE.md and
       RL_ROUTING_PROJECT.md to current-state scaffolding; seed fixtures
       relocated to data/seeds/
-- [ ] Phase 9 — Multi-seed training (planned; hygiene)
+- [x] Phase 9 — Multi-seed training (5 seeds x 3 variants x 2 regimes;
+      every trained model identical to canonical seed=42 on both regimes;
+      std=0.00pp across all headline metrics)
 
 ## Open Issues
 - Small evaluation set: 177 transactions (33 hard) from 50 labelled seeds
@@ -88,6 +92,19 @@ signal regimes rules out a calibration-specific artefact and supports the
 EV-invariance explanation for natural-regime convergence. See README
 "Regime probe" subsection.
 
+## Multi-seed Robustness Summary (Phase 9)
+Retrained every (variant, regime) combination with 5 additional seeds
+(0-4 alongside the canonical 42): 30 trainings, 3 variants x 5 seeds x
+{raw, regime}. All other hyperparameters unchanged. Every seed produces
+action totals identical to the canonical seed=42 policy: on raw regime,
+all 15 models are 81/96/0; on regime dataset, A/B are 64/96/0 and C is
+0/160/0. Population standard deviation is 0.00pp across every headline
+metric on both regimes, for every variant. This confirms the tier-level
+policy is seed-invariant on this problem, consistent with the EV-invariance
+mechanism reported in Key Finding #4. See README "Multi-seed robustness"
+subsection; per-seed numbers in experiments/results/multi_seed_summary_*.
+{md,json}.
+
 ## Session Log
 ### Session 1 — 2026-03-25
 - Completed: Phases 0 and 1 — env, reward functions, simulator, 17 tests
@@ -120,4 +137,7 @@ EV-invariance explanation for natural-regime convergence. See README
 - Completed: Regime probe — reshape easy tier to 0.72 (EV-divergence band), retrain A/B/C on calibrated and raw regimes, confirm variant divergence exactly as EV math predicts on BOTH regimes (commits 894cf82 + 2e80cb4, including a defensibility sweep across README / RESEARCH_NOTES / data card / paper / superseded comparison report)
 
 ### Session 11 — 2026-04-20
-- Completed: Phase 10 repository cleanup — removed vendored parent project (backend/, frontend/, Dockerfile, docker-compose.yml, railway.toml, DEPLOYMENT.md, docs/ARCHITECTURE.md); trimmed CLAUDE.md to a 31-line pointer and RL_ROUTING_PROJECT.md to 73 lines of research framing; relocated seed fixtures to data/seeds/ so the synthetic-data regeneration pipeline still works; added prerequisite pointer to the parent repository in integration/INTEGRATION_GUIDE.md
+- Completed: Phase 10 repository cleanup — removed vendored parent project (backend/, frontend/, Dockerfile, docker-compose.yml, railway.toml, DEPLOYMENT.md, docs/ARCHITECTURE.md); trimmed CLAUDE.md to a 31-line pointer and RL_ROUTING_PROJECT.md to 73 lines of research framing; relocated seed fixtures to data/seeds/ so the synthetic-data regeneration pipeline still works; added prerequisite pointer to the parent repository in integration/INTEGRATION_GUIDE.md; post-merge review polish (PR #2): broken DEPLOYMENT.md link, stale PROGRESS.md fields, consistent p-value formatting across README/paper/stat summaries; Docker reproducibility (PR #3): Dockerfile.reproduce + Makefile + CI Reproduce job enforces the reproducibility claim on every PR
+
+### Session 12 — 2026-04-21
+- Completed: Phase 9 multi-seed robustness sweep — refactored agent/train.py to accept --seed/--suffix flags; wrote experiments/multi_seed.py; ran 30 trainings (3 variants x 5 seeds x {raw, regime}) and confirmed every trained PPO model produces action totals identical to the canonical seed=42 policy (raw: 81/96/0; regime: A/B 64/96/0, C 0/160/0); std=0.00pp across every headline metric; added README "Multi-seed robustness" subsection and `make multi-seed` target

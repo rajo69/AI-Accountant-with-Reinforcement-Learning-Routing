@@ -70,8 +70,25 @@ def make_eval_env(reward_variant: str, seed: int, data_path: str, tag: str) -> M
     return Monitor(env, filename=str(eval_log_dir / "eval_monitor"))
 
 
-def train(reward_variant: str, dataset: str = "raw") -> None:
-    """Train a PPO policy for the given reward variant."""
+def train(
+    reward_variant: str,
+    dataset: str = "raw",
+    seed: int | None = None,
+    suffix: str = "",
+) -> None:
+    """Train a PPO policy for the given reward variant.
+
+    Args:
+        reward_variant: one of "A", "B", "C".
+        dataset: one of DATASETS keys.
+        seed: overrides the training seed from policy_config.yaml. The default
+            (None) uses the config's seed (42). Used by multi-seed robustness
+            sweeps to produce independent trained models.
+        suffix: appended to the dataset-derived tag used in output filenames.
+            E.g. suffix="_seed0" produces models/trained/ppo_variant_A_seed0.zip
+            for dataset="raw". Lets multi-seed runs write to non-colliding paths
+            without touching the canonical headline models.
+    """
     cfg = load_config()
     ppo_cfg = cfg["ppo"]
     train_cfg = cfg["training"]
@@ -79,9 +96,11 @@ def train(reward_variant: str, dataset: str = "raw") -> None:
     if dataset not in DATASETS:
         raise ValueError(f"Unknown dataset '{dataset}'. Choose from: {list(DATASETS)}")
     data_path = str(DATASETS[dataset])
-    tag = "" if dataset == "raw" else f"_{dataset}"
+    base_tag = "" if dataset == "raw" else f"_{dataset}"
+    tag = base_tag + suffix
 
-    seed: int = train_cfg["seed"]
+    config_seed: int = train_cfg["seed"]
+    seed_i: int = config_seed if seed is None else seed
     total_timesteps: int = ppo_cfg["total_timesteps"]
     save_freq: int = train_cfg["save_freq"]
     eval_freq: int = train_cfg["eval_freq"]
@@ -97,7 +116,7 @@ def train(reward_variant: str, dataset: str = "raw") -> None:
     print(f"{'='*60}")
     print(f"  Dataset         : {dataset}  ({data_path})")
     print(f"  Total timesteps : {total_timesteps:,}")
-    print(f"  Seed            : {seed}")
+    print(f"  Seed            : {seed_i}")
     print(f"  Net arch        : {ppo_cfg['net_arch']}")
     print(f"  Learning rate   : {ppo_cfg['learning_rate']}")
     print(f"  Checkpoint dir  : {CHECKPOINT_DIR}")
@@ -105,8 +124,8 @@ def train(reward_variant: str, dataset: str = "raw") -> None:
     print()
 
     # ── Environments ──────────────────────────────────────────────────────────
-    train_env = make_env(reward_variant, seed, data_path, tag)
-    eval_env = make_eval_env(reward_variant, seed, data_path, tag)
+    train_env = make_env(reward_variant, seed_i, data_path, tag)
+    eval_env = make_eval_env(reward_variant, seed_i, data_path, tag)
 
     n_transactions = train_env.unwrapped.n_transactions  # type: ignore[attr-defined]
     print(f"  Training dataset: {n_transactions} transactions per episode")
@@ -147,7 +166,7 @@ def train(reward_variant: str, dataset: str = "raw") -> None:
         clip_range=float(ppo_cfg["clip_range"]),
         tensorboard_log=str(TENSORBOARD_DIR),
         policy_kwargs=policy_kwargs,
-        seed=seed,
+        seed=seed_i,
         verbose=1,
     )
 
@@ -186,6 +205,7 @@ def train(reward_variant: str, dataset: str = "raw") -> None:
         "reward_variant": reward_variant,
         "dataset": dataset,
         "data_path": data_path,
+        "seed": seed_i,
         "total_timesteps": total_timesteps,
         "final_mean_reward": round(mean_reward_f, 4),
         "final_std_reward": round(std_reward_f, 4),
@@ -234,8 +254,22 @@ def main() -> None:
              "Claude Haiku confidence scores; 'calibrated' uses the Platt-scaled "
              "output from experiments/calibrate.py.",
     )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=None,
+        help="Override the training seed from policy_config.yaml. Used by "
+             "multi-seed robustness sweeps.",
+    )
+    parser.add_argument(
+        "--suffix",
+        default="",
+        help="Append this string to the dataset-derived tag in output "
+             "filenames (e.g. '_seed0' produces ppo_variant_A_seed0.zip). "
+             "Lets multi-seed runs write to non-colliding paths.",
+    )
     args = parser.parse_args()
-    train(args.reward, dataset=args.dataset)
+    train(args.reward, dataset=args.dataset, seed=args.seed, suffix=args.suffix)
 
 
 if __name__ == "__main__":

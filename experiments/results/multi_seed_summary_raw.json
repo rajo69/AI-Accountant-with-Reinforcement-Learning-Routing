@@ -1,0 +1,355 @@
+{
+  "dataset": "raw",
+  "n_seeds": 5,
+  "seeds_requested": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "variants": [
+    "A",
+    "B",
+    "C"
+  ],
+  "total_runs": 30,
+  "train_failures": [],
+  "per_run": [
+    {
+      "variant": "A",
+      "dataset": "raw",
+      "seed": 0,
+      "action_totals": {
+        "AUTO_APPROVE": 81,
+        "SURFACE_FOR_REVIEW": 96,
+        "REJECT_FOR_MANUAL": 0
+      },
+      "overall_routing_accuracy": 0.6328,
+      "auto_approval_precision": 0.7778,
+      "auto_approval_rate": 0.4576,
+      "error_rate_auto": 0.2222
+    },
+    {
+      "variant": "A",
+      "dataset": "raw",
+      "seed": 1,
+      "action_totals": {
+        "AUTO_APPROVE": 81,
+        "SURFACE_FOR_REVIEW": 96,
+        "REJECT_FOR_MANUAL": 0
+      },
+      "overall_routing_accuracy": 0.6328,
+      "auto_approval_precision": 0.7778,
+      "auto_approval_rate": 0.4576,
+      "error_rate_auto": 0.2222
+    },
+    {
+      "variant": "A",
+      "dataset": "raw",
+      "seed": 2,
+      "action_totals": {
+        "AUTO_APPROVE": 81,
+        "SURFACE_FOR_REVIEW": 96,
+        "REJECT_FOR_MANUAL": 0
+      },
+      "overall_routing_accuracy": 0.6328,
+      "auto_approval_precision": 0.7778,
+      "auto_approval_rate": 0.4576,
+      "error_rate_auto": 0.2222
+    },
+    {
+      "variant": "A",
+      "dataset": "raw",
+      "seed": 3,
+      "action_totals": {
+        "AUTO_APPROVE": 81,
+        "SURFACE_FOR_REVIEW": 96,
+        "REJECT_FOR_MANUAL": 0
+      },
+      "overall_routing_accuracy": 0.6328,
+      "auto_approval_precision": 0.7778,
+      "auto_approval_rate": 0.4576,
+      "error_rate_auto": 0.2222
+    },
+    {
+      "variant": "A",
+      "dataset": "raw",
+      "seed": 4,
+      "action_totals": {
+        "AUTO_APPROVE": 81,
+        "SURFACE_FOR_REVIEW": 96,
+        "REJECT_FOR_MANUAL": 0
+      },
+      "overall_routing_accuracy": 0.6328,
+      "auto_approval_precision": 0.7778,
+      "auto_approval_rate": 0.4576,
+      "error_rate_auto": 0.2222
+    },
+    {
+      "variant": "B",
+      "dataset": "raw",
+      "seed": 0,
+      "action_totals": {
+        "AUTO_APPROVE": 81,
+        "SURFACE_FOR_REVIEW": 96,
+        "REJECT_FOR_MANUAL": 0
+      },
+      "overall_routing_accuracy": 0.6328,
+      "auto_approval_precision": 0.7778,
+      "auto_approval_rate": 0.4576,
+      "error_rate_auto": 0.2222
+    },
+    {
+      "variant": "B",
+      "dataset": "raw",
+      "seed": 1,
+      "action_totals": {
+        "AUTO_APPROVE": 81,
+        "SURFACE_FOR_REVIEW": 96,
+        "REJECT_FOR_MANUAL": 0
+      },
+      "overall_routing_accuracy": 0.6328,
+      "auto_approval_precision": 0.7778,
+      "auto_approval_rate": 0.4576,
+      "error_rate_auto": 0.2222
+    },
+    {
+      "variant": "B",
+      "dataset": "raw",
+      "seed": 2,
+      "action_totals": {
+        "AUTO_APPROVE": 81,
+        "SURFACE_FOR_REVIEW": 96,
+        "REJECT_FOR_MANUAL": 0
+      },
+      "overall_routing_accuracy": 0.6328,
+      "auto_approval_precision": 0.7778,
+      "auto_approval_rate": 0.4576,
+      "error_rate_auto": 0.2222
+    },
+    {
+      "variant": "B",
+      "dataset": "raw",
+      "seed": 3,
+      "action_totals": {
+        "AUTO_APPROVE": 81,
+        "SURFACE_FOR_REVIEW": 96,
+        "REJECT_FOR_MANUAL": 0
+      },
+      "overall_routing_accuracy": 0.6328,
+      "auto_approval_precision": 0.7778,
+      "auto_approval_rate": 0.4576,
+      "error_rate_auto": 0.2222
+    },
+    {
+      "variant": "B",
+      "dataset": "raw",
+      "seed": 4,
+      "action_totals": {
+        "AUTO_APPROVE": 81,
+        "SURFACE_FOR_REVIEW": 96,
+        "REJECT_FOR_MANUAL": 0
+      },
+      "overall_routing_accuracy": 0.6328,
+      "auto_approval_precision": 0.7778,
+      "auto_approval_rate": 0.4576,
+      "error_rate_auto": 0.2222
+    },
+    {
+      "variant": "C",
+      "dataset": "raw",
+      "seed": 0,
+      "action_totals": {
+        "AUTO_APPROVE": 81,
+        "SURFACE_FOR_REVIEW": 96,
+        "REJECT_FOR_MANUAL": 0
+      },
+      "overall_routing_accuracy": 0.6328,
+      "auto_approval_precision": 0.7778,
+      "auto_approval_rate": 0.4576,
+      "error_rate_auto": 0.2222
+    },
+    {
+      "variant": "C",
+      "dataset": "raw",
+      "seed": 1,
+      "action_totals": {
+        "AUTO_APPROVE": 81,
+        "SURFACE_FOR_REVIEW": 96,
+        "REJECT_FOR_MANUAL": 0
+      },
+      "overall_routing_accuracy": 0.6328,
+      "auto_approval_precision": 0.7778,
+      "auto_approval_rate": 0.4576,
+      "error_rate_auto": 0.2222
+    },
+    {
+      "variant": "C",
+      "dataset": "raw",
+      "seed": 2,
+      "action_totals": {
+        "AUTO_APPROVE": 81,
+        "SURFACE_FOR_REVIEW": 96,
+        "REJECT_FOR_MANUAL": 0
+      },
+      "overall_routing_accuracy": 0.6328,
+      "auto_approval_precision": 0.7778,
+      "auto_approval_rate": 0.4576,
+      "error_rate_auto": 0.2222
+    },
+    {
+      "variant": "C",
+      "dataset": "raw",
+      "seed": 3,
+      "action_totals": {
+        "AUTO_APPROVE": 81,
+        "SURFACE_FOR_REVIEW": 96,
+        "REJECT_FOR_MANUAL": 0
+      },
+      "overall_routing_accuracy": 0.6328,
+      "auto_approval_precision": 0.7778,
+      "auto_approval_rate": 0.4576,
+      "error_rate_auto": 0.2222
+    },
+    {
+      "variant": "C",
+      "dataset": "raw",
+      "seed": 4,
+      "action_totals": {
+        "AUTO_APPROVE": 81,
+        "SURFACE_FOR_REVIEW": 96,
+        "REJECT_FOR_MANUAL": 0
+      },
+      "overall_routing_accuracy": 0.6328,
+      "auto_approval_precision": 0.7778,
+      "auto_approval_rate": 0.4576,
+      "error_rate_auto": 0.2222
+    }
+  ],
+  "summary": {
+    "A": {
+      "n_seeds": 5,
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "overall_routing_accuracy": {
+        "mean": 0.6328,
+        "std": 0.0,
+        "min": 0.6328,
+        "max": 0.6328
+      },
+      "auto_approval_precision": {
+        "mean": 0.7778,
+        "std": 0.0,
+        "min": 0.7778,
+        "max": 0.7778
+      },
+      "auto_approval_rate": {
+        "mean": 0.4576,
+        "std": 0.0,
+        "min": 0.4576,
+        "max": 0.4576
+      },
+      "error_rate_auto": {
+        "mean": 0.2222,
+        "std": 0.0,
+        "min": 0.2222,
+        "max": 0.2222
+      },
+      "distinct_action_totals": [
+        {
+          "AUTO_APPROVE": 81,
+          "REJECT_FOR_MANUAL": 0,
+          "SURFACE_FOR_REVIEW": 96
+        }
+      ]
+    },
+    "B": {
+      "n_seeds": 5,
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "overall_routing_accuracy": {
+        "mean": 0.6328,
+        "std": 0.0,
+        "min": 0.6328,
+        "max": 0.6328
+      },
+      "auto_approval_precision": {
+        "mean": 0.7778,
+        "std": 0.0,
+        "min": 0.7778,
+        "max": 0.7778
+      },
+      "auto_approval_rate": {
+        "mean": 0.4576,
+        "std": 0.0,
+        "min": 0.4576,
+        "max": 0.4576
+      },
+      "error_rate_auto": {
+        "mean": 0.2222,
+        "std": 0.0,
+        "min": 0.2222,
+        "max": 0.2222
+      },
+      "distinct_action_totals": [
+        {
+          "AUTO_APPROVE": 81,
+          "REJECT_FOR_MANUAL": 0,
+          "SURFACE_FOR_REVIEW": 96
+        }
+      ]
+    },
+    "C": {
+      "n_seeds": 5,
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "overall_routing_accuracy": {
+        "mean": 0.6328,
+        "std": 0.0,
+        "min": 0.6328,
+        "max": 0.6328
+      },
+      "auto_approval_precision": {
+        "mean": 0.7778,
+        "std": 0.0,
+        "min": 0.7778,
+        "max": 0.7778
+      },
+      "auto_approval_rate": {
+        "mean": 0.4576,
+        "std": 0.0,
+        "min": 0.4576,
+        "max": 0.4576
+      },
+      "error_rate_auto": {
+        "mean": 0.2222,
+        "std": 0.0,
+        "min": 0.2222,
+        "max": 0.2222
+      },
+      "distinct_action_totals": [
+        {
+          "AUTO_APPROVE": 81,
+          "REJECT_FOR_MANUAL": 0,
+          "SURFACE_FOR_REVIEW": 96
+        }
+      ]
+    }
+  }
+}
