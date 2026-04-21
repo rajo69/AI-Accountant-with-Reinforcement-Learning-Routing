@@ -40,8 +40,8 @@ along with a confidence score between 0 and 1.
 
 ### The Problem with Hand-Tuned Thresholds
 
-After classification, the agent applies three fixed routing thresholds inherited
-from the developer's initial intuition:
+After classification, the agent applies three fixed routing thresholds carried
+over from the parent project's initial hand-tuning:
 
 ```python
 if confidence > 0.85:   status = "auto_categorised"   # write to ledger
@@ -49,7 +49,7 @@ elif confidence > 0.50: status = "suggested"           # add to review queue
 else:                   status = "needs_review"        # flag for manual work
 ```
 
-These values (0.85 and 0.50) are arbitrary. They do not adapt to:
+These thresholds (0.85 and 0.50) are fixed and were not learned from data. They do not adapt to:
 - the accountant's current workload or available capacity
 - the inherent difficulty of the transaction (ambiguous vendor descriptions)
 - the stakes of a misclassification (VAT-sensitive categories vs. petty cash)
