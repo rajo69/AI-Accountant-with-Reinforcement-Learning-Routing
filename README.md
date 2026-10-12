@@ -1,7 +1,7 @@
 # AI Accountant: Learned Routing via Reinforcement Learning
 
 > A research extension investigating whether a learned routing policy can
-> outperform hand-tuned confidence thresholds in a production multi-agent
+> outperform the hand-tuned confidence thresholds of a deployed LLM
 > accounting pipeline.
 
 [![CI](https://github.com/rajo69/AI-Accountant-with-Reinforcement-Learning-Routing/actions/workflows/ci.yml/badge.svg)](https://github.com/rajo69/AI-Accountant-with-Reinforcement-Learning-Routing/actions/workflows/ci.yml)
@@ -32,9 +32,10 @@ human oversight must be calibrated against throughput.
 ### The Parent Project
 
 The [AI Accountant](https://github.com/rajo69/agentic-ai-accounting) is a
-production-grade FastAPI and LangGraph system that
-automates transaction categorisation for UK accountants connected via the Xero
-API. Its core component is a `CategoriserAgent` that uses Anthropic's Claude API
+deployed, open-source FastAPI and LangGraph review layer for UK small businesses
+and bookkeepers on Xero: it proposes a category for every transaction, with a
+confidence tier that tells the reviewer where to look. Its core component is the
+categoriser workflow (the CategoriserAgent below) that uses Anthropic's Claude API
 (via the Instructor library) to predict a category for each bank transaction,
 along with a confidence score between 0 and 1.
 
@@ -44,7 +45,7 @@ After classification, the agent applies three fixed routing thresholds carried
 over from the parent project's initial hand-tuning:
 
 ```python
-if confidence > 0.85:   status = "auto_categorised"   # write to ledger
+if confidence > 0.85:   status = "auto_categorised"   # auto-accept, no review queue
 elif confidence > 0.50: status = "suggested"           # add to review queue
 else:                   status = "needs_review"        # flag for manual work
 ```
@@ -94,7 +95,7 @@ is implemented using the Gymnasium interface [4].
 
 | Action | Index | Effect |
 |--------|-------|--------|
-| AUTO_APPROVE | 0 | Accept prediction; write to ledger without review |
+| AUTO_APPROVE | 0 | Accept prediction without review (auto-accept tier) |
 | SURFACE_FOR_REVIEW | 1 | Add to accountant review queue |
 | REJECT_FOR_MANUAL | 2 | Flag for full manual re-categorisation |
 
@@ -109,7 +110,7 @@ grounded in the reward shaping literature [5].
 | Situation | Reward | Rationale |
 |-----------|--------|-----------|
 | AUTO_APPROVE, correct | +1.0 | Ideal outcome; no human time spent |
-| AUTO_APPROVE, wrong | -2.0 | Silent ledger error; 2:1 asymmetry models audit risk |
+| AUTO_APPROVE, wrong | -2.0 | Silent miscategorisation; 2:1 asymmetry models audit risk |
 | SURFACE_FOR_REVIEW, correct | -0.3 | Unnecessary escalation wastes accountant time |
 | SURFACE_FOR_REVIEW, wrong | +0.3 | Warranted escalation; positive but modest |
 | REJECT, correct | -1.0 | Discards good prediction; costlier than escalation |
