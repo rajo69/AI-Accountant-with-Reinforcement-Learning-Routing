@@ -29,7 +29,7 @@ htmlcov/
 # Alembic
 # (keep versions tracked)
 
-# Evals — cache and results are local only
+# Evals: cache and results are local only
 backend/evals/.cache/
 backend/evals/results/
 
@@ -37,7 +37,7 @@ backend/evals/results/
 .DS_Store
 Thumbs.db
 
-# RL Routing — data and model artifacts
+# RL Routing: data and model artifacts
 data/raw/
 experiments/tensorboard/
 models/checkpoints/
@@ -46,9 +46,12 @@ models/checkpoints/
 # evaluation results are committed; large raw outputs are not
 # best-during-training checkpoints from SB3 EvalCallback are not committed
 models/trained/best_ppo_variant_*/
-# SB3 EvalCallback numpy log — overwritten on every training run, not useful
+# SB3 EvalCallback numpy log, overwritten on every training run, not useful
 # as a versioned artefact (the training metadata JSONs are committed instead).
 experiments/results/evaluations.npz
 experiments/results/figures/.gitkeep
 .env
 .env.local
+
+# Claude Code local settings
+.claude/settings.local.json

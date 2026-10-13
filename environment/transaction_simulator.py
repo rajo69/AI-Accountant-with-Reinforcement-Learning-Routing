@@ -447,7 +447,8 @@ the RL routing policy. It is derived from the 50-transaction seed set in
 project's eval fixtures).
 
 ## Generation Methodology
-1. **Seed data**: 50 labelled transactions representing UK business banking activity.
+1. **Seed data**: 50 labelled transactions representing UK business banking activity
+   (the parent AI Accountant's eval fixtures, generated with Claude).
 2. **Variant generation**: For each seed, Claude ({self.model}) generated
    variants by varying merchant name phrasing, amount (±30%), date, and reference
    while preserving the correct category label.
@@ -476,7 +477,7 @@ project's eval fixtures).
 
 | Type      | Count |
 |-----------|-------|
-| Seed (hand-labelled) | {summary['n_seeds_train']} |
+| Seed (parent eval fixtures, generated with Claude) | {summary['n_seeds_train']} |
 | Generated | {summary['n_synthetic_train']} |
 
 ## Scope of the Data
@@ -487,7 +488,7 @@ project's eval fixtures).
    descriptions; the distribution of UK business transactions is broader.
 3. **Single model**: All confidence scores come from {self.model}, for that model
    version.
-4. **Difficulty labels**: Difficulty tiers are from the manually-labelled eval fixture.
+4. **Difficulty labels**: Difficulty tiers come from the parent's eval fixtures, generated with Claude.
 
 ## Reproduction
 ```bash

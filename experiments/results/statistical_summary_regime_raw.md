@@ -2,7 +2,7 @@
 
 All intervals are Wilson score 95% CIs. p-values are two-sided two-proportion z-tests (Baseline vs PPO).
 
-| Metric | Baseline (0.85/0.50) | PPO (A representative; A/B/C diverge — see notes) | Significance |
+| Metric | Baseline (0.85/0.50) | PPO (A representative; A/B/C diverge, see notes) | Significance |
 |---|:---:|:---:|:---:|
 | Routing accuracy (over 160) | 63.7% [56.1, 70.8] | 59.4% [51.6, 66.7] | p=0.421 |
 | Auto-approval precision | 68.0% [58.2, 76.5] | 71.9% [59.9, 81.4] | p=0.605 |

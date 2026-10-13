@@ -149,8 +149,9 @@ parent project's evaluation framework by
 | Medium | 252 | 63 | 48% |
 | Hard | 131 | 33 | 52% |
 
-**Effective unit of diversity.** The 882 transactions derive from **50 hand-
-labelled seed scenarios × ~18 Claude-generated variants each**, not from 882
+**Effective unit of diversity.** The 882 transactions derive from **50 seed
+scenarios (the parent AI Accountant's eval fixtures, generated with Claude) × ~18
+Claude-generated variants each**, not from 882
 independent draws. Variants within a seed share vendor family and category; they
 differ in amount, date, merchant phrasing, and reference. Statistical
 power on this dataset is therefore set at the seed level as well as by the eval

@@ -1,4 +1,4 @@
-# Multi-seed robustness — dataset `raw`
+# Multi-seed robustness: dataset `raw`
 
 Each row reports mean across 5 seeds (0, 1, 2, 3, 4), with the population standard deviation in parentheses. Identical action totals across all seeds (where listed) indicate that the tier-level policy is seed-invariant for the given (variant, regime).
 

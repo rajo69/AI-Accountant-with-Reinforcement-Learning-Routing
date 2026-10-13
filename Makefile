@@ -1,4 +1,4 @@
-# Makefile — convenience targets for reproducibility and development.
+# Makefile: convenience targets for reproducibility and development.
 #
 # `reproduce-fast` is the one a reviewer should run. It re-evaluates the
 # committed PPO models on the committed held-out sets for all four regimes
@@ -20,7 +20,7 @@ help:
 	@echo "Reproducibility:"
 	@echo "  make reproduce-fast   Regenerate all eval JSONs + statistical + multi-seed summaries (~2 min)"
 	@echo "  make reproduce-full   Retrain all variants on all regimes, then reproduce-fast (~4 h)"
-	@echo "  make multi-seed       Multi-seed robustness sweep — retrains 30 models (~5-6 h)"
+	@echo "  make multi-seed       Multi-seed robustness sweep, retrains 30 models (~5-6 h)"
 	@echo ""
 	@echo "Development:"
 	@echo "  make test             Run the pytest suite"

@@ -417,7 +417,7 @@ def write_markdown(report: dict, path: Path) -> None:
     lines.append("")
     lines.append("All intervals are Wilson score 95% CIs. p-values are two-sided two-proportion z-tests (Baseline vs PPO).")
     lines.append("")
-    ppo_hdr = "PPO (A/B/C identical)" if report.get("variants_converge", True) else "PPO (A representative; A/B/C diverge — see notes)"
+    ppo_hdr = "PPO (A/B/C identical)" if report.get("variants_converge", True) else "PPO (A representative; A/B/C diverge, see notes)"
     lines.append(f"| Metric | Baseline (0.85/0.50) | {ppo_hdr} | Significance |")
     lines.append("|---|:---:|:---:|:---:|")
     lines.append(row(f"Routing accuracy (over {n})", "routing_accuracy"))

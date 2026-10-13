@@ -159,7 +159,7 @@ def write_markdown(dataset: str, rows: list[dict[str, Any]], summary: dict[str, 
     """Emit a human-readable markdown table for the README."""
     seeds_used = sorted({r["seed"] for r in rows})
     lines = []
-    lines.append(f"# Multi-seed robustness — dataset `{dataset}`")
+    lines.append(f"# Multi-seed robustness: dataset `{dataset}`")
     lines.append("")
     lines.append(
         f"Each row reports mean across {len(seeds_used)} seeds "

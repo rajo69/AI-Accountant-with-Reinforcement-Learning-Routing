@@ -333,7 +333,7 @@ def _mock_confidence(tier: int) -> float:
 
 
 def _minimal_test_transactions() -> list[dict]:
-    """Six hand-crafted records for unit tests with no file dependencies."""
+    """Six inline records for unit tests with no file dependencies."""
     return [
         {
             "transaction_id": f"mock_{i}",

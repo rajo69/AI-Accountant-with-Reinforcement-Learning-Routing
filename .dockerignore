@@ -1,4 +1,4 @@
-# .dockerignore — keep the reproducibility image minimal.
+# .dockerignore: keep the reproducibility image minimal.
 #
 # We include the full source tree, committed PPO models, and committed
 # datasets (those are the point of the image). We exclude caches, editor
@@ -24,7 +24,7 @@ Thumbs.db
 .idea
 .vscode
 
-# Git — the image does not need commit history
+# Git: the image does not need commit history
 .git
 .github
 
