@@ -1,5 +1,5 @@
 """
-experiments/regime_probe.py — Data-regime probe for the EV-invariance hypothesis.
+experiments/regime_probe.py: Data-regime probe for the EV-invariance hypothesis.
 
 Context
 -------
@@ -24,7 +24,7 @@ For a transaction with per-tier correct-probability p:
     EV(SURFACE| variant)  = p * (-0.3 * k) + (1-p) * (+0.3)
 
 where penalty is -2.0 for A, -2.0 for B, -5.0 for C; and k is the SURFACE
-scaling — 1.0 for A and C, (1 + E[L]) = 1.5 for B at average load.
+scaling: 1.0 for A and C, (1 + E[L]) = 1.5 for B at average load.
 
 Break-even p above which AUTO is preferred:
 
@@ -59,7 +59,7 @@ Run:
     python -m experiments.regime_probe
 
 Outputs:
-    data/synthetic/transactions_regime.jsonl
+    data/generated/transactions_regime.jsonl
     data/evaluation/held_out_set_regime.json
     experiments/results/regime_probe_report.json
 """
@@ -80,16 +80,16 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 # effect is not a calibration-specific artefact.
 SOURCES = {
     "calibrated": {
-        "train_in":  REPO_ROOT / "data" / "synthetic" / "transactions_calibrated.jsonl",
+        "train_in":  REPO_ROOT / "data" / "generated" / "transactions_calibrated.jsonl",
         "eval_in":   REPO_ROOT / "data" / "evaluation" / "held_out_set_calibrated.json",
-        "train_out": REPO_ROOT / "data" / "synthetic" / "transactions_regime.jsonl",
+        "train_out": REPO_ROOT / "data" / "generated" / "transactions_regime.jsonl",
         "eval_out":  REPO_ROOT / "data" / "evaluation" / "held_out_set_regime.json",
         "report_out": REPO_ROOT / "experiments" / "results" / "regime_probe_report.json",
     },
     "raw": {
-        "train_in":  REPO_ROOT / "data" / "synthetic" / "transactions.jsonl",
+        "train_in":  REPO_ROOT / "data" / "generated" / "transactions.jsonl",
         "eval_in":   REPO_ROOT / "data" / "evaluation" / "held_out_set.json",
-        "train_out": REPO_ROOT / "data" / "synthetic" / "transactions_regime_raw.jsonl",
+        "train_out": REPO_ROOT / "data" / "generated" / "transactions_regime_raw.jsonl",
         "eval_out":  REPO_ROOT / "data" / "evaluation" / "held_out_set_regime_raw.json",
         "report_out": REPO_ROOT / "experiments" / "results" / "regime_probe_raw_report.json",
     },

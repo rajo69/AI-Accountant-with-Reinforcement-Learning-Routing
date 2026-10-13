@@ -1,5 +1,5 @@
 """
-experiments/calibrate.py — Calibration probe for the RL routing policy.
+experiments/calibrate.py: Calibration probe for the RL routing policy.
 
 Hypothesis (from README Key Finding #4):
     The reason all three PPO reward variants (A/B/C) converge to the same
@@ -18,7 +18,7 @@ validation. The eval set uses predictions from a model fit on the full
 training set.
 
 The outputs are two new datasets:
-    data/synthetic/transactions_calibrated.jsonl
+    data/generated/transactions_calibrated.jsonl
     data/evaluation/held_out_set_calibrated.json
 
 Each record has the same schema as the input dataset but with:
@@ -36,7 +36,7 @@ experiments/results/calibration_report.json.
 Run:
     python -m experiments.calibrate
 
-No command-line arguments — paths are deterministic from REPO_ROOT.
+No command-line arguments: paths are deterministic from REPO_ROOT.
 """
 
 from __future__ import annotations
@@ -50,9 +50,9 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-TRAIN_PATH = REPO_ROOT / "data" / "synthetic" / "transactions.jsonl"
+TRAIN_PATH = REPO_ROOT / "data" / "generated" / "transactions.jsonl"
 EVAL_PATH = REPO_ROOT / "data" / "evaluation" / "held_out_set.json"
-TRAIN_OUT_PATH = REPO_ROOT / "data" / "synthetic" / "transactions_calibrated.jsonl"
+TRAIN_OUT_PATH = REPO_ROOT / "data" / "generated" / "transactions_calibrated.jsonl"
 EVAL_OUT_PATH = REPO_ROOT / "data" / "evaluation" / "held_out_set_calibrated.json"
 REPORT_PATH = REPO_ROOT / "experiments" / "results" / "calibration_report.json"
 

@@ -98,7 +98,7 @@ class RoutingEnv(gym.Env):
     def __init__(
         self,
         transactions: list[dict] | None = None,
-        data_path: str = "data/synthetic/transactions.jsonl",
+        data_path: str = "data/generated/transactions.jsonl",
         reward_variant: str = "A",
         seed: int | None = None,
     ) -> None:

@@ -139,7 +139,7 @@ parent project's evaluation framework by
    amount, date, merchant phrasing, and description while preserving category.
 2. Each generated transaction was processed by a simplified CategoriserAgent
    prompt (same Claude model as the parent app, without pgvector few-shot context)
-   to obtain real Claude confidence scores. See `data/synthetic/README.md`.
+   to obtain real Claude confidence scores. See `data/generated/README.md`.
 3. Final dataset: **882 transactions** (705 training / 177 evaluation), stratified
    by difficulty tier across all 50 seed categories.
 

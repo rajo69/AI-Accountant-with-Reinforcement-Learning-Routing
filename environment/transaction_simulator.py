@@ -7,9 +7,9 @@ Workflow
 2. For each seed, generate N variants using the Claude API
 3. Score each transaction (seed + generated) using a simplified version of the
    CategoriserAgent prompt to get a real Claude confidence score
-4. Write all records to data/synthetic/transactions.jsonl
+4. Write all records to data/generated/transactions.jsonl
 5. Create a stratified 80/20 train/eval split by difficulty tier
-6. Write a data card to data/synthetic/README.md
+6. Write a data card to data/generated/README.md
 
 Usage
 -----
@@ -43,7 +43,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent.parent
 FIXTURES_DIR = PROJECT_ROOT / "data" / "seeds"
-SYNTHETIC_DIR = PROJECT_ROOT / "data" / "synthetic"
+GENERATED_DIR = PROJECT_ROOT / "data" / "generated"
 EVAL_DIR = PROJECT_ROOT / "data" / "evaluation"
 
 _MAX_AMOUNT_LOG = math.log1p(50_000.0)
@@ -218,10 +218,10 @@ class TransactionSimulator:
         )
 
         # Step 4: Save
-        SYNTHETIC_DIR.mkdir(parents=True, exist_ok=True)
+        GENERATED_DIR.mkdir(parents=True, exist_ok=True)
         EVAL_DIR.mkdir(parents=True, exist_ok=True)
 
-        train_path = SYNTHETIC_DIR / "transactions.jsonl"
+        train_path = GENERATED_DIR / "transactions.jsonl"
         eval_path = EVAL_DIR / "held_out_set.json"
 
         self._write_jsonl(train_set, train_path)
@@ -233,7 +233,7 @@ class TransactionSimulator:
         # Step 6: Write data card
         self._write_data_card(summary)
 
-        self._log("Done. Data card written to data/synthetic/README.md")
+        self._log("Done. Data card written to data/generated/README.md")
         return summary
 
     # ── Private: generation ───────────────────────────────────────────────────
@@ -437,7 +437,7 @@ Return the most appropriate account code and name, your confidence (0.0-1.0), an
             json.dump(records, f, indent=2)
 
     def _write_data_card(self, summary: dict) -> None:
-        """Write data/synthetic/README.md data card."""
+        """Write data/generated/README.md data card."""
         card = f"""# Data Card: Generated Transaction Dataset
 
 ## Overview
@@ -495,7 +495,7 @@ python -m environment.transaction_simulator
 ```
 Requires `ANTHROPIC_API_KEY` in environment. See `.env.example`.
 """
-        card_path = SYNTHETIC_DIR / "README.md"
+        card_path = GENERATED_DIR / "README.md"
         with open(card_path, "w", encoding="utf-8") as f:
             f.write(card)
 
@@ -632,9 +632,9 @@ def main() -> None:
             f"mean_conf={stats['mean_conf']:.3f}"
         )
     print("\n  Files written:")
-    print("    data/synthetic/transactions.jsonl")
+    print("    data/generated/transactions.jsonl")
     print("    data/evaluation/held_out_set.json")
-    print("    data/synthetic/README.md")
+    print("    data/generated/README.md")
 
 
 if __name__ == "__main__":

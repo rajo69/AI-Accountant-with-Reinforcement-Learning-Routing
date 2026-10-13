@@ -241,16 +241,16 @@ def test_held_out_set_not_in_training_set() -> None:
     with tempfile.TemporaryDirectory() as tmpdir:
         # Patch paths to use temp dir
         import environment.transaction_simulator as sim_module
-        original_synthetic = sim_module.SYNTHETIC_DIR
+        original_generated = sim_module.GENERATED_DIR
         original_eval = sim_module.EVAL_DIR
-        sim_module.SYNTHETIC_DIR = Path(tmpdir) / "synthetic"
+        sim_module.GENERATED_DIR = Path(tmpdir) / "generated"
         sim_module.EVAL_DIR = Path(tmpdir) / "evaluation"
 
         try:
             sim = TransactionSimulator(dry_run=True, verbose=False)
             sim.run(n_variants_by_difficulty={"easy": 2, "medium": 2, "hard": 2})
 
-            train_path = Path(tmpdir) / "synthetic" / "transactions.jsonl"
+            train_path = Path(tmpdir) / "generated" / "transactions.jsonl"
             eval_path = Path(tmpdir) / "evaluation" / "held_out_set.json"
 
             assert train_path.exists(), "Training JSONL not written"
@@ -272,7 +272,7 @@ def test_held_out_set_not_in_training_set() -> None:
             )
 
         finally:
-            sim_module.SYNTHETIC_DIR = original_synthetic
+            sim_module.GENERATED_DIR = original_generated
             sim_module.EVAL_DIR = original_eval
 
 
@@ -285,9 +285,9 @@ def test_simulator_produces_balanced_categories() -> None:
 
     with tempfile.TemporaryDirectory() as tmpdir:
         import environment.transaction_simulator as sim_module
-        original_synthetic = sim_module.SYNTHETIC_DIR
+        original_generated = sim_module.GENERATED_DIR
         original_eval = sim_module.EVAL_DIR
-        sim_module.SYNTHETIC_DIR = Path(tmpdir) / "synthetic"
+        sim_module.GENERATED_DIR = Path(tmpdir) / "generated"
         sim_module.EVAL_DIR = Path(tmpdir) / "evaluation"
 
         try:
@@ -300,7 +300,7 @@ def test_simulator_produces_balanced_categories() -> None:
                 assert count > 0, f"{tier_name} tier has 0 training examples"
 
         finally:
-            sim_module.SYNTHETIC_DIR = original_synthetic
+            sim_module.GENERATED_DIR = original_generated
             sim_module.EVAL_DIR = original_eval
 
 

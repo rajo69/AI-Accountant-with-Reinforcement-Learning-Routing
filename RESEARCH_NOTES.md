@@ -187,7 +187,7 @@ the CategoriserAgent, which calls the Anthropic API at ~$0.01 to $0.05 per
 transaction. Total cost: ~$9 to $44. This is acceptable for a one-time research
 run but not for a public repository where CI would re-run it on every push.
 
-The committed data files (`data/synthetic/transactions.jsonl` and
+The committed data files (`data/generated/transactions.jsonl` and
 `data/evaluation/held_out_set.json`) use **real** Claude Haiku confidence scores
 from a one-time API run (2026-03-26). These are committed to the repo so that
 results are reproducible without re-running the API. CI does not regenerate

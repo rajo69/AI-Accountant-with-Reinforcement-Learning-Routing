@@ -12,7 +12,7 @@ story, headline findings, and reproduction instructions.
 ## Where things live
 
 - Code: `agent/`, `api/`, `environment/`, `experiments/`, `integration/`
-- Data: `data/seeds/` (parent-project seeds), `data/synthetic/` (generated training set)
+- Data: `data/seeds/` (parent-project seeds), `data/generated/` (generated training set)
 - Trained models: `models/trained/`
 - Research artefacts: `paper/`, `experiments/results/`
 - Status: `PROGRESS.md` (phase log), `RESEARCH_NOTES.md` (design decisions)

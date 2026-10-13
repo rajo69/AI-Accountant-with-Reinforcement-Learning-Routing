@@ -1,5 +1,5 @@
 """
-agent/train.py — PPO training script for the RL routing agent.
+agent/train.py: PPO training script for the RL routing agent.
 
 Usage:
     python agent/train.py --reward A
@@ -29,7 +29,7 @@ from environment.routing_env import RoutingEnv
 
 
 # ---------------------------------------------------------------------------
-# Paths (relative to repo root — run this script from repo root)
+# Paths (relative to repo root: run this script from repo root)
 # ---------------------------------------------------------------------------
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CONFIG_PATH = REPO_ROOT / "agent" / "policy_config.yaml"
@@ -42,10 +42,10 @@ RESULTS_DIR = REPO_ROOT / "experiments" / "results"
 # uses the Platt-scaled calibrator output from experiments/calibrate.py;
 # "regime" is the easy-tier-reshaped calibrated set from experiments/regime_probe.py.
 DATASETS = {
-    "raw":         REPO_ROOT / "data" / "synthetic" / "transactions.jsonl",
-    "calibrated":  REPO_ROOT / "data" / "synthetic" / "transactions_calibrated.jsonl",
-    "regime":      REPO_ROOT / "data" / "synthetic" / "transactions_regime.jsonl",
-    "regime_raw":  REPO_ROOT / "data" / "synthetic" / "transactions_regime_raw.jsonl",
+    "raw":         REPO_ROOT / "data" / "generated" / "transactions.jsonl",
+    "calibrated":  REPO_ROOT / "data" / "generated" / "transactions_calibrated.jsonl",
+    "regime":      REPO_ROOT / "data" / "generated" / "transactions_regime.jsonl",
+    "regime_raw":  REPO_ROOT / "data" / "generated" / "transactions_regime_raw.jsonl",
 }
 
 
@@ -112,7 +112,7 @@ def train(
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
     print(f"\n{'='*60}")
-    print(f"Training PPO — Reward Variant {reward_variant} ({dataset})")
+    print(f"Training PPO: Reward Variant {reward_variant} ({dataset})")
     print(f"{'='*60}")
     print(f"  Dataset         : {dataset}  ({data_path})")
     print(f"  Total timesteps : {total_timesteps:,}")
@@ -224,7 +224,7 @@ def train(
 
     # ── Summary ───────────────────────────────────────────────────────────────
     print(f"\n{'='*60}")
-    print(f"Training complete — Variant {reward_variant}")
+    print(f"Training complete: Variant {reward_variant}")
     print(f"{'='*60}")
     print(f"  Final mean reward : {mean_reward_f:.4f} ± {std_reward_f:.4f}")
     print(f"  Training time     : {training_time:.1f}s")
