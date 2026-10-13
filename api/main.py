@@ -1,5 +1,5 @@
 """
-api/main.py — FastAPI application exposing the RL routing policy.
+api/main.py: FastAPI application exposing the RL routing policy.
 
 Endpoints
 ---------
@@ -14,7 +14,7 @@ This API follows the same patterns as the parent project (app/main.py):
 - Lifespan handler for startup/shutdown
 - CORS middleware (allow_origins=["*"], allow_credentials=False)
 - FastAPI with Pydantic v2 response models
-- No business logic in the route handlers — everything delegated to the router
+- No business logic in the route handlers: everything delegated to the router
 
 The router singleton is created at startup and shared across requests.
 Thread safety: SB3 model.predict() is stateless (read-only), so sharing is safe.
@@ -31,7 +31,7 @@ from api.schemas import HealthResponse, PolicyInfo, ReloadResponse, RouteRequest
 from integration.router import LearnedRouter
 
 # ---------------------------------------------------------------------------
-# Application-level router singleton — created once at startup
+# Application-level router singleton: created once at startup
 # ---------------------------------------------------------------------------
 _router: LearnedRouter | None = None
 
@@ -50,7 +50,7 @@ async def lifespan(app: FastAPI):
 # FastAPI app
 # ---------------------------------------------------------------------------
 app = FastAPI(
-    title="AI Accountant — RL Routing API",
+    title="AI Accountant: RL Routing API",
     version=VERSION,
     description=(
         "Exposes a learned PPO routing policy as a drop-in replacement for "
@@ -75,7 +75,7 @@ app.add_middleware(
 
 def get_router() -> LearnedRouter:
     if _router is None:
-        raise HTTPException(status_code=503, detail="Router not initialised — server starting up.")
+        raise HTTPException(status_code=503, detail="Router not initialised: server starting up.")
     return _router
 
 
@@ -105,9 +105,9 @@ def route_transaction(request: RouteRequest) -> RouteResponse:
 
     The returned `status` field is a drop-in replacement for the parent
     project's CategoriserAgent decide-node output:
-    - `auto_categorised` — write prediction to ledger without review
-    - `suggested`        — surface for accountant review
-    - `needs_review`     — flag for manual re-categorisation
+    - `auto_categorised`: accept prediction without review (a person can still confirm)
+    - `suggested`: surface for accountant review
+    - `needs_review`: flag for manual re-categorisation
     """
     router = get_router()
     decision = router.route(
@@ -152,7 +152,7 @@ def reload_policy() -> ReloadResponse:
     if success:
         message = f"Policy reloaded successfully: ppo_variant_{router.model_variant}"
     else:
-        message = "Model file not found — falling back to hand-tuned threshold policy."
+        message = "Model file not found: falling back to hand-tuned threshold policy."
     return ReloadResponse(
         success=success,
         using_fallback=router.is_using_fallback,

@@ -1,5 +1,5 @@
 """
-RoutingEnv — Gymnasium-compatible environment for transaction routing decisions.
+RoutingEnv: Gymnasium-compatible environment for transaction routing decisions.
 
 The environment presents the agent with one transaction at a time and asks it to
 choose a routing action. An episode is one full pass through the transaction dataset
@@ -10,7 +10,7 @@ State space
 Variants A and C (4-dimensional):
     [confidence_score, amount_normalised, difficulty_tier, category_entropy]
 
-Variant B (5-dimensional — adds accountant load to the state):
+Variant B (5-dimensional: adds accountant load to the state):
     [confidence_score, amount_normalised, difficulty_tier, category_entropy, accountant_load]
 
 Feature details:
@@ -34,9 +34,9 @@ Feature details:
 Action space
 ------------
 Discrete(3):
-    0 = AUTO_APPROVE      — write the CategoriserAgent's prediction to the ledger
-    1 = SURFACE_FOR_REVIEW — add to accountant review queue
-    2 = REJECT_FOR_MANUAL  — flag for full manual re-categorisation
+    0 = AUTO_APPROVE: accept the CategoriserAgent's prediction without human review
+    1 = SURFACE_FOR_REVIEW: add to accountant review queue
+    2 = REJECT_FOR_MANUAL: flag for full manual re-categorisation
 
 Reward
 ------
@@ -89,7 +89,7 @@ class RoutingEnv(gym.Env):
             If None, data is loaded from data_path.
         data_path: Path to JSONL file produced by transaction_simulator.py.
             Used only when transactions is None.
-        reward_variant: Which reward design to use — 'A', 'B', or 'C'.
+        reward_variant: Which reward design to use: 'A', 'B', or 'C'.
         seed: Random seed for episode shuffling.
     """
 

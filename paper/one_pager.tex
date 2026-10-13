@@ -1,4 +1,4 @@
-% one_pager.tex — 1-page technical note companion to
+% one_pager.tex: 1-page technical note companion to
 % github.com/rajo69/AI-Accountant-with-Reinforcement-Learning-Routing
 % Compile: pdflatex paper/one_pager.tex
 \documentclass[10pt,a4paper]{article}
@@ -23,7 +23,7 @@
 \renewcommand{\arraystretch}{1.05}
 \pagestyle{empty}
 
-\title{\vspace{-0.6cm}\textbf{Learned Routing Under Uncalibrated LLM Confidence:\\a PPO Case Study on a Production Accounting Pipeline}}
+\title{\vspace{-0.6cm}\textbf{Learned Routing Under Uncalibrated LLM Confidence:\\a PPO Case Study on an LLM Accounting Pipeline}}
 \author{Rajarshi Nandi \\ \small \texttt{rajarshin264@gmail.com} \quad \href{https://github.com/rajo69/AI-Accountant-with-Reinforcement-Learning-Routing}{github.com/rajo69/\ldots-Routing}}
 \date{\vspace{-0.4cm}\small April 2026}
 
@@ -41,7 +41,7 @@ autonomy is a core unsolved problem for production deployments of agentic AI.
 \textbf{Question.}
 Can a lightweight PPO policy, observing the same confidence score plus a
 handful of transaction features, outperform the hand-tuned threshold routing of a
-production LLM agent on a real-world pipeline?
+deployed LLM accounting agent?
 
 \textbf{Setup.}
 The parent system is an AI bookkeeping assistant for UK accountants. A
@@ -49,7 +49,7 @@ The parent system is an AI bookkeeping assistant for UK accountants. A
 confidence score to each Xero bank transaction; a hand-tuned router then picks
 one of three actions: \textsc{auto-approve}, \textsc{surface-for-review}, or
 \textsc{reject-for-manual}. We formalise this as a Gymnasium MDP, generate 882
-synthetic transactions (stratified 80/20, real Claude confidence scores) from 50
+transactions (stratified 80/20, real Claude confidence scores) from 50
 labelled seeds, and train three PPO variants (Stable-Baselines3~2.7.1, 100k
 steps, seed=42) corresponding to three deployment priorities: a typical firm (A),
 a workload-weighted high-volume firm (B), and a compliance-critical setting (C)
@@ -72,7 +72,7 @@ Auto-approval error rate       & 27.4\% [20.1, 36.3] & 22.2\% [14.5, 32.4] & 0.4
 \end{center}
 
 All three PPO variants produce \emph{identical} action sequences on the eval
-set. Of the four metrics, only auto-approval \emph{rate} differs significantly.
+set. The significant difference is the auto-approval \emph{rate}.
 The mechanism is visible in the per-tier breakdown among auto-approved
 transactions: the baseline auto-approves 31 medium-tier transactions at a
 \textbf{54.8\% [37.8, 70.8]} error rate (more wrong than right), while the PPO
@@ -85,13 +85,13 @@ policies auto-approve \emph{zero} medium-tier.
 \vspace{-0.15cm}
 
 \textbf{Interpretation.}
-The apparent accuracy and precision gains of PPO over the baseline are
-\emph{not} statistically significant at $n{=}177$. On the natural data regime
-the defensible contribution is not "PPO improves accuracy" but "PPO learns to
-refuse to auto-approve the tier where the baseline is dangerously wrong."
+At $n{=}177$ the accuracy and precision differences lie within overlapping
+confidence intervals; on the natural data regime the contribution is that PPO
+learns to refuse to auto-approve the tier where the baseline is dangerously
+wrong.
 Two probes refine the mechanistic story. A \emph{calibration probe} (Platt-
 scaled logistic regression) improves proper scoring rules on eval (Brier
-0.295$\to$0.215) but does not resolve the A/B/C convergence — all three
+0.295$\to$0.215) and leaves the shared A/B/C policy unchanged: all three
 variants still produce identical action sequences. A \emph{regime probe}
 reshapes easy-tier accuracy to 0.72, placing it inside the EV-divergence band
 $(0.64, 0.80)$ where Variants A and B prefer \textsc{auto-approve} but Variant
@@ -99,11 +99,11 @@ C prefers \textsc{surface-for-review}. On the reshaped set the variants diverge
 exactly as the EV break-even math predicts: A and B auto-approve the entire
 easy tier while C auto-approves nothing. The binding constraint on variant
 divergence is therefore the \emph{per-tier accuracy structure}, not
-calibration quality alone — reward-driven policies differ when the reward
+calibration quality alone: reward-driven policies differ when the reward
 tables disagree on the tier-level EV-optimal action at the observed
 accuracies, and agree otherwise.
 
-\textbf{Next work.}
+\textbf{Next experiments.}
 Multi-sample self-consistency for a fundamentally different uncertainty
 signal [Kadavath+2022, Xiong+2024]; a larger seed-independent eval set to
 separate statistical power from seed-level dependence; extension to the

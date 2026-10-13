@@ -1,8 +1,7 @@
 # Research Notes
 
-A running log of design decisions, things tried that did not work, and
-observations during development. Written for PhD interview preparation —
-these are the choices you would be asked to defend.
+A running log of design decisions, things tried, and observations during
+development: the choices behind the results, with the reasoning for each.
 
 ---
 
@@ -26,13 +25,13 @@ accuracies (easy 82.6% / medium 52.4% / hard 62.6%) happen to place every
 tier outside C's divergence band, so C's EV-optimal tier-level action
 coincides with A's and B's. The regime probe (Results → Regime probe in
 the README) verifies this by reshaping easy-tier accuracy to 0.72, where
-C's EV-optimal action flips to SURFACE while A/B still prefer AUTO —
+C's EV-optimal action flips to SURFACE while A/B still prefer AUTO,
 producing the expected divergence.
 
 ### Why is SURFACE_FOR_REVIEW penalised symmetrically (+0.3 / −0.3)?
 
 Early reward designs penalised unnecessary escalation less than correct
-escalation was rewarded. This produced policies that escalated everything —
+escalation was rewarded. This produced policies that escalated everything:
 a "safe default" that technically maximised reward while making the system
 useless. Symmetric penalties (+0.3 / −0.3) force the agent to discriminate:
 escalation is only net-positive if the agent would have been wrong otherwise.
@@ -58,24 +57,24 @@ multi-step return). Full-dataset episodes (length ~705) allow the policy to
 learn from return propagation and give the Monitor wrapper meaningful episode
 statistics for TensorBoard.
 
-### Why include difficulty_tier as a feature when it's not available in production?
+### Why include difficulty_tier as a feature?
 
-In a real deployment, `difficulty_tier` is not directly observable — it comes
-from the eval framework, not from transaction features. It was included because
+`difficulty_tier` comes from the eval framework rather than from transaction
+features. It was included because
 (a) it is a reasonable proxy for inherent transaction ambiguity and (b) it
 provides a discrete signal that the 4-dim state space can actually learn from,
-given the mock confidence scores. In a production re-run with real confidence
-scores, difficulty_tier could be dropped or replaced with a learned ambiguity
-score derived from the CategoriserAgent's top-k probabilities.
+given the mock confidence scores. A deployment would replace difficulty_tier
+with a learned ambiguity score derived from the CategoriserAgent's top-k
+probabilities.
 
 ### Why category_entropy = 0.0 for all transactions?
 
 The Claude API returns a single category prediction, not a distribution over
 categories. To get true entropy, one would need to either (a) run the prompt
 multiple times with temperature > 0 or (b) use a classifier that natively
-outputs a probability distribution. Neither was done for cost reasons.
-The feature is retained in the state space as a placeholder — future work
-with multi-sample prompting could populate it.
+outputs a probability distribution. I kept the API cost of this study to one
+scoring pass, and kept the feature slot in the state space so multi-sample
+prompting can populate it without changing the environment interface.
 
 ---
 
@@ -83,17 +82,17 @@ with multi-sample prompting could populate it.
 
 ### Variant A convergence (mock-score run)
 
-Variant A converged very quickly — by ~20k timesteps the policy had essentially
+Variant A converged very quickly: by ~20k timesteps the policy had essentially
 reached its maximum eval reward (291.1) and stayed there. The action distribution
 plot shows it learned a pure tier-based strategy: auto-approve easy+medium,
-surface hard. The training curve is essentially flat after 20k steps, suggesting
-100k was 5x more than needed for this dataset size. This is worth noting in
-interviews — it suggests the environment is too simple for the model capacity.
+surface hard. The training curve is flat after 20k steps, so 100k steps
+converges with a 5x margin at this dataset size.
 
 ### Variant B identical to Variant A on eval set (mock-score run)
 
 The workload-sensitive penalty was a deliberate design choice to make the agent
-learn load-responsive behaviour. The identical eval results suggest either:
+learn load-responsive behaviour. Two explanations fit the identical eval
+results:
 (a) 100k steps was insufficient to learn load-sensitive routing that deviates
     from Variant A's default, or
 (b) at neutral load (0.5, used in evaluation), the load-adjusted penalty
@@ -101,15 +100,16 @@ learn load-responsive behaviour. The identical eval results suggest either:
     to change routing decisions on a dataset where routing is primarily
     determined by difficulty_tier.
 
-To distinguish (a) from (b), one would need to evaluate Variant B at load=0.0
-and load=1.0 separately. This is future work.
+Evaluating Variant B at load=0.0 and load=1.0 separately distinguishes (a)
+from (b); multi-load evaluation for Variant B is in the README's Next
+experiments.
 
 ### Variant C reward scale mismatch (mock-score run)
 
 Variant C's final training mean reward (67.3) vs Variant A (291.1) is striking.
 This is expected: by never auto-approving medium transactions (45.8% auto-rate
 vs 81.4% for A), Variant C foregoes many +1.0 rewards. The training objective
-and the evaluation objective are different — Variant C is "doing well" at its
+and the evaluation objective are different: Variant C is "doing well" at its
 own objective (minimising false auto-approvals) even though its cumulative
 episode reward is lower. This is a common confusion in RL: a lower reward does
 not mean a worse policy; it means the agent is optimising a different target.
@@ -136,7 +136,7 @@ This is the fundamental difference between runs.
 
 **Why Haiku outputs round numbers:** Haiku is an instruction-following model
 generating a confidence float as text. It tends to round to the nearest 5% or 10%.
-This is a well-known LLM calibration failure — the model doesn't natively output
+This is a well-known LLM calibration failure: the model doesn't natively output
 a probability from a softmax; it generates a number based on its training distribution
 for what "confidence" numbers look like.
 
@@ -147,12 +147,12 @@ surface all medium and hard. Training rewards diverged (A=140.5, B=110.9, C=−2
 but eval behaviour was identical. The Variant C reward of −27.5 means the policy
 surfaces most correct easy-tier transactions (−0.3 each), choosing conservatism even
 for the cases it would have auto-approved profitably. However, the eval showed it still
-auto-approves 81 easy transactions — so the negative training reward reflects surfacing
+auto-approves 81 easy transactions, so the negative training reward reflects surfacing
 easy transactions during the training episodes, while the eval (deterministic, fixed
 seed) converges to the same action.
 
 The convergence across variants on raw and calibrated confidence is not evidence of a
-single dominant strategy in general — it is evidence that the observed per-tier
+single dominant strategy in general: it is evidence that the observed per-tier
 accuracies (82.6% / 52.4% / 62.6%) place every tier outside the A-vs-C EV-divergence
 band (0.64, 0.80). The subsequent regime probe (see Results → Regime probe in the
 README) confirms this: reshaping easy-tier accuracy to 0.72 (inside the divergence
@@ -164,17 +164,15 @@ score distribution and not load-bearing.
 
 ### Baseline degradation with real scores
 
-The hand-tuned 0.85 threshold was calibrated for the mock score distribution (easy≈0.90,
-medium≈0.65, hard≈0.38) — the developer's intuition was essentially correct about what
-CategoriserAgent outputs would look like. With real scores, nearly everything exceeds
+The hand-tuned 0.85 threshold was set for the mock score distribution (easy≈0.90,
+medium≈0.65, hard≈0.38). With real scores, nearly everything exceeds
 0.85, so the threshold auto-approves 63.8% of transactions including medium ones with
 54.8% error rates. The baseline's confidence threshold is miscalibrated for real Claude
 output.
 
-This is the most practically important finding: the reason the hand-tuned threshold
-existed in the first place was precisely because nobody knew what real confidence
-distributions would look like. The 0.85 value was a guess. With real data, it turns
-out the model is overconfident, and the threshold needs to be much higher (~0.95) or
+This is the most practically important finding. The hand-tuned threshold was set
+before any real confidence distribution existed; with real data the model is
+overconfident, and the threshold needs to be much higher (~0.95) or
 replaced with a non-confidence-based gate (like difficulty_tier) to avoid the
 auto-approval volume the PPO agents correctly reject.
 
@@ -185,8 +183,8 @@ auto-approval volume the PPO agents correctly reject.
 ### Why commit the confidence scores rather than regenerate them in CI?
 
 Generating confidence scores requires running 882 transactions through
-the CategoriserAgent, which calls the Anthropic API at ~$0.01–0.05 per
-transaction. Total cost: ~$9–44. This is acceptable for a one-time research
+the CategoriserAgent, which calls the Anthropic API at ~$0.01 to $0.05 per
+transaction. Total cost: ~$9 to $44. This is acceptable for a one-time research
 run but not for a public repository where CI would re-run it on every push.
 
 The committed data files (`data/synthetic/transactions.jsonl` and
@@ -198,9 +196,9 @@ fixture or model changes.
 
 The real scores turned out to cluster at round values (0.95, 0.85, 0.75)
 rather than varying continuously. This is documented in the Real Confidence
-Score Run Observations section above and in Limitations. The practical
-consequence — policies still learn tier-based rather than confidence-based
-routing — is the same as with mock scores, but the mechanism is different:
+Score Run Observations section above and in the README's Evaluation Scope. The practical
+consequence, that policies still learn tier-based rather than confidence-based
+routing, is the same as with mock scores, but the mechanism is different:
 mock scores had no intra-tier variance by construction; real scores have low
 intra-tier variance because Haiku is poorly calibrated.
 
@@ -209,8 +207,8 @@ intra-tier variance because Haiku is poorly calibrated.
 The parent project's eval framework uses 50 labelled transactions; 20% of ~882
 gives 177 held-out transactions (81 easy, 63 medium, 33 hard). The split is
 stratified by difficulty tier to ensure the eval set is representative.
-Hard tier is under-powered (n=33), which is why hard-tier error rates should
-be treated with caution.
+The hard tier has n=33, so hard-tier error rates are read with their Wilson
+intervals.
 
 ---
 
@@ -219,12 +217,12 @@ be treated with caution.
 ### Why PPO-C as the default in LearnedRouter?
 
 On the original mock-score run Phase 3 evaluation PPO-C showed the best precision
-and lowest error rate and was selected as the production default. On the subsequent
+and lowest error rate and was selected as the integration default. On the subsequent
 real-confidence and Platt-calibrated evaluations PPO-A, PPO-B, and PPO-C produce
 identical action sequences, so the choice of default among the three is immaterial
 on the natural data regime. PPO-C remains the integration default because it is
 the most conservative under data regimes that fall into its divergence band (as the
-regime probe demonstrates — there C auto-approves nothing while A/B auto-approve
+regime probe demonstrates: there C auto-approves nothing while A/B auto-approve
 the easy tier). For an accounting deployment where false auto-approvals carry
 outsized cost, the more conservative default is the defensible choice, even when
 it is empirically equal on the natural-regime eval.

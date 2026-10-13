@@ -140,7 +140,7 @@ def test_env_step_before_reset_raises() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Test 3: Variant A reward — correct auto-approval
+# Test 3: Variant A reward: correct auto-approval
 # ---------------------------------------------------------------------------
 
 def test_reward_variant_a_correct_approval() -> None:
@@ -172,8 +172,8 @@ def test_reward_variant_a_unnecessary_escalation() -> None:
 def test_reward_variant_a_incorrect_approval_penalised_more_than_unnecessary_escalation() -> None:
     """
     A false auto-approval (-2.0) must be penalised more heavily than unnecessary
-    escalation (-0.3). This is the core asymmetry in the reward design —
-    a silent ledger error is far costlier than a wasted accountant review.
+    escalation (-0.3). This is the core asymmetry in the reward design:
+    an accepted wrong prediction is far costlier than a wasted accountant review.
     """
     penalty_false_approval = reward_a(action=AUTO_APPROVE, is_correct=False)
     penalty_unnecessary_escalation = reward_a(action=SURFACE_FOR_REVIEW, is_correct=True)
@@ -228,7 +228,7 @@ def test_reward_variant_b_correct_escalation_load_independent() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Test 6: Simulator stratified split — held-out set not in training set
+# Test 6: Simulator stratified split: held-out set not in training set
 # ---------------------------------------------------------------------------
 
 def test_held_out_set_not_in_training_set() -> None:

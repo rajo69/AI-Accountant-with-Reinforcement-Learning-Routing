@@ -1,18 +1,18 @@
 """
-integration/router.py — Drop-in replacement for the parent project's threshold
+integration/router.py: Drop-in replacement for the parent project's threshold
 routing logic.
 
 This module provides LearnedRouter, a class with an identical interface to the
 existing hand-tuned threshold router in the parent project's CategoriserAgent.
-It loads the best-performing trained PPO policy (Variant C, per Phase 3 results)
+It loads a trained PPO policy (Variant C by default, see DEFAULT_MODEL_VARIANT)
 and exposes a single route() method that returns a RoutingDecision.
 
 Graceful degradation
 --------------------
 If the model file is not found at startup, LearnedRouter automatically falls back
 to the hand-tuned ThresholdPolicy. This guarantees the parent project never
-breaks due to a missing model file — the fallback produces exactly the same
-routing behaviour as the current production system.
+breaks due to a missing model file: the fallback produces exactly the same
+routing behaviour as the parent project's current thresholds.
 
 Audit logging
 -------------
@@ -48,19 +48,18 @@ from agent.baseline import ThresholdPolicy, make_baseline_policy
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
-# Paths — resolved relative to repo root
+# Paths: resolved relative to repo root
 # ---------------------------------------------------------------------------
 REPO_ROOT = Path(__file__).resolve().parent.parent
 TRAINED_DIR = REPO_ROOT / "models" / "trained"
 
-# Best model determined by Phase 3 evaluation: PPO Variant C achieves the best
-# balance of precision (90.1%) and error rate (9.9%) — the recommended default
-# for compliance contexts. Override via ROUTING_MODEL_VARIANT env var.
+# Default variant. C has the most conservative reward (-5.0 for an accepted
+# wrong prediction). Override via ROUTING_MODEL_VARIANT env var.
 DEFAULT_MODEL_VARIANT = "C"
 
-# Action constants — match parent project's CategoriserAgent decide node
+# Action constants: match parent project's CategoriserAgent decide node
 AUTO_APPROVE = "auto_categorised"       # confidence > 0.85 in parent project
-SURFACE_FOR_REVIEW = "suggested"        # 0.50–0.85 in parent project
+SURFACE_FOR_REVIEW = "suggested"        # 0.50 to 0.85 in parent project
 REJECT_FOR_MANUAL = "needs_review"      # < 0.50 in parent project
 
 # Internal action index → parent project status string
@@ -70,7 +69,7 @@ _ACTION_TO_STATUS: dict[int, str] = {
     2: REJECT_FOR_MANUAL,
 }
 
-# Max amount for log-normalisation — must match RoutingEnv._MAX_AMOUNT_LOG
+# Max amount for log-normalisation: must match RoutingEnv._MAX_AMOUNT_LOG
 _MAX_AMOUNT_LOG = math.log1p(50_000.0)
 
 
@@ -111,7 +110,8 @@ class LearnedRouter:
 
     Args:
         model_variant: Which trained PPO variant to load ("A", "B", or "C").
-            Defaults to "C" (best precision in Phase 3 evaluation).
+            Defaults to "C" (the most conservative reward, -5.0 for an
+            accepted wrong prediction).
             Override with env var ROUTING_MODEL_VARIANT.
         models_dir: Directory containing ppo_variant_*.zip files.
             Defaults to models/trained/ in the repo root.
@@ -138,9 +138,9 @@ class LearnedRouter:
         model_path = self._models_dir / f"ppo_variant_{self.model_variant}.zip"
         if not model_path.exists():
             logger.warning(
-                "Trained model not found at %s — falling back to hand-tuned "
-                "threshold policy (0.85/0.50). Routing behaviour unchanged from "
-                "current production system.",
+                "Trained model not found at %s; falling back to hand-tuned "
+                "threshold policy (0.85/0.50). Routing behaviour matches the parent "
+                "project's thresholds.",
                 model_path,
             )
             self._using_fallback = True
@@ -152,7 +152,7 @@ class LearnedRouter:
             self._model = PPO.load(str(model_path))
             logger.info("Loaded PPO routing model: variant=%s path=%s", self.model_variant, model_path)
         except Exception as exc:
-            logger.error("Failed to load PPO model (%s): %s — falling back to baseline", model_path, exc)
+            logger.error("Failed to load PPO model (%s): %s; falling back to baseline", model_path, exc)
             self._using_fallback = True
             self._policy_used = "threshold_baseline"
 
@@ -178,13 +178,13 @@ class LearnedRouter:
         Determine routing action for a transaction.
 
         Args:
-            confidence_score: Float 0–1 from CategoriserAgent output.
+            confidence_score: Float 0 to 1 from CategoriserAgent output.
             transaction_features: Dict with optional keys:
                 - amount (float): Transaction amount in GBP. Used for log-normalisation.
                 - difficulty_tier (int): 0=easy, 1=medium, 2=hard. From eval framework.
                 - category_entropy (float): Entropy over top-k categories. Pass 0.0
                   if not available (Claude API returns single prediction).
-                - accountant_load (float): Queue pressure 0–1. Used by Variant B only.
+                - accountant_load (float): Queue pressure 0 to 1. Used by Variant B only.
                   Pass 0.5 for neutral/unknown load.
 
         Returns:

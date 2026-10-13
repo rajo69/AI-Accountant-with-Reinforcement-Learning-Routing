@@ -1,4 +1,4 @@
-# Integration Guide — Swapping in the Learned Router
+# Integration Guide: Swapping in the Learned Router
 
 This guide explains exactly how to replace the hand-tuned confidence threshold
 logic in the parent project's CategoriserAgent with the LearnedRouter.
@@ -21,7 +21,7 @@ parent repository) in the `decide` node of the LangGraph graph.
 ### Current code (hand-tuned thresholds)
 
 ```python
-# agents/categoriser.py — decide node (current)
+# agents/categoriser.py: decide node (current)
 def decide(state: CategoriserState) -> CategoriserState:
     confidence = state["prediction"]["confidence"]
 
@@ -40,11 +40,11 @@ def decide(state: CategoriserState) -> CategoriserState:
 ### Replacement code (LearnedRouter)
 
 ```python
-# agents/categoriser.py — decide node (with LearnedRouter)
+# agents/categoriser.py: decide node (with LearnedRouter)
 from integration.router import LearnedRouter
 
 # Create once at module level (loads model on import)
-_router = LearnedRouter(model_variant="C")   # PPO-C: best precision
+_router = LearnedRouter(model_variant="C")   # PPO-C: most conservative reward (-5.0)
 
 
 def decide(state: CategoriserState) -> CategoriserState:
@@ -80,11 +80,11 @@ def decide(state: CategoriserState) -> CategoriserState:
 
 - The CategoriserAgent's `fetch_context`, `classify`, `validate`, and `explain`
   nodes are completely unchanged.
-- The `AuditLog` schema is unchanged — `decision.audit_data` is stored in the
+- The `AuditLog` schema is unchanged: `decision.audit_data` is stored in the
   existing `ai_decision_data` JSONB column alongside the LLM reasoning text.
 - All API routes, database models, and frontend components are unchanged.
 - The fallback is automatic: if `models/trained/ppo_variant_C.zip` is missing,
-  the router silently uses the original 0.85/0.50 thresholds.
+  the router logs a warning and uses the original 0.85/0.50 thresholds.
 
 ---
 
@@ -104,12 +104,12 @@ and update the `LearnedRouter()` constructor call accordingly.
 
 ## Switching between variants
 
-| Variant | Use case | Auto-approval rate | Error rate |
-|---------|----------|--------------------|------------|
-| A | High-throughput, error-tolerant | 81% | 18.8% |
-| B | Load-sensitive (vary by queue depth) | 81% | 18.8% |
-| C | Compliance-critical | 46% | 9.9% |
-| baseline | No ML, pure thresholds | 37% | 10.6% |
+| Variant | Use case | Reward design |
+|---------|----------|---------------|
+| A | High-throughput, error-tolerant | -2.0 for an accepted wrong prediction |
+| B | Load-sensitive (vary by queue depth) | A, with the review penalty scaled by accountant load |
+| C | Compliance-critical | -5.0 for an accepted wrong prediction |
+| baseline | No ML, pure thresholds | Fixed 0.85 / 0.50 thresholds |
 
 Change `model_variant="C"` in the `_router = LearnedRouter(...)` line, or
 set the `ROUTING_MODEL_VARIANT` environment variable.
@@ -118,13 +118,15 @@ set the `ROUTING_MODEL_VARIANT` environment variable.
 
 ## Verifying the integration
 
-After swapping in the router, run the parent project's evaluation suite:
+Run this repository's router tests, which cover model loading, the threshold
+fallback, the audit data and the interface match with the baseline:
 
 ```bash
-cd /path/to/parent-project/backend
-python -m evals.run --mock
+python -m pytest integration/tests -v
 ```
 
-Expected: ≥80% overall, ≥95% easy-tier (same acceptance criteria as before).
-The routing decision affects workload distribution, not categorisation accuracy —
-so eval scores should be unchanged or improved.
+The router decides which status a prediction receives (`auto_categorised`,
+`suggested` or `needs_review`); it does not change the predicted category, so
+the parent project's categorisation eval
+(`python -m evals.eval_runner --mode mock`, run from `backend/`) is unaffected
+by the swap.

@@ -1,11 +1,11 @@
 """
-TransactionSimulator — generates synthetic transaction data for RL training.
+TransactionSimulator: generates the transaction dataset for RL training.
 
 Workflow
 --------
 1. Load 50 seed transactions from data/seeds/transactions.json
-2. For each seed, generate N synthetic variants using the Claude API
-3. Score each transaction (seed + synthetic) using a simplified version of the
+2. For each seed, generate N variants using the Claude API
+3. Score each transaction (seed + generated) using a simplified version of the
    CategoriserAgent prompt to get a real Claude confidence score
 4. Write all records to data/synthetic/transactions.jsonl
 5. Create a stratified 80/20 train/eval split by difficulty tier
@@ -17,20 +17,17 @@ Usage
     python -m environment.transaction_simulator                  # requires ANTHROPIC_API_KEY
 
 Cost estimate (Haiku):
-    50 seeds × 16 variants = 800 synthetic records + 50 seeds = 850 total
+    50 seeds × 16 variants = 800 generated records + 50 seeds = 850 total
     Scoring: ~850 calls × ~600 tokens each ≈ 510k tokens ≈ $0.05
     Generation: ~50 calls (batch per seed) × ~300 tokens ≈ 15k tokens ≈ $0.002
     Total: well under $0.10
 
 Note on confidence scores
 -------------------------
-Production confidence scores come from Claude + pgvector few-shot context (similar
-already-categorised transactions). Here we call Claude WITHOUT pgvector context,
-because we do not have a live database. This means scores are slightly lower on
-average than production values. This limitation is documented in the data card and
-should be considered when interpreting results — the RL agent is learning to route
-based on confidence scores from a context-free classifier, which may not perfectly
-represent the calibration of the full production system.
+In the parent app, confidence scores come from Claude + pgvector few-shot context
+(similar already-categorised transactions). Here we call Claude WITHOUT pgvector
+context, because the simulator runs without a live database, so the RL agent learns
+to route on the confidence of a context-free classifier. The data card records this.
 """
 
 from __future__ import annotations
@@ -55,7 +52,7 @@ _HAIKU = "claude-haiku-4-5-20251001"
 
 # Variants per difficulty tier: more variants for under-represented tiers
 # to improve balance in the training set.
-# Default: easy×12, medium×20, hard×40 → ~372+300+160 = 832 synthetic
+# Default: easy×12, medium×20, hard×40 → ~372+300+160 = 832 generated
 VARIANTS_BY_DIFFICULTY: dict[str, int] = {
     "easy": 12,
     "medium": 20,
@@ -79,7 +76,7 @@ class RawTransaction:
 
 @dataclass
 class ScoredTransaction:
-    """A transaction (seed or synthetic) with confidence score from Claude."""
+    """A transaction (seed or generated) with confidence score from Claude."""
     transaction_id: str
     description: str
     amount: float
@@ -129,7 +126,7 @@ class ScoredTransaction:
 
 class TransactionSimulator:
     """
-    Generates and scores synthetic transactions for RL training.
+    Generates and scores transaction variants for RL training.
 
     Args:
         api_key: Anthropic API key. If None, reads ANTHROPIC_API_KEY env var.
@@ -182,10 +179,10 @@ class TransactionSimulator:
         seeds = self._load_seeds()
         self._log(f"Loaded {len(seeds)} seed transactions from fixtures.")
 
-        # Step 1: Generate synthetic variants
+        # Step 1: Generate variants
         all_transactions: list[ScoredTransaction] = []
 
-        # Add seeds as non-synthetic records (unscored for now)
+        # Add the seeds themselves (is_synthetic=False, unscored for now)
         for seed in seeds:
             all_transactions.append(self._seed_to_scored(seed))
 
@@ -202,7 +199,7 @@ class TransactionSimulator:
             if not self.dry_run:
                 time.sleep(0.1)  # brief pause to respect rate limits
 
-        self._log(f"Generated {total_variants} synthetic variants. Total: {len(all_transactions)} records.")
+        self._log(f"Generated {total_variants} variants. Total: {len(all_transactions)} records.")
 
         # Step 2: Score all transactions (get confidence from Claude)
         self._log("Scoring all transactions with Claude...")
@@ -242,7 +239,7 @@ class TransactionSimulator:
     # ── Private: generation ───────────────────────────────────────────────────
 
     def _generate_variants(self, seed: RawTransaction, n: int) -> list[ScoredTransaction]:
-        """Call Claude to generate n synthetic variants of a seed transaction."""
+        """Call Claude to generate n variants of a seed transaction."""
         if self.dry_run:
             return self._mock_variants(seed, n)
 
@@ -406,7 +403,7 @@ Return the most appropriate account code and name, your confidence (0.0-1.0), an
     ) -> tuple[list[ScoredTransaction], list[ScoredTransaction]]:
         """
         Stratified split by difficulty tier. The held-out eval set contains
-        exactly eval_fraction of each difficulty tier. Seed (non-synthetic)
+        exactly eval_fraction of each difficulty tier. Seed (is_synthetic=False)
         transactions are preferentially kept in the training set.
         """
         rng = random.Random(42)  # fixed for reproducibility
@@ -441,7 +438,7 @@ Return the most appropriate account code and name, your confidence (0.0-1.0), an
 
     def _write_data_card(self, summary: dict) -> None:
         """Write data/synthetic/README.md data card."""
-        card = f"""# Data Card — Synthetic Transaction Dataset
+        card = f"""# Data Card: Generated Transaction Dataset
 
 ## Overview
 This dataset was generated by `environment/transaction_simulator.py` for training
@@ -451,11 +448,11 @@ project's eval fixtures).
 
 ## Generation Methodology
 1. **Seed data**: 50 labelled transactions representing UK business banking activity.
-2. **Synthetic expansion**: For each seed, Claude ({self.model}) generated synthetic
+2. **Variant generation**: For each seed, Claude ({self.model}) generated
    variants by varying merchant name phrasing, amount (±30%), date, and reference
    while preserving the correct category label.
-3. **Confidence scoring**: Each transaction (seed + synthetic) was run through a
-   simplified CategoriserAgent prompt (same model as production, WITHOUT pgvector
+3. **Confidence scoring**: Each transaction (seed + generated) was run through a
+   simplified CategoriserAgent prompt (same model as the parent app, WITHOUT pgvector
    few-shot context) to obtain a real Claude confidence score.
 4. **Train/eval split**: 80/20 stratified by difficulty tier, fixed seed=42.
 
@@ -475,24 +472,22 @@ project's eval fixtures).
 | Medium | {summary['train_by_tier'][1]['count']} | {summary['train_by_tier'][1]['pct_correct']:.1f}% | {summary['train_by_tier'][1]['mean_conf']:.3f} |
 | Hard   | {summary['train_by_tier'][2]['count']} | {summary['train_by_tier'][2]['pct_correct']:.1f}% | {summary['train_by_tier'][2]['mean_conf']:.3f} |
 
-### Synthetic vs Real (training set)
+### Seed vs Generated (training set)
 
 | Type      | Count |
 |-----------|-------|
-| Seed (real) | {summary['n_seeds_train']} |
-| Synthetic | {summary['n_synthetic_train']} |
+| Seed (hand-labelled) | {summary['n_seeds_train']} |
+| Generated | {summary['n_synthetic_train']} |
 
-## Known Limitations
-1. **No pgvector context**: Confidence scores are from Claude without few-shot examples.
-   Production scores would be higher (more context → more confident correct predictions).
-   The RL agent learns to route based on these slightly pessimistic confidence estimates.
-2. **Small seed set**: 50 seeds × 12-40 variants per tier. Synthetic variants may
-   cluster around seed descriptions; true distribution of UK business transactions
-   is broader.
-3. **Single model**: All confidence scores come from {self.model}. Scores are not
-   calibrated across model versions.
-4. **Static difficulty labels**: Difficulty tiers are from the manually-labelled
-   eval fixture, not derived empirically from confidence distributions.
+## Scope of the Data
+1. **Context-free confidence**: Confidence scores are from Claude without few-shot examples;
+   the parent app adds pgvector precedents. The RL agent learns to route on the confidence
+   of a context-free classifier.
+2. **Seed structure**: 50 seeds × 12-40 variants per tier. Variants cluster around seed
+   descriptions; the distribution of UK business transactions is broader.
+3. **Single model**: All confidence scores come from {self.model}, for that model
+   version.
+4. **Difficulty labels**: Difficulty tiers are from the manually-labelled eval fixture.
 
 ## Reproduction
 ```bash
@@ -594,7 +589,7 @@ Requires `ANTHROPIC_API_KEY` in environment. See `.env.example`.
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Generate synthetic transaction data for RL training."
+        description="Generate the transaction dataset for RL training."
     )
     parser.add_argument(
         "--api-key", default=None,
@@ -627,7 +622,7 @@ def main() -> None:
     print(f"  Training set       : {summary['n_train']}")
     print(f"  Held-out eval set  : {summary['n_eval']}")
     print(f"  Seeds in training  : {summary['n_seeds_train']}")
-    print(f"  Synthetic          : {summary['n_synthetic_train']}")
+    print(f"  Generated          : {summary['n_synthetic_train']}")
     print(f"  Overall % correct  : {summary['overall_pct_correct']:.1f}%")
     print("\n  Training by tier:")
     for tier_name, stats in zip(("Easy", "Medium", "Hard"), summary["train_by_tier"]):

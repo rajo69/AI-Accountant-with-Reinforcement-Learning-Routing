@@ -3,7 +3,7 @@ Reward functions for the RL routing agent.
 
 This module is the intellectual core of the project. Every numerical value here
 represents a deliberate, documented design decision. The asymmetries are not
-arbitrary — they reflect the real-world cost structure of an accounting pipeline
+arbitrary: they reflect the real-world cost structure of an accounting pipeline
 where different types of routing errors have very different consequences.
 
 Background
@@ -11,17 +11,17 @@ Background
 The CategoriserAgent outputs a confidence score (0-1) and a predicted category.
 The routing policy must decide what to do with this prediction:
 
-    Action 0 — AUTO_APPROVE:        Accept the prediction, write it to the ledger.
-    Action 1 — SURFACE_FOR_REVIEW:  Send to the accountant queue. A human decides.
-    Action 2 — REJECT_FOR_MANUAL:   Flag for manual re-categorisation from scratch.
+    Action 0, AUTO_APPROVE:        Accept the prediction without human review.
+    Action 1, SURFACE_FOR_REVIEW:  Send to the accountant queue. A human decides.
+    Action 2, REJECT_FOR_MANUAL:   Flag for manual re-categorisation from scratch.
 
 "Correct" means the CategoriserAgent's prediction matched the true category.
 An action is "correct" when it leads to the best outcome for that prediction quality.
 
 Specifically:
     - AUTO_APPROVE is "correct" when the prediction was right (is_correct=True)
-    - SURFACE_FOR_REVIEW is "correct" when the prediction was wrong (is_correct=False)
-      — i.e., escalation was warranted because the agent would have made a mistake
+    - SURFACE_FOR_REVIEW is "correct" when the prediction was wrong (is_correct=False),
+      i.e., escalation was warranted because the agent would have made a mistake
     - REJECT is "correct" when the prediction was wrong (is_correct=False)
 
 Why Three Variants?
@@ -60,7 +60,7 @@ ACTION_NAMES = {
 
 
 # ---------------------------------------------------------------------------
-# Variant A — Binary reward
+# Variant A: Binary reward
 # ---------------------------------------------------------------------------
 
 def reward_a(action: int, is_correct: bool, **kwargs: float) -> float:
@@ -72,20 +72,20 @@ def reward_a(action: int, is_correct: bool, **kwargs: float) -> float:
 
     AUTO_APPROVE correct (+1.0):
         The ideal outcome. Agent was confident AND right. No human time was spent
-        and the ledger entry is accurate. Maximum reward.
+        and the accepted category is correct. Maximum reward.
 
     AUTO_APPROVE incorrect (-2.0):
-        The worst outcome. The agent was wrong but we wrote it to the ledger
-        without human review. This creates a silent error that may not be caught
-        until the quarter-end audit, requiring correction entries and wasted
-        accountant time. The penalty is DOUBLE the reward to create a strong
-        asymmetry — false confidence is far more damaging than over-escalation.
-        Asymmetry ratio: 2:1 (mirrors the >0.85 auto-approval threshold, which
-        itself implies the agent must be right ~85%+ of the time to break even).
+        The worst outcome. The agent was wrong and the prediction was accepted
+        without human review. An accepted wrong prediction may not be noticed
+        until a later review, costing correction work and accountant time.
+        The penalty is DOUBLE the reward to create a strong
+        asymmetry: false confidence is far more damaging than over-escalation.
+        Asymmetry ratio: 2:1, so AUTO_APPROVE has positive expected reward only
+        when P(correct) > 2/3 (see RESEARCH_NOTES.md, reward design).
 
     SURFACE_FOR_REVIEW correct (+0.3):
         Escalation was warranted (agent would have been wrong), but it still
-        costs accountant time and adds latency. Positive but modest — we want
+        costs accountant time and adds latency. Positive but modest: we want
         the agent to prefer auto-approval when genuinely confident, not use
         escalation as a safe default for everything.
 
@@ -99,7 +99,7 @@ def reward_a(action: int, is_correct: bool, **kwargs: float) -> float:
         Flagging for manual re-categorisation was right (agent was badly wrong),
         and the harder intervention is worth more reward than mere escalation (+0.3).
         Manual re-categorisation costs the accountant more time than reviewing a
-        suggestion, hence the moderate reward — it's the right call but expensive.
+        suggestion, hence the moderate reward: it's the right call but expensive.
 
     REJECT incorrect (-1.0):
         Agent was right but we threw away its prediction and forced manual work.
@@ -128,7 +128,7 @@ def reward_a(action: int, is_correct: bool, **kwargs: float) -> float:
 
 
 # ---------------------------------------------------------------------------
-# Variant B — Workload-weighted reward
+# Variant B: Workload-weighted reward
 # ---------------------------------------------------------------------------
 
 def reward_b(action: int, is_correct: bool, accountant_load: float = 0.0, **kwargs: float) -> float:
@@ -163,7 +163,7 @@ def reward_b(action: int, is_correct: bool, accountant_load: float = 0.0, **kwar
         (correct escalation still earns +0.3 regardless of load).
 
     The accountant_load is injected into the observation state, so the agent can
-    LEARN to behave differently when load is high — more conservative about unnecessary
+    LEARN to behave differently when load is high: more conservative about unnecessary
     escalation, favouring auto-approval for borderline cases.
 
     All other reward values are identical to Variant A.
@@ -190,13 +190,13 @@ def reward_b(action: int, is_correct: bool, accountant_load: float = 0.0, **kwar
             # At full load, this is twice as bad as at zero load.
             return -0.3 * (1.0 + float(accountant_load))
 
-    # REJECT_FOR_MANUAL — load does not affect reject reward/penalty
+    # REJECT_FOR_MANUAL: load does not affect reject reward/penalty
     # (manual re-categorisation bypasses the accountant queue entirely)
     return 0.5 if not is_correct else -1.0
 
 
 # ---------------------------------------------------------------------------
-# Variant C — Conservative (compliance-critical) reward
+# Variant C: Conservative (compliance-critical) reward
 # ---------------------------------------------------------------------------
 
 def reward_c(action: int, is_correct: bool, **kwargs: float) -> float:

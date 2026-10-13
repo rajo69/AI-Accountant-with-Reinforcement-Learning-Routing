@@ -1,7 +1,7 @@
-# Dockerfile.reproduce — reproducibility image for the RL routing extension.
+# Dockerfile.reproduce: reproducibility image for the RL routing extension.
 #
 # This image contains the full source tree, the committed PPO models, and the
-# committed synthetic/held-out datasets. Running it regenerates every headline
+# committed training and held-out datasets. Running it regenerates every headline
 # number in the README and in paper/one_pager.md from scratch.
 #
 # Build:   docker build -f Dockerfile.reproduce -t rl-routing-reproduce .

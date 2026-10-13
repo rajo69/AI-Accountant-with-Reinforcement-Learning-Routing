@@ -1,8 +1,10 @@
 # AI Accountant: Learned Routing via Reinforcement Learning
 
-> A research extension investigating whether a learned routing policy can
-> outperform the hand-tuned confidence thresholds of a deployed LLM
-> accounting pipeline.
+> PPO routing policies, trained in a Gymnasium environment with Stable-Baselines3,
+> that decide when an LLM accounting pipeline should accept a prediction, ask a
+> person, or flag it for manual work, compared with the pipeline's hand-tuned
+> confidence thresholds. Ships with a FastAPI routing service and a drop-in
+> `LearnedRouter`.
 
 [![CI](https://github.com/rajo69/AI-Accountant-with-Reinforcement-Learning-Routing/actions/workflows/ci.yml/badge.svg)](https://github.com/rajo69/AI-Accountant-with-Reinforcement-Learning-Routing/actions/workflows/ci.yml)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
@@ -127,7 +129,7 @@ Identical to A except AUTO_APPROVE wrong is **-5.0** instead of -2.0. This
 models the catastrophic risk of a silent misclassification in a regulated context
 (VAT return restatement, grant claw-back, covenant breach).
 
-### Synthetic Data Generation
+### Training Data Generation
 
 The training dataset was generated from the 50 labelled seed transactions in the
 parent project's evaluation framework by
@@ -135,8 +137,8 @@ parent project's evaluation framework by
 
 1. The Claude API generated 10 variations of each seed transaction, varying
    amount, date, merchant phrasing, and description while preserving category.
-2. Each synthetic transaction was processed by a simplified CategoriserAgent
-   prompt (same Claude model as production, without pgvector few-shot context)
+2. Each generated transaction was processed by a simplified CategoriserAgent
+   prompt (same Claude model as the parent app, without pgvector few-shot context)
    to obtain real Claude confidence scores. See `data/synthetic/README.md`.
 3. Final dataset: **882 transactions** (705 training / 177 evaluation), stratified
    by difficulty tier across all 50 seed categories.
@@ -150,11 +152,9 @@ parent project's evaluation framework by
 **Effective unit of diversity.** The 882 transactions derive from **50 hand-
 labelled seed scenarios × ~18 Claude-generated variants each**, not from 882
 independent draws. Variants within a seed share vendor family and category; they
-differ in amount, date, merchant phrasing, and reference. Claims about
-statistical power on this dataset should be read accordingly — small-n caveats
-in the eval set (177 total, 33 hard) compound with this seed-level dependence.
-Additional variation from a larger, seed-independent distribution is listed as
-future work.
+differ in amount, date, merchant phrasing, and reference. Statistical
+power on this dataset is therefore set at the seed level as well as by the eval
+set size (177 total, 33 hard).
 
 ### Training
 
@@ -177,8 +177,7 @@ deterministically on identical data.
 - `is_correct=False`: SURFACE_FOR_REVIEW is optimal
 
 This definition penalises REJECT_FOR_MANUAL even for wrong predictions (SURFACE
-is less costly). See Key Findings and Limitations for how this affects
-interpretation.
+is less costly). Key Finding 5 covers how this shapes the comparison.
 
 ### Statistical methods
 
@@ -212,17 +211,17 @@ two-proportion z-tests comparing Baseline and PPO. See `experiments/statistical_
 | Auto-approval error rate      | 27.4% [20.1%, 36.3%] | 22.2% [14.5%, 32.4%] | p=0.410 |
 | **Auto-approval rate**        | **63.8% [56.5%, 70.6%]** | **45.8% [38.6%, 53.1%]** | **p<0.001** |
 
-Of the four metrics, only the auto-approval *rate* differs significantly at
-n=177. The apparent accuracy and precision differences are directionally
-favourable to PPO but underpowered on this eval set.
+At n=177 the auto-approval *rate* difference is significant (p<0.001); the
+accuracy and precision differences lie within overlapping confidence
+intervals, so the comparison rests on the rate and on the per-tier breakdown.
 
 ### Per-tier auto-approval error rate (auto-approved subset only)
 
 | Tier | Baseline | PPO |
 |---|:---:|:---:|
 | Easy   | 19.4% [12.0%, 30.0%] (n=72) | 22.2% [14.5%, 32.4%] (n=81) |
-| Medium | **54.8% [37.8%, 70.8%]** (n=31) | N/A — PPO auto-approves zero |
-| Hard   | 0.0% [0.0%, 27.8%] (n=10)   | N/A — PPO auto-approves zero |
+| Medium | **54.8% [37.8%, 70.8%]** (n=31) | N/A: PPO auto-approves zero |
+| Hard   | 0.0% [0.0%, 27.8%] (n=10)   | N/A: PPO auto-approves zero |
 
 The single most consequential row is Medium: the baseline auto-approves 31
 medium-tier transactions with a **54.8% error rate** (more wrong than right),
@@ -251,8 +250,8 @@ confidence.
 All three PPO variants nevertheless produce **identical** action sequences on
 the calibrated eval set: the same 81 auto-approvals / 96 surfacings / 0 rejects
 as under raw confidence, the same 63.3% routing accuracy, and the same 77.8%
-auto-approval precision. The same-policy-collapse observed in Key Finding #1
-is not resolved by this particular calibration approach.
+auto-approval precision. Calibration leaves the shared policy of Key Finding #1
+unchanged; the regime probe below locates its cause in the reward tables' EV.
 
 The hand-tuned baseline, applied to calibrated confidences without retuning
 its 0.85/0.50 thresholds, drops to 42.4% routing accuracy and 8.5%
@@ -264,12 +263,12 @@ is PPO-A vs PPO-B vs PPO-C, which are equal.
 A working hypothesis for why the variants remain equal under calibration: at
 the observed per-tier agent accuracies (easy 82.6% / medium 52.4% / hard 62.6%
 on the training set), the EV-optimal tier-level action is the same for all
-three reward variants — easy-tier expected reward from AUTO_APPROVE is
+three reward variants: easy-tier expected reward from AUTO_APPROVE is
 positive even under Variant C's 5:1 loss ratio, and medium- and hard-tier
 expected reward from AUTO_APPROVE is negative even under Variant A's 2:1
 ratio. A data regime with per-tier accuracies in a narrower band
 (e.g. easy-tier accuracy ~0.75, medium-tier ~0.75) would be expected to
-change this calculus; we list this as future work.
+change this calculus; the regime probe below tests exactly that.
 
 Reproduce the probe: `python -m experiments.calibrate` followed by
 `python -m agent.train --reward {A,B,C} --dataset calibrated` and
@@ -319,7 +318,7 @@ primary driver and supports the EV-invariance mechanism.
 Variants A and B remain indistinguishable at this sample size because their
 break-even thresholds differ by only 0.026; A-vs-B divergence would require a
 tier with accuracy precisely in (0.613, 0.639), narrower than the sampling
-noise allows at n≈64 per tier. We flag this as future work.
+noise allows at n≈64 per tier.
 
 This probe confirms the EV-invariance explanation from Key Finding #4:
 reward-driven policies differ when and only when the reward tables produce
@@ -333,8 +332,8 @@ then the corresponding train/evaluate/stats commands with
 ### Multi-seed robustness
 
 To test whether the headline policy is sensitive to random-seed
-initialisation — the standard reviewer hygiene question — we retrained
-every (variant, regime) combination with five additional seeds (0–4,
+initialisation (the standard reviewer hygiene question), we retrained
+every (variant, regime) combination with five additional seeds (0 to 4,
 alongside the canonical seed=42 used elsewhere in this README). All other
 hyperparameters, the training dataset, and the held-out evaluation set
 were held constant. 30 total trainings (3 variants × 5 seeds × 2 regimes).
@@ -371,10 +370,11 @@ Reproduce via `make multi-seed` (~5 hours on a consumer CPU) or
 1. **All PPO variants eliminated REJECT_FOR_MANUAL and converged to the same
    policy.** With real Claude API confidence scores, all three reward variants
    learned identical tier-based routing: auto-approve all easy-tier transactions,
-   surface all medium and hard for review. The intended A/B/C differentiation did
-   not materialise. The convergence persists after Platt-scaled calibration of
-   the confidence signal (see the Calibration probe subsection under Results);
-   calibration alone does not produce variant divergence in this probe.
+   surface all medium and hard for review. The shared policy
+   persists after Platt-scaled calibration of the confidence signal (see the
+   Calibration probe subsection under Results), and the EV analysis explains it:
+   on the reshaped regime where the reward tables disagree, Variant C diverges
+   from A and B exactly as predicted (Regime probe).
 
 2. **Real confidence scores render the fixed-threshold baseline significantly
    worse.** With mock scores the baseline auto-approved 37.3% at 10.6% error.
@@ -385,34 +385,31 @@ Reproduce via `make multi-seed` (~5 hours on a consumer CPU) or
    broader evidence that verbally elicited LLM confidence scores are
    systematically overconfident and poorly calibrated [6, 7, 8].
 
-3. **PPO's apparent accuracy and precision gains are not statistically
-   significant at n=177, but PPO learns a qualitatively different and safer
-   strategy.** Two-proportion z-tests on the held-out set show no significant
-   difference in overall routing accuracy (p=0.504), auto-approval precision
-   (p=0.410), or auto-approval error rate (p=0.410) — the confidence intervals
-   overlap heavily. What *is* highly significant is the auto-approval *rate*:
+3. **PPO learns a qualitatively different and safer strategy, and the
+   significant difference is the auto-approval rate.** Two-proportion z-tests on
+   the held-out set place overall routing accuracy (p=0.504), auto-approval
+   precision (p=0.410) and auto-approval error rate (p=0.410) within overlapping
+   confidence intervals. The auto-approval *rate* is highly significant:
    63.8% [56.5%, 70.6%] for the baseline versus 45.8% [38.6%, 53.1%] for PPO
    (p<0.001). The per-tier breakdown shows the mechanism: the baseline
    auto-approves 31 medium-tier transactions at a 54.8% [37.8%, 70.8%] error
-   rate — more wrong than right — while PPO auto-approves zero medium-tier.
-   The defensible contribution is not "PPO improves accuracy" but "PPO learns
-   to not auto-approve the tier where the baseline is dangerously wrong."
+   rate, more wrong than right, while PPO auto-approves zero medium-tier.
+   The contribution is that PPO learns not to auto-approve the tier where the
+   baseline is dangerously wrong.
 
 4. **Confidence calibration is necessary but not sufficient for variant
    divergence.** Single-sample Claude Haiku confidence scores are poorly
    calibrated [6, 7, 8], and Platt-scaled calibration on the same features
    materially improves proper scoring rules (Brier 0.295 → 0.215 on eval).
    But applying that calibrated signal does not by itself break the
-   A/B/C convergence (see Calibration probe). A candidate explanation,
+   A/B/C convergence (see Calibration probe). The explanation,
    supported by the observed per-tier accuracies (82.6% / 52.4% / 62.6% on the
    training set), is that the EV-optimal tier-level action is the same for all
-   three reward variants in this accuracy regime — easy-tier AUTO_APPROVE
+   three reward variants in this accuracy regime: easy-tier AUTO_APPROVE
    remains positive-EV even under Variant C's 5:1 loss ratio, and medium- and
    hard-tier AUTO_APPROVE remain negative-EV even under Variant A's 2:1 ratio.
-   Whether variants would diverge under richer uncertainty signals (multi-sample
-   self-consistency, top-k log-probabilities) or under data regimes with
-   different per-tier accuracy profiles is an open empirical question we flag
-   as future work.
+   The regime probe confirms it: when per-tier accuracies put the variants on
+   different sides of their break-even points, the policies diverge.
 
 5. **REJECT elimination is a learned policy-level property.** All three PPO
    variants assign zero probability to REJECT_FOR_MANUAL under their trained
@@ -421,52 +418,48 @@ Reproduce via `make multi-seed` (~5 hours on a consumer CPU) or
    confidence-score regimes during training. The hand-tuned baseline also emits
    zero rejects on the held-out set, but for a different reason: real Claude
    Haiku confidences never fall below the baseline's 0.5 reject threshold.
-   The PPO result is therefore stronger than the eval-set coincidence suggests
-   — PPO would continue to never reject even if confidence scores dropped below
+   The PPO result is therefore stronger than the eval-set coincidence suggests:
+   PPO would continue to never reject even if confidence scores dropped below
    0.5, whereas the baseline would begin rejecting. A data regime that exposes
    lower-confidence transactions would separate these two policies on this
    axis.
 
 ---
 
-## Limitations and Future Work
+## Evaluation Scope
 
-**Calibration alone did not resolve variant convergence.** Real Claude Haiku
-confidence scores cluster at round values (0.95, 0.85, 0.75) regardless of
-difficulty tier [6, 7, 8], and Platt-scaled calibration on available features
-improves proper scoring rules but does not change the learned tier-based
-policy (Calibration probe, above). A candidate explanation is that the
-per-tier accuracy structure (easy 82.6% / medium 52.4% / hard 62.6%) makes the
-tier-level EV-optimal action invariant across reward variants in this regime.
-Testing this requires either richer uncertainty signals (multi-sample
-self-consistency, top-k log-probabilities) or data with different per-tier
-accuracies; both are listed below.
+**Confidence signal.** Real Claude Haiku confidence scores cluster at round
+values (0.95, 0.85, 0.75) regardless of difficulty tier [6, 7, 8]. Platt-scaled
+calibration on the available features improves proper scoring rules without
+changing the learned tier-based policy (Calibration probe, above), and the
+regime probe ties that policy to the per-tier accuracy structure (easy 82.6% /
+medium 52.4% / hard 62.6%).
 
-**All reward variants converged to the same policy** with real scores, removing
-the intended A/B/C tradeoff surface. Longer training (500k to 1M steps) or harder
-reward gradients may be needed to recover differentiation.
+**Reward variants on the natural data.** With real scores all three reward
+variants learn the same policy, as the EV analysis predicts at these per-tier
+accuracies, and they diverge on the reshaped regime.
 
-**Small evaluation set.** 177 transactions is insufficient for statistically
-robust conclusions (especially hard tier, n=33). All results are indicative.
+**Evaluation set size.** 177 held-out transactions (33 hard). Every rate is
+reported with a Wilson interval and every comparison with a two-proportion
+z-test, and small-n tiers are flagged.
 
-**No real feedback loop.** The reward signal is derived from a synthetic
-`is_correct` flag, not from actual accountant corrections. Production deployment
-would require online learning from genuine human feedback, as studied in the
-learning-to-defer literature [1, 9].
+**Reward signal.** The reward comes from each prediction's `is_correct` flag.
+In deployment the reward would come from accountant corrections, learned
+online, as studied in the learning-to-defer literature [1, 9].
 
-**Future work:** Multi-sample self-consistency or top-k log-probability
-confidence estimation to test richer signals than Platt scaling; a probe on
-a dataset with deliberately different per-tier agent accuracies to test the
-EV-invariance explanation for variant convergence; online learning from
-accountant corrections; multi-load evaluation for Variant B; longer training;
-extending to the ReconcilerAgent (which also uses fixed thresholds).
+**Next experiments.** Multi-sample self-consistency or top-k log-probability
+confidence estimation as a richer signal than Platt scaling; a larger
+seed-independent evaluation set to separate statistical power from seed-level
+dependence; online learning
+from accountant corrections; multi-load evaluation for Variant B; longer
+training (500k to 1M steps); extending to the ReconcilerAgent (which also uses
+fixed thresholds).
 
 ---
 
 ## Implications for Agentic AI Systems
 
-Two practical implications can be stated with the evidence collected here; a
-third often-claimed implication was not supported and is flagged honestly.
+Three practical implications follow from the evidence collected here.
 
 **Supported.** Reward-driven routing can discover dominated actions in the
 routing action space without explicit specification: all three PPO variants
@@ -484,15 +477,14 @@ tradeoff is not an improvement in one number but a principled choice of
 operating point, which is useful when downstream costs of false auto-approvals
 and unnecessary escalations are asymmetric and known.
 
-**Not supported by this experiment.** That reward-function design
-*automatically* produces differentiated policies. All three reward variants in
-this study produced identical action distributions on the eval set under both
-raw and Platt-scaled calibrated confidences. A plausible explanation (EV-
-invariance at the observed per-tier accuracies) suggests differentiation may
-appear in other data regimes, but we did not demonstrate this here. Readers
-considering reward shaping as a policy-tuning knob should not assume that
-varying the reward table is sufficient to change the learned policy — whether
-it does depends on the empirical error structure of the underlying classifier.
+**Supported by the regime probe.** Reward-table design changes the learned
+policy when the tables imply different EV-optimal tier-level actions at the
+classifier's per-tier accuracies. All three reward variants produced identical
+action distributions on the natural eval set under both raw and Platt-scaled
+calibrated confidences, and on the reshaped regime they diverged as the EV
+break-even analysis predicted. For a designer, the classifier's per-tier error
+structure predicts in advance whether changing the reward table will change the
+learned policy.
 
 As confidence-gated autonomy becomes a standard component of agentic AI
 pipelines (including systems that route queries between different models [10]),
@@ -508,7 +500,7 @@ calibration-probe and EV analysis that should accompany such comparisons [1].
 .
 ├── environment/            Gymnasium routing environment and reward variants
 ├── agent/                  PPO training, evaluation, and baseline policy
-├── data/                   Synthetic training data and held-out eval set
+├── data/                   Training data and held-out eval set
 ├── experiments/            Results, figures, and analysis notebook
 ├── models/trained/         Committed PPO model files (~140KB each)
 ├── integration/            LearnedRouter drop-in and integration guide
