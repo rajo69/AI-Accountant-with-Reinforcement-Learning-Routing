@@ -1,5 +1,5 @@
 """
-experiments/statistical_analysis.py — Statistical rigour for the headline claims.
+experiments/statistical_analysis.py - Statistical rigour for the headline claims.
 
 Loads experiments/results/evaluation_results.json and computes:
 
