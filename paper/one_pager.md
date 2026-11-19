@@ -1,6 +1,6 @@
 # Learned Routing Under Uncalibrated LLM Confidence: a PPO Case Study on an LLM Accounting Pipeline
 
-**Rajarshi Nandi** · `rajarshin264@gmail.com` · [github.com/rajo69/AI-Accountant-with-Reinforcement-Learning-Routing](https://github.com/rajo69/AI-Accountant-with-Reinforcement-Learning-Routing) · April 2026
+**Rajarshi Nandi** · `einkatz65@gmail.com` · [github.com/rajo69/AI-Accountant-with-Reinforcement-Learning-Routing](https://github.com/rajo69/AI-Accountant-with-Reinforcement-Learning-Routing) · April 2026
 
 *This is the 1-page companion note to the repository. For the full methodology, references, and evaluation scope, see the repository README.*
 
