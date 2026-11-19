@@ -8,39 +8,37 @@
 
 ## Problem
 
-Production agentic pipelines increasingly rely on fixed confidence thresholds to decide when an LLM-based component may act autonomously versus escalate to a human. These thresholds (e.g. `confidence > 0.85 ⇒ auto-approve`) are hand-tuned and do not adapt to input difficulty, stakes, or operator load. Confidence-gated autonomy is a core unsolved problem for production deployments of agentic AI.
+Many agentic pipelines use fixed confidence thresholds to decide when an LLM-based component may act on its own and when it should hand a case to a person. These thresholds (e.g. `confidence > 0.85 ⇒ auto-approve`) are hand-tuned and do not adapt to input difficulty, stakes, or operator load.
 
 ## Question
 
-Can a lightweight PPO policy, observing the same confidence score plus a handful of transaction features, outperform the hand-tuned threshold routing of a deployed LLM accounting agent?
+Can a lightweight PPO policy, observing the confidence score plus a few transaction features, route an LLM accounting agent's decisions better than its hand-tuned thresholds?
 
 ## Setup
 
-The parent system is an AI bookkeeping assistant for UK accountants. A `CategoriserAgent` (Claude Haiku via Instructor) assigns a category and a confidence score to each Xero bank transaction; a hand-tuned router then picks one of three actions: `AUTO_APPROVE`, `SURFACE_FOR_REVIEW`, or `REJECT_FOR_MANUAL`. We formalise this as a Gymnasium MDP, generate 882 transactions (stratified 80/20, real Claude confidence scores) from 50 labelled seeds, and train three PPO variants (Stable-Baselines3 2.7.1, 100k steps, seed=42) corresponding to three deployment priorities: a typical firm (A), a workload-weighted high-volume firm (B), and a compliance-critical setting (C) with a 5× penalty on silent auto-approval errors.
+The parent system is an AI bookkeeping assistant for UK accountants. A `CategoriserAgent` (Claude Haiku via Instructor) assigns a category and a confidence score to each Xero bank transaction; a hand-tuned router then picks one of three actions: `AUTO_APPROVE`, `SURFACE_FOR_REVIEW`, or `REJECT_FOR_MANUAL`. The study uses a Gymnasium environment (a contextual bandit, since an action never changes the next transaction) whose state holds the confidence, the log amount and a difficulty-tier label from the seed fixtures; the thresholds see the confidence only. The data are 882 synthetic transactions: 50 seed scenarios written with Claude plus 832 variants, 244 of them template copies from a silent generator fallback, all scored by Claude Haiku 4.5, with labels no person checked. The 80/20 split is by transaction, so all 49 scenarios in the 177-item held-out set also appear in training. Three PPO variants (Stable-Baselines3 2.7.1, 100k steps, seed=42) correspond to three deployment priorities: a typical firm (A), a workload-weighted high-volume firm (B), and a compliance-critical setting (C) with a 5× penalty on silent auto-approval errors.
 
-## Results (held-out n=177; Wilson 95% CIs; two-proportion z-tests)
+## Results (held-out n=177; Wilson 95% CIs, which assume independent items)
 
-| Metric | Baseline | PPO (A/B/C identical) | p |
-|---|:---:|:---:|:---:|
-| Routing accuracy (all 177) | 66.7% [59.4, 73.2] | 63.3% [56.0, 70.0] | 0.504 |
-| Auto-approval precision | 72.6% [63.7, 79.9] | 77.8% [67.6, 85.5] | 0.410 |
-| Auto-approval error rate | 27.4% [20.1, 36.3] | 22.2% [14.5, 32.4] | 0.410 |
-| **Auto-approval rate** | **63.8% [56.5, 70.6]** | **45.8% [38.6, 53.1]** | **<0.001** |
+| Metric | Baseline | PPO (A/B/C identical) |
+|---|:---:|:---:|
+| Routing accuracy (all 177) | 66.7% [59.4, 73.2] | 63.3% [56.0, 70.0] |
+| Auto-approval precision | 72.6% [63.7, 79.9] | 77.8% [67.6, 85.5] |
+| Auto-approval error rate | 27.4% [20.1, 36.3] | 22.2% [14.5, 32.4] |
+| **Auto-approval rate** | **63.8% [56.5, 70.6]** | **45.8% [38.6, 53.1]** |
 
-All three PPO variants produce **identical** action sequences on the eval set. The significant difference is the auto-approval *rate*. The mechanism is visible in the per-tier breakdown among auto-approved transactions: the baseline auto-approves 31 medium-tier transactions at a **54.8% [37.8, 70.8]** error rate (more wrong than right), while the PPO policies auto-approve **zero** medium-tier.
-
-![Error rate by difficulty tier](../experiments/results/figures/fig2_error_by_tier.png)
+All three PPO variants learned the same policy: auto-approve every easy-tier transaction and review every medium-tier and hard-tier one, whatever the confidence. Counting each seed scenario once, the auto-approval gap of 18.1 points has a 95% interval of 4.0 to 32.8 points (exact p = 0.032; 0.096 after a Holm correction over three comparisons). Routing accuracy does not differ between the policies, and neither does better than approving everything (62.1%). The baseline auto-approves 31 medium-tier transactions, 17 of which disagree with the reference labels; PPO auto-approves none of them, because it reviews the whole tier.
 
 ## Interpretation
 
-At n=177 the accuracy and precision differences lie within overlapping confidence intervals; the contribution on the natural data regime is that PPO learns to refuse to auto-approve the tier where the baseline is dangerously wrong.
+The learned policy is a rule on a label the thresholds never see. What it found is that the difficulty tier predicts Haiku's mistakes better than Haiku's stated confidence, which took only 14 distinct values and separated right from wrong answers weakly (AUROC 0.66). A live transaction has no tier, so this is not yet a deployable router.
 
-Two probes refine the mechanistic story. A **calibration probe** (Platt-scaled logistic regression on [confidence, amount, tier_onehot] → is_correct) improves proper scoring rules on eval (Brier 0.295 → 0.215) and leaves the shared A/B/C policy unchanged: all three variants still produce identical action sequences. A **regime probe** reshapes easy-tier accuracy to 0.72, placing it inside the EV-divergence band (0.64, 0.80) where Variant A and B prefer AUTO_APPROVE but Variant C prefers SURFACE_FOR_REVIEW. On the reshaped set the variants diverge exactly as the EV break-even math predicts: A and B auto-approve the entire easy tier while C auto-approves nothing. The binding constraint on variant divergence is therefore the **per-tier accuracy structure**, not calibration quality alone: reward-driven policies differ when the reward tables disagree on the tier-level EV-optimal action at the observed accuracies, and agree otherwise.
+Two probes test the explanation. A **calibration probe** (logistic recalibration on [confidence, amount, tier_onehot] → is_correct; not Platt scaling, which uses the confidence alone) improves proper scoring rules on eval (Brier 0.295 → 0.216, close to the 0.219 that tier base rates alone give) and leaves the shared A/B/C policy unchanged. A **regime probe** removes correct easy-tier items until easy-tier accuracy is 0.72, inside the band (0.64, 0.80) where Variants A and B prefer AUTO_APPROVE but Variant C prefers SURFACE_FOR_REVIEW. On the reshaped set A and B auto-approve the whole easy tier and C auto-approves nothing, as the break-even arithmetic predicts, on raw and recalibrated confidence alike. This is consistent with a simple account: reward tables change the policy when they disagree on the expected-reward-optimal action for a tier at the observed accuracies. On the natural data the margins are thin (the easy tier sits 2.3 points above C's break-even).
 
 ## Next experiments
 
-Multi-sample self-consistency for a fundamentally different uncertainty signal; a larger seed-independent eval set to separate statistical power from seed-level dependence; extension to the parent pipeline's reconciliation agent. (A five-seed robustness sweep has since shipped alongside the code: every trained PPO policy produces an identical action sequence across seeds 0 to 4 and 42 on both the natural raw regime and the constructed divergence regime, confirming the tier-level policy is seed-invariant on this problem; see the repository README's "Multi-seed robustness" subsection.)
+Split by scenario and give every policy the same inputs; compare against a calibrated break-even threshold and a learning-to-defer model; check the labels by hand; use multi-sample self-consistency for a richer uncertainty signal; extend to the parent pipeline's reconciliation agent. A five-seed robustness sweep (30 retrainings over seeds 0 to 4, three variants, two datasets) matched every canonical run's action totals and metrics; see the repository README's "Multi-seed robustness" subsection.
 
 ## Code, data, reproducibility
 
-Full code, held-out eval set, trained PPO models, and a reproducible statistical-analysis script are at the GitHub link above (MIT). All result numbers on this page regenerate via `python -m agent.evaluate` followed by `python -m experiments.statistical_analysis`.
+Full code, held-out eval set, trained PPO models, and a reproducible statistical-analysis script are at the GitHub link above (MIT). The item-level numbers on this page regenerate via `python -m agent.evaluate` followed by `python -m experiments.statistical_analysis`; the scenario-level interval comes from a separate re-analysis described in the README.

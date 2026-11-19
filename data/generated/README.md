@@ -9,13 +9,22 @@ project's eval fixtures).
 ## Generation Methodology
 1. **Seed data**: 50 labelled transactions representing UK business banking activity
    (the parent AI Accountant's eval fixtures, generated with Claude).
-2. **Variant generation**: For each seed, Claude (claude-haiku-4-5-20251001) generated
-   variants by varying merchant name phrasing, amount (±30%), date, and reference
-   while preserving the correct category label.
+2. **Variant generation**: For each seed, Claude (claude-haiku-4-5-20251001) was asked
+   for 12, 20 or 40 variants (easy, medium and hard seeds), varying merchant name
+   phrasing, amount (±30%), date, and reference while preserving the correct category
+   label. For 16 seeds (12 easy, 3 medium, 1 hard) the generation call failed and the
+   simulator silently fell back to template copies: the seed description plus " VAR1",
+   " VAR2" and so on, with the amount jittered by up to 20%. These 244 rows (187
+   training, 57 held out) are in the committed files, and every row of such a seed has
+   the same correctness as the others.
 3. **Confidence scoring**: Each transaction (seed + generated) was run through a
    simplified CategoriserAgent prompt (same model as the parent app, WITHOUT pgvector
-   few-shot context) to obtain a real Claude confidence score.
-4. **Train/eval split**: 80/20 stratified by difficulty tier, fixed seed=42.
+   few-shot context) to obtain Claude's stated confidence. Two rows, the seed rows
+   t001 (training) and t003 (held out), carry a score from the mock fallback scorer
+   instead; their confidences are 0.8336 and 0.8925.
+4. **Train/eval split**: 80/20 by transaction within each difficulty tier, fixed
+   seed=42. The split does not group by seed, so every held-out seed (49 of 50) also
+   has variants in training.
 
 ## Dataset Statistics
 
@@ -49,6 +58,10 @@ project's eval fixtures).
 3. **Single model**: All confidence scores come from claude-haiku-4-5-20251001, for that model
    version.
 4. **Difficulty labels**: Difficulty tiers come from the parent's eval fixtures, generated with Claude.
+5. **Category labels**: Labels also come from those fixtures and were not checked by a
+   person. For seeds t022, t032 and t041 the labelled account has a different name in
+   `data/seeds/accounts.json`, the chart shown to the categoriser, so their rows are
+   almost always scored wrong.
 
 ## Derived datasets
 
@@ -58,7 +71,7 @@ downstream probes rather than by re-running the simulator:
 | File | How produced | Purpose |
 |---|---|---|
 | `transactions.jsonl`            | `environment/transaction_simulator.py` with the Anthropic API | Primary training set. Raw Claude Haiku confidence scores. |
-| `transactions_calibrated.jsonl` | `experiments/calibrate.py` | Replaces `confidence_score` with Platt-scaled output (5-fold stratified-by-tier CV); preserves `confidence_score_raw`. Calibration probe. |
+| `transactions_calibrated.jsonl` | `experiments/calibrate.py` | Replaces `confidence_score` with the output of a logistic recalibration on confidence, amount and tier (5-fold stratified-by-tier CV); preserves `confidence_score_raw`. Calibration probe. |
 | `transactions_regime.jsonl`     | `experiments/regime_probe.py --source calibrated` | Subsamples calibrated training set so easy-tier accuracy lands at 0.72 (inside the A-vs-C EV-divergence band). Regime probe. |
 | `transactions_regime_raw.jsonl` | `experiments/regime_probe.py --source raw` | Same subsampling on the raw-confidence training set as a robustness check. |
 

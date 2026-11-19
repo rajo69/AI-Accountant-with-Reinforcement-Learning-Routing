@@ -13,20 +13,23 @@ The 2:1 ratio in Variant A (correct=+1.0, wrong=−2.0) was derived from the
 existing confidence threshold: the parent project auto-approves above 0.85,
 which implicitly assumes the agent is right at least ~67% of the time at
 that threshold for auto-approval to be net-positive. A 2:1 loss-to-gain ratio
-produces exactly that break-even at 67% confidence, aligning the RL incentive
-with the threshold logic's implicit assumption.
+puts the break-even against a zero reward at 67%. The real alternative to
+auto-approving is sending the item for review (+0.3 if the prediction is wrong,
+−0.3 if it is right), and against that the break-even is 0.639 (README,
+Regime probe).
 
-Variant C's −5.0 was chosen to set the break-even at ~83% (P(correct) > 5/6),
-which is close to the 0.85 hand-tuned threshold. The expectation was that the
+Variant C's −5.0 was chosen to set the break-even against a zero reward at
+~83% (P(correct) > 5/6), which is close to the 0.85 hand-tuned threshold;
+against review it is 0.803. The expectation was that the
 Variant C policy would learn an effective threshold near 0.85. On the raw-
-confidence and Platt-calibrated eval sets PPO-C's action distribution is
+confidence and recalibrated eval sets PPO-C's action distribution is
 identical to PPO-A and PPO-B (81/96/0), because the observed per-tier
 accuracies (easy 82.6% / medium 52.4% / hard 62.6%) happen to place every
 tier outside C's divergence band, so C's EV-optimal tier-level action
 coincides with A's and B's. The regime probe (Results → Regime probe in
-the README) verifies this by reshaping easy-tier accuracy to 0.72, where
-C's EV-optimal action flips to SURFACE while A/B still prefer AUTO,
-producing the expected divergence.
+the README) is consistent with this: reshaping easy-tier accuracy to 0.72,
+where C's EV-optimal action flips to SURFACE while A/B still prefer AUTO,
+produces the expected divergence.
 
 ### Why is SURFACE_FOR_REVIEW penalised symmetrically (+0.3 / −0.3)?
 
@@ -51,11 +54,13 @@ the harder, more decisive call appropriately.
 
 ### Why episode = full dataset pass (not single transactions)?
 
-Early testing used single-transaction episodes (episode length = 1). This
-produced unstable training because the discount factor γ never mattered (no
-multi-step return). Full-dataset episodes (length ~705) allow the policy to
-learn from return propagation and give the Monitor wrapper meaningful episode
-statistics for TensorBoard.
+Early testing used single-transaction episodes (episode length = 1). In
+hindsight the episode length does not change what can be learned here: an
+action affects only its own reward and never which transaction comes next, so
+the task is a contextual bandit and there is no multi-step return to
+propagate. With γ = 0.99 the long episodes mainly add variance to PPO's
+advantage estimates. Full-dataset episodes (length ~705) do give the Monitor
+wrapper meaningful episode statistics for TensorBoard.
 
 ### Why include difficulty_tier as a feature?
 
@@ -65,7 +70,9 @@ features. It was included because
 provides a discrete signal that the 4-dim state space can actually learn from,
 given the mock confidence scores. A deployment would replace difficulty_tier
 with a learned ambiguity score derived from the CategoriserAgent's top-k
-probabilities.
+probabilities. In the event the tier drove every learned policy: each one
+auto-approves exactly the easy tier (README, Results), so the comparison with
+the confidence-only thresholds is not like for like.
 
 ### Why category_entropy = 0.0 for all transactions?
 
@@ -130,8 +137,8 @@ values. Of 705 training transactions:
 - Medium tier: 131/252 scored 0.95; clearly high-confidence even for 48%-accuracy tier
 - Hard tier: 65/131 scored 0.75; still quite high for 52%-accuracy tier
 
-Average confidence by tier: easy=0.938, medium=0.883, hard=0.820. The separation
-(0.118 between easy and hard) is much smaller than mock scores (0.90 - 0.38 = 0.52).
+Average confidence by tier (training set): easy=0.938, medium=0.883, hard=0.813. The
+separation (0.125 between easy and hard) is much smaller than mock scores (0.90 - 0.38 = 0.52).
 This is the fundamental difference between runs.
 
 **Why Haiku outputs round numbers:** Haiku is an instruction-following model
@@ -155,26 +162,28 @@ The convergence across variants on raw and calibrated confidence is not evidence
 single dominant strategy in general: it is evidence that the observed per-tier
 accuracies (82.6% / 52.4% / 62.6%) place every tier outside the A-vs-C EV-divergence
 band (0.64, 0.80). The subsequent regime probe (see Results → Regime probe in the
-README) confirms this: reshaping easy-tier accuracy to 0.72 (inside the divergence
-band) produces the expected A/B vs C variant divergence exactly as the EV break-even
-math predicts, with Variant C refusing all auto-approvals while A and B auto-approve
-the entire easy tier. The prior mock-score run's apparent "Variant C at 45.8% auto-
+README) is consistent with this: reshaping easy-tier accuracy to 0.72 (inside the
+divergence band) produces the A/B vs C divergence that the break-even arithmetic
+predicts, with Variant C making no auto-approvals while A and B auto-approve the
+entire easy tier. The natural-data margins are thin: easy-tier training accuracy is
+2.3 points above C's break-even and hard-tier accuracy 1.3 points below A's. The prior mock-score run's apparent "Variant C at 45.8% auto-
 rate, 9.9% error" distinct-point result is now understood as an artefact of the mock
 score distribution and not load-bearing.
 
 ### Baseline degradation with real scores
 
-The hand-tuned 0.85 threshold was set for the mock score distribution (easy≈0.90,
-medium≈0.65, hard≈0.38). With real scores, nearly everything exceeds
-0.85, so the threshold auto-approves 63.8% of transactions including medium ones with
-54.8% error rates. The baseline's confidence threshold is miscalibrated for real Claude
-output.
+The 0.85 threshold was carried over from the parent project's hand-tuning (README,
+Background) and was never tuned on these data. Under the mock score distribution
+(easy≈0.90, medium≈0.65, hard≈0.38) it separated the tiers. With real scores about
+four in five transactions (723 of 882) score 0.85 or more, so the threshold
+auto-approves 63.8% of held-out transactions, including 31 medium-tier ones of which
+17 disagree with their labels.
 
-This is the most practically important finding. The hand-tuned threshold was set
-before any real confidence distribution existed; with real data the model is
-overconfident, and the threshold needs to be much higher (~0.95) or
-replaced with a non-confidence-based gate (like difficulty_tier) to avoid the
-auto-approval volume the PPO agents correctly reject.
+This is the most practically important observation. A higher threshold does not fix
+it: at 0.95 or above, 30 of the 63 held-out medium-tier items would still be
+auto-approved, 16 of them wrongly, because Haiku's stated confidence barely separates
+right from wrong answers inside that tier. What separated them in this study was the
+difficulty tier, which a live transaction does not carry.
 
 ---
 
@@ -183,13 +192,16 @@ auto-approval volume the PPO agents correctly reject.
 ### Why commit the confidence scores rather than regenerate them in CI?
 
 Generating confidence scores requires running 882 transactions through
-the CategoriserAgent, which calls the Anthropic API at ~$0.01 to $0.05 per
-transaction. Total cost: ~$9 to $44. This is acceptable for a one-time research
-run but not for a public repository where CI would re-run it on every push.
+the CategoriserAgent, one Anthropic API call each, plus the variant-generation
+calls. That is acceptable for a one-time research run but not for a public
+repository where CI would re-run it on every push.
 
 The committed data files (`data/generated/transactions.jsonl` and
 `data/evaluation/held_out_set.json`) use **real** Claude Haiku confidence scores
-from a one-time API run (2026-03-26). These are committed to the repo so that
+from a one-time API run (2026-03-26) for 880 of the 882 rows; the seed rows t001
+and t003 carry mock scores from the simulator's fallback, and 244 variants are
+template copies from its generation fallback (see `data/generated/README.md`).
+These are committed to the repo so that
 results are reproducible without re-running the API. CI does not regenerate
 them; the simulator is run manually with `ANTHROPIC_API_KEY` when the seed
 fixture or model changes.
@@ -206,7 +218,9 @@ intra-tier variance because Haiku is poorly calibrated.
 
 The parent project's eval framework uses 50 labelled transactions; 20% of ~882
 gives 177 held-out transactions (81 easy, 63 medium, 33 hard). The split is
-stratified by difficulty tier to ensure the eval set is representative.
+stratified by difficulty tier to ensure the eval set is representative. It is by
+transaction, not by seed, so every held-out transaction has siblings from its seed
+scenario in training.
 The hard tier has n=33, so hard-tier error rates are read with their Wilson
 intervals.
 
@@ -218,14 +232,17 @@ intervals.
 
 On the original mock-score run Phase 3 evaluation PPO-C showed the best precision
 and lowest error rate and was selected as the integration default. On the subsequent
-real-confidence and Platt-calibrated evaluations PPO-A, PPO-B, and PPO-C produce
+real-confidence and recalibrated evaluations PPO-A, PPO-B, and PPO-C produce
 identical action sequences, so the choice of default among the three is immaterial
 on the natural data regime. PPO-C remains the integration default because it is
 the most conservative under data regimes that fall into its divergence band (as the
 regime probe demonstrates: there C auto-approves nothing while A/B auto-approve
 the easy tier). For an accounting deployment where false auto-approvals carry
 outsized cost, the more conservative default is the defensible choice, even when
-it is empirically equal on the natural-regime eval.
+it is empirically equal on the natural-regime eval. One caution: held-out easy-tier
+accuracy (77.8%) is below C's break-even (0.803), so on the held-out data PPO-C scores
+worse by its own reward than sending everything for review (−0.149 against −0.073 per
+item).
 
 ### Why a module-level singleton for LearnedRouter in the API?
 

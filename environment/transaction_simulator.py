@@ -4,11 +4,14 @@ TransactionSimulator: generates the transaction dataset for RL training.
 Workflow
 --------
 1. Load 50 seed transactions from data/seeds/transactions.json
-2. For each seed, generate N variants using the Claude API
+2. For each seed, generate N variants using the Claude API (12 / 20 / 40 for
+   easy / medium / hard seeds); if a generation call fails, fall back to
+   template copies of the seed (see _mock_variants)
 3. Score each transaction (seed + generated) using a simplified version of the
-   CategoriserAgent prompt to get a real Claude confidence score
+   CategoriserAgent prompt to get Claude's stated confidence; if a scoring call
+   fails, fall back to a mock score (see _mock_score)
 4. Write all records to data/generated/transactions.jsonl
-5. Create a stratified 80/20 train/eval split by difficulty tier
+5. Create an 80/20 train/eval split by transaction within each difficulty tier
 6. Write a data card to data/generated/README.md
 
 Usage
@@ -17,8 +20,8 @@ Usage
     python -m environment.transaction_simulator                  # requires ANTHROPIC_API_KEY
 
 Cost estimate (Haiku):
-    50 seeds × 16 variants = 800 generated records + 50 seeds = 850 total
-    Scoring: ~850 calls × ~600 tokens each ≈ 510k tokens ≈ $0.05
+    50 seeds + 832 variants (12 / 20 / 40 per easy / medium / hard seed) = 882 total
+    Scoring: ~882 calls × ~600 tokens each ≈ 510k tokens ≈ $0.05
     Generation: ~50 calls (batch per seed) × ~300 tokens ≈ 15k tokens ≈ $0.002
     Total: well under $0.10
 
@@ -402,9 +405,10 @@ Return the most appropriate account code and name, your confidence (0.0-1.0), an
         eval_fraction: float,
     ) -> tuple[list[ScoredTransaction], list[ScoredTransaction]]:
         """
-        Stratified split by difficulty tier. The held-out eval set contains
-        exactly eval_fraction of each difficulty tier. Seed (is_synthetic=False)
-        transactions are preferentially kept in the training set.
+        Split by transaction, stratified by difficulty tier. The held-out eval
+        set contains exactly eval_fraction of each difficulty tier. Seed and
+        variant rows are shuffled together and the split does not group by
+        seed_id, so variants of the same seed scenario can fall on both sides.
         """
         rng = random.Random(42)  # fixed for reproducibility
 

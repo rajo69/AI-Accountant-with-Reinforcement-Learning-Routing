@@ -3,6 +3,14 @@
 This guide explains exactly how to replace the hand-tuned confidence threshold
 logic in the parent project's CategoriserAgent with the LearnedRouter.
 
+> **Read this first.** The committed PPO policies decide on `difficulty_tier`,
+> a label from this repository's seed fixtures, and not on the confidence score
+> (see the main README, Results). A live transaction has no such label. With the
+> default tier of 1 (medium) every variant sends every transaction for review,
+> whatever its confidence, and with tier 0 it auto-approves on the label alone.
+> This guide therefore shows the integration mechanics; the router is not ready
+> for deployment until the tier is replaced by a real difficulty estimate.
+
 ## Prerequisites
 
 This guide assumes you have the parent
@@ -55,7 +63,7 @@ def decide(state: CategoriserState) -> CategoriserState:
         confidence_score=confidence,
         transaction_features={
             "amount": float(transaction.get("amount", 0)),
-            "difficulty_tier": 1,     # or derive from context
+            "difficulty_tier": 1,     # the policy routes on this; at 1 every item goes to review
             "category_entropy": 0.0,  # Claude API doesn't return top-k probs
         },
     )

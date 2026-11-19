@@ -1,7 +1,7 @@
 {
   "reward_variant": "A",
   "dataset": "raw",
-  "data_path": "C:\\Users\\Rajo\\Desktop\\projects_2026\\github_exp\\proj_ver\\agentic_ai_rl_routing\\AI-Accountant-with-Reinforcement-Learning-Routing\\data\\synthetic\\transactions.jsonl",
+  "data_path": "data/synthetic/transactions.jsonl",
   "seed": 3,
   "total_timesteps": 100000,
   "final_mean_reward": 140.5,

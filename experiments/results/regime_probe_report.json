@@ -1,7 +1,7 @@
 {
   "config": {
-    "source_train": "C:\\Users\\Rajo\\Desktop\\projects_2026\\github_exp\\proj_ver\\agentic_ai_rl_routing\\AI-Accountant-with-Reinforcement-Learning-Routing\\data\\synthetic\\transactions_calibrated.jsonl",
-    "source_eval": "C:\\Users\\Rajo\\Desktop\\projects_2026\\github_exp\\proj_ver\\agentic_ai_rl_routing\\AI-Accountant-with-Reinforcement-Learning-Routing\\data\\evaluation\\held_out_set_calibrated.json",
+    "source_train": "data/synthetic/transactions_calibrated.jsonl",
+    "source_eval": "data/evaluation/held_out_set_calibrated.json",
     "target_easy_accuracy": 0.72,
     "random_state": 42,
     "ev_divergence_band": {

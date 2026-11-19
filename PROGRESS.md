@@ -31,9 +31,10 @@ in Key Finding #4.
 - [x] Phase 7: Statistical rigour (Wilson CIs, two-proportion z-tests,
       Key Finding #3 reframe)
 - [x] Phase 7b: 1-page technical note companion (paper/)
-- [x] Phase 8a: Calibration probe (Platt scaling; Key Finding #4 reframe)
-- [x] Phase 8b: Regime probe on calibrated and raw confidence (EV-invariance
-      mechanism confirmed on both signal regimes; commits 894cf82 + 2e80cb4)
+- [x] Phase 8a: Calibration probe (logistic recalibration on confidence,
+      amount and tier; Key Finding #4 reframe)
+- [x] Phase 8b: Regime probe on calibrated and raw confidence (consistent
+      with the EV explanation on both signals; commits 894cf82 + 2e80cb4)
 - [x] Phase 10: Repository cleanup; removed vendored parent project
       (backend/, frontend/, deployment configs); trimmed CLAUDE.md and
       RL_ROUTING_PROJECT.md to current-state scaffolding; seed fixtures
@@ -43,9 +44,11 @@ in Key Finding #4.
       std=0.00pp across all headline metrics)
 
 ## Evaluation Notes
-- Evaluation set: 177 transactions (33 hard) from 50 labelled seeds
-  × ~18 variants each. The effective unit of diversity is closer to 50
-  scenarios than to 882 independent draws. Recorded in the README's Evaluation Scope.
+- Evaluation set: 177 transactions (33 hard) from 49 of the 50 labelled
+  seeds (12 / 20 / 40 variants per easy / medium / hard seed; 244 variants
+  are template copies). The split is by transaction, so every held-out seed
+  also appears in training, and the effective unit of diversity is closer to
+  50 scenarios than to 882 independent draws. Recorded in the README.
 - Variants A and B have EV break-even thresholds 0.026 apart (0.639 vs
   0.613); separating them needs a tier with accuracy inside that band, finer
   than n≈64 per tier resolves.
@@ -69,15 +72,19 @@ All three PPO variants produced identical action distributions on the
 | Baseline     | 66.7% [59, 73] | 72.6% [64, 80] | 63.8% [57, 71] | 27.4% [20, 36]  |
 | PPO-A / B / C| 63.3% [56, 70] | 77.8% [68, 86] | 45.8% [39, 53] | 22.2% [15, 32]  |
 
-Two-proportion z-tests: routing accuracy p=0.504, precision p=0.410, error
-rate p=0.410 (within overlapping intervals at n=177). Auto-approval rate
-p<0.001 (highly significant). All three PPO variants are identical on the eval set, reported
-as one column. See `experiments/results/statistical_summary.md`.
+Item-level two-proportion z-tests: routing accuracy p=0.504, precision
+p=0.410, error rate p=0.410. These treat paired, clustered items as
+independent; counting each seed scenario once, the auto-approval-rate gap
+(18.1 points) has a 95% interval of 4.0 to 32.8 points and exact p = 0.032
+(0.096 after Holm). All three PPO variants are identical on the eval set
+(auto-approve iff the tier is easy), reported as one column. See
+`experiments/results/statistical_summary.md` and the README's Results.
 
 ## Calibration Probe Summary (Phase 8a)
-Platt-scaled logistic regression on [raw_conf, amount_normalised,
+Logistic recalibration (not Platt scaling) on [raw_conf, amount_normalised,
 tier_onehot] → is_correct, fit via 5-fold stratified CV. Improves proper
-scoring rules on eval (Brier 0.295 → 0.215, log-loss 0.910 → 0.616).
+scoring rules on eval (Brier 0.295 → 0.216, log-loss 0.910 → 0.616); tier
+base rates alone give 0.219.
 Under calibrated confidence, all three PPO variants STILL produce identical
 action sequences (AUTO 81 / SURFACE 96 / REJECT 0). Calibration leaves the
 shared A/B/C policy unchanged; the regime probe explains why. See Results → Calibration probe in the
@@ -86,10 +93,10 @@ main README.
 ## Regime Probe Summary (Phase 8b)
 Reshapes the easy tier to p=0.72 (inside the A-vs-C EV-divergence band of
 (0.64, 0.80)). On BOTH the calibrated and raw regimes, Variant C diverges
-from A/B exactly as the EV math predicts: A and B auto-approve all 64 easy;
+from A/B as the EV arithmetic predicts: A and B auto-approve all 64 easy;
 C auto-approves zero and surfaces all 160. Divergence replicating on both
-signal regimes rules out a calibration-specific artefact and supports the
-EV-invariance explanation for natural-regime convergence. See README
+signal regimes rules out a calibration-specific artefact and is consistent
+with the EV explanation for natural-regime convergence. See README
 "Regime probe" subsection.
 
 ## Multi-seed Robustness Summary (Phase 9)
@@ -99,9 +106,9 @@ Retrained every (variant, regime) combination with 5 additional seeds
 action totals identical to the canonical seed=42 policy: on raw regime,
 all 15 models are 81/96/0; on regime dataset, A/B are 64/96/0 and C is
 0/160/0. Population standard deviation is 0.00pp across every headline
-metric on both regimes, for every variant. This confirms the tier-level
-policy is seed-invariant on this problem, consistent with the EV-invariance
-mechanism reported in Key Finding #4. See README "Multi-seed robustness"
+metric on both regimes, for every variant. The tier-level policy does not
+depend on the training seed; the seeds leave the data and split fixed, so
+this says nothing about sampling uncertainty. See README "Multi-seed robustness"
 subsection; per-seed numbers in experiments/results/multi_seed_summary_*.
 {md,json}.
 

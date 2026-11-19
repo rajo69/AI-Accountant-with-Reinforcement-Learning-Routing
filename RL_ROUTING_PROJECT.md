@@ -40,34 +40,37 @@ priorities (typical / workload-weighted / compliance-critical).
 
 ### Why this matters beyond this application
 
-Confidence-gated autonomy (deciding when an AI should act versus escalate to
-a human) is an unsolved problem across agentic AI systems broadly. Findings
-here are relevant to clinical decision support, autonomous compliance
-checking, and any multi-agent pipeline where human oversight must be
-calibrated against throughput.
+Deciding when an AI component should act on its own and when it should hand a
+case to a person is an open question for agentic AI systems. This repository
+studies one small, synthetic instance of it; the findings are a case study,
+not a general result.
 
 ### What the repository now reports (as of 2026-04-21)
 
 See `README.md` for full numbers with confidence intervals. In summary:
 
-- On the natural evaluation regime, all three PPO variants converge to the
-  same action sequence; the accuracy and precision differences from the
-  hand-tuned baseline lie within overlapping confidence intervals at n=177.
-- The auto-approval *rate* difference IS highly significant (p<0.001), driven
-  by PPO's refusal to auto-approve medium-difficulty transactions where the
-  baseline has 54.8% error.
-- A calibration probe (Platt-scaled logistic regression) improves Brier and
-  log-loss substantially and leaves the shared policy unchanged.
+- On the natural evaluation regime, all three PPO variants learn the same
+  rule: auto-approve if and only if the difficulty tier is easy. The tier is a
+  label from the seed fixtures that the thresholds do not see. Routing
+  accuracy and precision do not differ from the hand-tuned baseline.
+- The learned policy auto-approves 45.8% of held-out transactions against
+  63.8% for the thresholds. Counting each seed scenario once, the gap has a
+  95% interval of 4.0 to 32.8 points (exact p = 0.032, 0.096 after a Holm
+  correction). It comes from PPO reviewing the whole medium-difficulty tier,
+  where 17 of the baseline's 31 auto-approvals disagree with the labels.
+- A calibration probe (logistic recalibration on confidence, amount and tier)
+  improves Brier and log-loss, mostly by learning the tier base rates, and
+  leaves the shared policy unchanged.
 - A constructed-regime probe (easy-tier accuracy moved into the band where
   Variant C's EV-optimal tier action differs from A/B's) produces the
-  expected divergence on both calibrated and raw confidence. This supports
-  an expected-value-invariance explanation for the natural-regime
+  expected divergence on both calibrated and raw confidence. This is
+  consistent with an expected-value explanation for the natural-regime
   convergence.
 - A five-seed robustness sweep (3 variants x 5 seeds x {raw, regime} = 30
-  trainings) confirms the tier-level policy is seed-invariant on this
-  problem: every trained model produces an action sequence identical to
-  the canonical seed=42 policy, with population standard deviation 0.00
-  percentage points across every headline metric on both regimes.
+  retrainings) shows the tier-level policy does not depend on the training
+  seed: every retrained model matches the action totals of the canonical
+  seed=42 policy, with population standard deviation 0.00 percentage points
+  across every headline metric on both regimes.
 
 ### Integration with the parent project
 

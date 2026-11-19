@@ -1,5 +1,5 @@
 {
-  "held_out_set_path": "C:\\Users\\Rajo\\Desktop\\projects_2026\\github_exp\\RL_Routing_AI_Accountant\\data\\evaluation\\held_out_set.json",
+  "held_out_set_path": "data/evaluation/held_out_set.json",
   "n_transactions": 177,
   "policies": [
     {

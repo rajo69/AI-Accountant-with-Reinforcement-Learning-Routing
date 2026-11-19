@@ -46,11 +46,12 @@ companion. To submit to arXiv as a short technical note:
    with reward-table and full hyperparameters, and a Discussion section
    covering the calibration-probe follow-up.
 2. Register for an arXiv account and obtain an endorsement (cs.LG or cs.AI).
-3. Submit as source (LaTeX + `experiments/results/figures/*.png`) rather
-   than PDF.
+3. Submit as source (LaTeX, plus any figures regenerated from the
+   real-score results) rather than PDF.
 
 The calibration probe and regime probe have since shipped and are
-summarised in the current 1-pager; any arXiv expansion should lead with the
-regime-probe result (EV-invariance confirmed on both raw and calibrated
-signals), with the natural-regime convergence as the observation that
-motivated it.
+summarised in the current 1-pager; any arXiv expansion should lead with what
+the learned policy is (a rule on the difficulty tier) and the regime-probe
+result (consistent with the break-even explanation on both raw and
+recalibrated signals), with the natural-regime convergence as the observation
+that motivated it.

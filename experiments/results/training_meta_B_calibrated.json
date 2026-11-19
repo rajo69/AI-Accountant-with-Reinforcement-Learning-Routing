@@ -1,7 +1,7 @@
 {
   "reward_variant": "B",
   "dataset": "calibrated",
-  "data_path": "C:\\Users\\Rajo\\Desktop\\projects_2026\\github_exp\\proj_ver\\agentic_ai_rl_routing\\AI-Accountant-with-Reinforcement-Learning-Routing\\data\\synthetic\\transactions_calibrated.jsonl",
+  "data_path": "data/synthetic/transactions_calibrated.jsonl",
   "total_timesteps": 100000,
   "final_mean_reward": 110.8746,
   "final_std_reward": 18.2685,
