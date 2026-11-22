@@ -1,7 +1,7 @@
 {
   "config": {
     "source": "raw",
-    "source_train": "data/synthetic/transactions.jsonl",
+    "source_train": "data/generated/transactions.jsonl",
     "source_eval": "data/evaluation/held_out_set.json",
     "target_easy_accuracy": 0.72,
     "random_state": 42,

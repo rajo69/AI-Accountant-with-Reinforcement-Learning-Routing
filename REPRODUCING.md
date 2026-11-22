@@ -11,6 +11,19 @@ Use Python 3.12, the version CI tests. On Windows, if `py -0` does not list
 3.12, [uv](https://docs.astral.sh/uv/) can fetch it for the virtual
 environment.
 
+**On Windows, keep the folder path short.** Windows limits a full file path to
+260 characters unless long paths are switched on, and files inside the
+repository folder go deep: scikit-learn's compiled modules in `.venv` and
+TensorBoard's training logs sit about 110 characters below it, and the deepest
+file the install creates (a JupyterLab asset) about 160. Keep the repository
+folder's own path under about 95 characters, for example
+`C:\code\AI-Accountant-with-Reinforcement-Learning-Routing` (57). Past the
+limit the errors are confusing: `ModuleNotFoundError` from inside scikit-learn
+in `experiments.calibrate`, or `FileNotFoundError` from TensorBoard during
+training. Both happened in testing in a deep folder and went away in a shorter
+one. The other fix is to switch on long paths (`LongPathsEnabled` in the
+registry, administrator rights needed).
+
 Windows (PowerShell):
 
 ```powershell
@@ -90,9 +103,11 @@ that dataset and suffix is missing, so a partial run never replaces a complete
 results file. Delete or commit the suffixed files when you are done.
 
 `--seed N` overrides the training seed in `agent/policy_config.yaml` (42).
-Retraining with the same seed on another machine or library version is not
-guaranteed to give a byte-identical model, so compare action totals and
-metrics, not model files.
+In testing, retraining variant A with seed 42 (stable-baselines3 2.9.2, about
+11 minutes on a laptop CPU) gave the same action as the committed model on all
+177 held-out items and the same final mean reward (140.5). The model file
+itself is not byte-identical, and other machines or library versions may
+differ, so compare actions and metrics, not model files.
 
 ## 5. Which command replaces which file
 
@@ -108,7 +123,11 @@ metrics, not model files.
 | `environment.transaction_simulator --dry-run` | nothing | `data/dry_run/` |
 
 For the raw regime the `_D` part is empty (`evaluation_results.json`,
-`ppo_variant_A.zip`). With `--suffix S`, `S` is appended and nothing committed
+`ppo_variant_A.zip`). Rerunning `experiments.calibrate` (and then
+`experiments.regime_probe`) with today's numpy and scikit-learn changes some
+confidence scores in their last binary digit (at most 2.2e-16), which shows in
+`git status`; every evaluation result and summary computed from them stays
+identical. Discard those changes with `git checkout -- data experiments`. With `--suffix S`, `S` is appended and nothing committed
 is replaced. Training without a suffix replaces the models the README's numbers
 come from, so do it on a git branch. Result files record repository-relative
 paths, so a rerun in another folder does not change them.
