@@ -12,12 +12,19 @@ Workflow
    fails, fall back to a mock score (see _mock_score)
 4. Write all records to data/generated/transactions.jsonl
 5. Create an 80/20 train/eval split by transaction within each difficulty tier
-6. Write a data card to data/generated/README.md
+6. Write generated statistics to data/generated/DATA_CARD_generated.md (the
+   hand-corrected data card, data/generated/README.md, is never overwritten)
 
 Usage
 -----
-    python -m environment.transaction_simulator --dry-run        # mock, no API
-    python -m environment.transaction_simulator                  # requires ANTHROPIC_API_KEY
+    python -m environment.transaction_simulator --dry-run        # mock, no API; writes data/dry_run/
+    python -m environment.transaction_simulator --overwrite --strict   # requires ANTHROPIC_API_KEY
+
+A real run replaces the committed dataset that every committed model and
+result was built from, so it refuses to start without --overwrite. Use a git
+branch. --strict stops at the first failed API call instead of silently
+falling back to template variants or mock scores (which the committed data
+contains; see data/generated/README.md).
 
 Cost estimate (Haiku):
     50 seeds + 832 variants (12 / 20 / 40 per easy / medium / hard seed) = 882 total
@@ -41,6 +48,7 @@ import math
 import os
 import random
 import time
+import zlib
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -144,10 +152,15 @@ class TransactionSimulator:
         model: str = _HAIKU,
         dry_run: bool = False,
         verbose: bool = True,
+        strict: bool = False,
     ) -> None:
         self.model = model
         self.dry_run = dry_run
         self.verbose = verbose
+        self.strict = strict
+        # API failures that fell back to template variants / mock scores
+        self.fallback_seeds: list[str] = []
+        self.mock_scored: list[str] = []
         self._client = None
 
         if not dry_run:
@@ -233,10 +246,19 @@ class TransactionSimulator:
         # Step 5: Compute summary statistics
         summary = self._compute_summary(all_transactions, train_set, eval_set)
 
+        summary["fallback_seeds"] = list(self.fallback_seeds)
+        summary["mock_scored"] = list(self.mock_scored)
+
         # Step 6: Write data card
         self._write_data_card(summary)
 
-        self._log("Done. Data card written to data/generated/README.md")
+        self._log(f"Done. Generated statistics written to {GENERATED_DIR / 'DATA_CARD_generated.md'}")
+        if self.fallback_seeds or self.mock_scored:
+            self._log(
+                f"WARNING: {len(self.fallback_seeds)} seed(s) fell back to template "
+                f"variants and {len(self.mock_scored)} transaction(s) got a mock score "
+                "after an API failure. Rerun with --strict to stop on the first failure."
+            )
         return summary
 
     # ── Private: generation ───────────────────────────────────────────────────
@@ -277,11 +299,13 @@ Return ONLY a valid JSON array (no other text):
             start = raw.find("[")
             end = raw.rfind("]") + 1
             if start == -1 or end == 0:
-                self._log(f"  Warning: Could not parse variants for {seed.id}, using mocks.")
-                return self._mock_variants(seed, n)
+                raise ValueError("no JSON array in the response")
             variants_data = json.loads(raw[start:end])
         except Exception as e:
+            if self.strict:
+                raise RuntimeError(f"Generation failed for {seed.id}: {e}") from e
             self._log(f"  Warning: Generation failed for {seed.id} ({e}), using mocks.")
+            self.fallback_seeds.append(seed.id)
             return self._mock_variants(seed, n)
 
         results = []
@@ -312,7 +336,8 @@ Return ONLY a valid JSON array (no other text):
 
     def _mock_variants(self, seed: RawTransaction, n: int) -> list[ScoredTransaction]:
         """Mock variant generation for dry-run mode."""
-        rng = random.Random(hash(seed.id))
+        # zlib.crc32, not hash(): str hashes change between Python processes
+        rng = random.Random(zlib.crc32(seed.id.encode("utf-8")))
         amount = float(seed.amount)
         variants = []
         for j in range(n):
@@ -381,14 +406,17 @@ Return the most appropriate account code and name, your confidence (0.0-1.0), an
             tx.is_correct = (pred.category_code == tx.true_category_code)
 
         except Exception as e:
+            if self.strict:
+                raise RuntimeError(f"Scoring failed for {tx.transaction_id}: {e}") from e
             self._log(f"  Warning: Scoring failed for {tx.transaction_id} ({e}), using mock.")
+            self.mock_scored.append(tx.transaction_id)
             self._mock_score(tx)
 
     def _mock_score(self, tx: ScoredTransaction) -> None:
         """Assign deterministic mock scores for dry-run mode."""
         tier = tx.difficulty_tier
         # Mock confidence: easy=high, medium=medium, hard=low (with small noise)
-        rng = random.Random(hash(tx.transaction_id))
+        rng = random.Random(zlib.crc32(tx.transaction_id.encode("utf-8")))
         base = {0: 0.90, 1: 0.65, 2: 0.38}[tier]
         tx.confidence_score = max(0.05, min(0.99, base + rng.uniform(-0.08, 0.08)))
         # Mock correctness: correct ~90% easy, ~75% medium, ~50% hard
@@ -500,7 +528,8 @@ python -m environment.transaction_simulator
 ```
 Requires `ANTHROPIC_API_KEY` in environment. See `.env.example`.
 """
-        card_path = GENERATED_DIR / "README.md"
+        # Never README.md: that is the hand-corrected card for the committed data.
+        card_path = GENERATED_DIR / "DATA_CARD_generated.md"
         with open(card_path, "w", encoding="utf-8") as f:
             f.write(card)
 
@@ -612,13 +641,38 @@ def main() -> None:
         "--eval-fraction", type=float, default=0.20,
         help="Fraction of each tier reserved for held-out eval (default: 0.20)"
     )
+    parser.add_argument(
+        "--overwrite", action="store_true",
+        help="Allow a real run to replace the committed dataset in data/generated "
+             "and data/evaluation (do it on a git branch)"
+    )
+    parser.add_argument(
+        "--strict", action="store_true",
+        help="Stop at the first failed API call instead of falling back to "
+             "template variants or mock scores"
+    )
     args = parser.parse_args()
+
+    global GENERATED_DIR, EVAL_DIR
+    if args.dry_run:
+        # Mock data must never replace the committed dataset.
+        GENERATED_DIR = PROJECT_ROOT / "data" / "dry_run" / "generated"
+        EVAL_DIR = PROJECT_ROOT / "data" / "dry_run" / "evaluation"
+    else:
+        targets = [GENERATED_DIR / "transactions.jsonl", EVAL_DIR / "held_out_set.json"]
+        if any(p.exists() for p in targets) and not args.overwrite:
+            parser.error(
+                "this would replace the committed dataset (data/generated/transactions.jsonl, "
+                "data/evaluation/held_out_set.json) that the committed models and results "
+                "were built from. Pass --overwrite, ideally on a git branch, or use --dry-run."
+            )
 
     sim = TransactionSimulator(
         api_key=args.api_key,
         model=args.model,
         dry_run=args.dry_run,
         verbose=True,
+        strict=args.strict,
     )
     summary = sim.run(eval_fraction=args.eval_fraction)
 
@@ -636,10 +690,12 @@ def main() -> None:
             f"correct={stats['pct_correct']:5.1f}%  "
             f"mean_conf={stats['mean_conf']:.3f}"
         )
+    print(f"  API fallbacks      : {len(summary['fallback_seeds'])} seed(s) templated, "
+          f"{len(summary['mock_scored'])} mock score(s)")
     print("\n  Files written:")
-    print("    data/generated/transactions.jsonl")
-    print("    data/evaluation/held_out_set.json")
-    print("    data/generated/README.md")
+    for p in (GENERATED_DIR / "transactions.jsonl", EVAL_DIR / "held_out_set.json",
+              GENERATED_DIR / "DATA_CARD_generated.md"):
+        print(f"    {p.relative_to(PROJECT_ROOT).as_posix()}")
 
 
 if __name__ == "__main__":

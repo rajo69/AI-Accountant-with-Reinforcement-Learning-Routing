@@ -5,6 +5,9 @@
 gymnasium>=0.29.0
 stable-baselines3>=2.3.0
 tensorboard>=2.16.0
+# agent/train.py shows a progress bar (progress_bar=True), which needs both
+tqdm>=4.66.0
+rich>=13.7.0
 
 # ── AI / LLM ─────────────────────────────────────────────────────────────────
 anthropic>=0.40.0

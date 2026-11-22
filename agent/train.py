@@ -204,7 +204,8 @@ def train(
     meta = {
         "reward_variant": reward_variant,
         "dataset": dataset,
-        "data_path": data_path,
+        # repo-relative, so a rerun does not record the local folder name
+        "data_path": Path(data_path).resolve().relative_to(REPO_ROOT).as_posix(),
         "seed": seed_i,
         "total_timesteps": total_timesteps,
         "final_mean_reward": round(mean_reward_f, 4),

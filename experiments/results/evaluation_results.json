@@ -1,4 +1,5 @@
 {
+  "dataset": "raw",
   "held_out_set_path": "data/evaluation/held_out_set.json",
   "n_transactions": 177,
   "policies": [

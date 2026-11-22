@@ -469,8 +469,14 @@ def main() -> None:
              "evaluation_results.json; other choices read the correspondingly "
              "suffixed files.",
     )
+    parser.add_argument(
+        "--suffix",
+        default="",
+        help="Read evaluation_results<tag>S.json (from agent.evaluate --suffix S) "
+             "and write statistical_summary<tag>S.{json,md}.",
+    )
     args = parser.parse_args()
-    tag = "" if args.dataset == "raw" else f"_{args.dataset}"
+    tag = ("" if args.dataset == "raw" else f"_{args.dataset}") + args.suffix
     results_path = RESULTS_DIR / f"evaluation_results{tag}.json"
     summary_json = RESULTS_DIR / f"statistical_summary{tag}.json"
     summary_md = RESULTS_DIR / f"statistical_summary{tag}.md"

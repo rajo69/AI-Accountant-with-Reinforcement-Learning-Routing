@@ -233,7 +233,7 @@ intervals.
 On the original mock-score run Phase 3 evaluation PPO-C showed the best precision
 and lowest error rate and was selected as the integration default. On the subsequent
 real-confidence and recalibrated evaluations PPO-A, PPO-B, and PPO-C produce
-identical action sequences, so the choice of default among the three is immaterial
+the same action totals, so the choice of default among the three is immaterial
 on the natural data regime. PPO-C remains the integration default because it is
 the most conservative under data regimes that fall into its divergence band (as the
 regime probe demonstrates: there C auto-approves nothing while A/B auto-approve

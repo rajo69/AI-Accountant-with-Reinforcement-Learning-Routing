@@ -256,8 +256,8 @@ def main() -> None:
     report = {
         "config": {
             "source": source,
-            "source_train": str(train_in),
-            "source_eval": str(eval_in),
+            "source_train": train_in.resolve().relative_to(REPO_ROOT).as_posix(),
+            "source_eval": eval_in.resolve().relative_to(REPO_ROOT).as_posix(),
             "target_easy_accuracy": TARGETS[0],
             "random_state": RANDOM_STATE,
             "ev_divergence_band": {

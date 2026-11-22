@@ -71,6 +71,14 @@ OPTIMAL_ACTION = {True: 0, False: 1}
 # Data loading
 # ---------------------------------------------------------------------------
 
+def repo_relative(path: Path) -> str:
+    """Path as recorded in results files: repo-relative, forward slashes."""
+    try:
+        return Path(path).resolve().relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        return str(path)
+
+
 def load_held_out_set(path: Path) -> list[dict]:
     with open(path, "r") as f:
         data = json.load(f)
@@ -291,11 +299,20 @@ def main() -> None:
              "'calibrated' uses the Platt-scaled eval set and "
              "ppo_variant_{A,B,C}_calibrated.zip.",
     )
+    parser.add_argument(
+        "--suffix",
+        default="",
+        help="Evaluate models trained with `python -m agent.train --suffix S` "
+             "(ppo_variant_{A,B,C}<tag>S.zip) and write "
+             "evaluation_results<tag>S.json, leaving the committed results "
+             "untouched.",
+    )
     args = parser.parse_args()
     dataset: str = args.dataset
     held_out_path = EVAL_DATASETS[dataset]
     tag = "" if dataset == "raw" else f"_{dataset}"
-    results_filename = f"evaluation_results{tag}.json"
+    suffix: str = args.suffix
+    results_filename = f"evaluation_results{tag}{suffix}.json"
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -325,14 +342,23 @@ def main() -> None:
 
     for i, variant in enumerate(["A", "B", "C"], start=2):
         print(f"  [{i}/4] PPO Variant {variant}...")
-        all_results.append(evaluate_ppo(records, variant, tag=tag))
+        all_results.append(evaluate_ppo(records, variant, tag=tag + suffix))
+
+    missing = [r["policy"] for r in all_results if "error" in r]
+    if missing:
+        # Never overwrite a good results file with one that lacks a policy.
+        raise SystemExit(
+            f"Not saved: no model file for {', '.join(missing)} "
+            f"(looked for {TRAINED_DIR.name}/ppo_variant_<A|B|C>{tag}{suffix}.zip). "
+            "Train all three variants with the same --dataset and --suffix first."
+        )
 
     print_comparison_table(all_results)
 
     # Save results
     output = {
         "dataset": dataset,
-        "held_out_set_path": str(held_out_path),
+        "held_out_set_path": repo_relative(held_out_path),
         "n_transactions": len(records),
         "policies": all_results,
     }

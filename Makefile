@@ -4,7 +4,9 @@
 # committed PPO models on the committed held-out sets for all four regimes
 # (raw, calibrated, regime, regime_raw), regenerates the statistical
 # summaries, and re-evaluates the 30 multi-seed models without retraining.
-# Runs in ~2 minutes on a laptop CPU.
+# Runs in ~2 minutes on a laptop CPU. Without Make (for example on Windows),
+# `python -m experiments.reproduce --check` runs the same steps and then
+# confirms that every regenerated file matches the committed one.
 #
 # `reproduce-full` additionally retrains every (variant × regime) combination
 # from scratch. ~4 hours on a consumer CPU. Useful for verifying the committed

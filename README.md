@@ -708,9 +708,17 @@ python -m experiments.statistical_analysis   # regenerate CIs and p-values
 uvicorn api.main:app --reload     # serve the routing API at localhost:8000/docs
 ```
 
-With GNU Make installed, `make reproduce-fast` runs the full evaluate +
-statistical-analysis pipeline for all four regimes in one command. To
-retrain from scratch:
+To rerun the evaluation for all four regimes and confirm that every
+regenerated file matches the committed one (no API key, about a minute on a
+laptop CPU; `make reproduce-fast` runs the same steps where GNU Make is
+installed):
+
+```bash
+python -m experiments.reproduce --check
+```
+
+To retrain from scratch (this replaces the committed models; add
+`--suffix _try1` to write new files beside them instead):
 
 ```bash
 python -m agent.train --reward A  # approximately 10 min on CPU
@@ -718,6 +726,10 @@ python -m agent.train --reward B
 python -m agent.train --reward C
 # or: make reproduce-full  (all variants, all regimes)
 ```
+
+[REPRODUCING.md](REPRODUCING.md) covers setting up from an empty folder
+(Windows included), trying changes without overwriting the committed results,
+which command replaces which file, and regenerating the dataset.
 
 ---
 

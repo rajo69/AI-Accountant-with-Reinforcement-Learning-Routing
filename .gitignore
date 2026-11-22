@@ -39,6 +39,8 @@ Thumbs.db
 
 # RL Routing: data and model artifacts
 data/raw/
+# transaction_simulator.py --dry-run writes here, never over the committed data
+data/dry_run/
 experiments/tensorboard/
 models/checkpoints/
 # trained model zips are committed (small, ~140KB each)
