@@ -176,7 +176,7 @@ def analyse(policies: list[dict]) -> dict:
     report: dict = {
         "baseline_name": baseline["policy"],
         "ppo_name": (
-            f"{ppo['policy']} (A/B/C identical on eval)"
+            f"{ppo['policy']} (A/B/C same action totals on eval)"
             if variants_converge else
             f"{ppo['policy']} (PPO-A shown; A/B/C DIVERGE — see per-variant block)"
         ),
@@ -280,9 +280,10 @@ def analyse(policies: list[dict]) -> dict:
     # --- Qualitative notes ----------------------------------------------------
     if variants_converge:
         report["notes"].append(
-            f"PPO A/B/C produce identical action sequences on the eval set "
+            f"PPO A/B/C produce the same action totals on the eval set "
             f"(total AUTO={ppo['auto']}, SURFACE={ppo['surface']}, REJECT={ppo['reject']}), "
-            f"so only one PPO column needs reporting in comparison tables."
+            f"so one PPO column is reported in comparison tables (equal totals, "
+            f"not a check that every item gets the same action)."
         )
     else:
         totals = report["variant_action_totals"]
@@ -302,16 +303,20 @@ def analyse(policies: list[dict]) -> dict:
         report["notes"].append(
             "Both policies emit 0 REJECT_FOR_MANUAL on this eval set. For the raw-"
             "confidence regime, this is because real Claude Haiku confidences "
-            "never fall below 0.5 (the baseline's reject threshold); PPO's "
-            "REJECT-elimination is a learned policy-level property invariant to "
-            "input confidence, whereas the baseline's zero rejects reflect the "
-            "data distribution."
+            "never fall below 0.5 (the baseline's reject threshold); PPO's zero "
+            "rejects follow from the reward tables, under which rejecting beats "
+            "sending for review only when the chance of a correct prediction is "
+            "below about 0.22 under Variants A and C (at most 0.33 under B), "
+            "and no tier in this data is that low."
         )
     elif baseline["reject"] > 0 and ppo["reject"] == 0:
         report["notes"].append(
             f"The baseline emits {baseline['reject']} REJECT_FOR_MANUAL "
             f"decisions on this eval set while PPO emits 0. The PPO policies "
-            f"assign zero probability to REJECT regardless of input; the baseline "
+            f"do not choose REJECT: under the reward tables it beats sending for "
+            f"review only when the chance of a correct prediction is below about "
+            f"0.22 under Variants A and C (at most 0.33 under B), and no tier in "
+            f"this data is that low. The baseline "
             f"uses REJECT whenever the thresholded score falls below its lower "
             f"threshold (0.50 on raw, not recalibrated for calibrated input)."
         )
@@ -319,13 +324,15 @@ def analyse(policies: list[dict]) -> dict:
     if comparisons["auto_error_rate"]["p_value"] > 0.05:
         report["notes"].append(
             "The Baseline-vs-PPO difference in auto-approval error rate is NOT "
-            "statistically significant at alpha=0.05."
+            "statistically significant at alpha=0.05 (item-level z-test)."
         )
     if comparisons["auto_approval_rate"]["p_value"] < 0.05:
         report["notes"].append(
-            "The Baseline-vs-PPO difference in auto-approval RATE is highly "
-            "significant: the two policies sit at very different points on the "
-            "coverage/precision tradeoff curve."
+            "The Baseline-vs-PPO difference in auto-approval RATE has an "
+            "item-level p below 0.05: the two policies sit at different points "
+            "on the coverage/precision tradeoff. Item-level tests treat items "
+            "as independent, but items cluster in seed scenarios; see the "
+            "scenario-level comparison in the README before quoting this."
         )
 
     return report
@@ -417,7 +424,7 @@ def write_markdown(report: dict, path: Path) -> None:
     lines.append("")
     lines.append("All intervals are Wilson score 95% CIs. p-values are two-sided two-proportion z-tests (Baseline vs PPO).")
     lines.append("")
-    ppo_hdr = "PPO (A/B/C identical)" if report.get("variants_converge", True) else "PPO (A representative; A/B/C diverge, see notes)"
+    ppo_hdr = "PPO (A/B/C same totals)" if report.get("variants_converge", True) else "PPO (A representative; A/B/C diverge, see notes)"
     lines.append(f"| Metric | Baseline (0.85/0.50) | {ppo_hdr} | Significance |")
     lines.append("|---|:---:|:---:|:---:|")
     lines.append(row(f"Routing accuracy (over {n})", "routing_accuracy"))

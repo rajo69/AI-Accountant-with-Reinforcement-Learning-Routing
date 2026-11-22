@@ -2,7 +2,7 @@
 
 All intervals are Wilson score 95% CIs. p-values are two-sided two-proportion z-tests (Baseline vs PPO).
 
-| Metric | Baseline (0.85/0.50) | PPO (A/B/C identical) | Significance |
+| Metric | Baseline (0.85/0.50) | PPO (A/B/C same totals) | Significance |
 |---|:---:|:---:|:---:|
 | Routing accuracy (over 177) | 66.7% [59.4, 73.2] | 63.3% [56.0, 70.0] | p=0.504 |
 | Auto-approval precision | 72.6% [63.7, 79.9] | 77.8% [67.6, 85.5] | p=0.410 |
@@ -19,7 +19,7 @@ All intervals are Wilson score 95% CIs. p-values are two-sided two-proportion z-
 
 ### Interpretation
 
-- PPO A/B/C produce identical action sequences on the eval set (total AUTO=81, SURFACE=96, REJECT=0), so only one PPO column needs reporting in comparison tables.
-- Both policies emit 0 REJECT_FOR_MANUAL on this eval set. For the raw-confidence regime, this is because real Claude Haiku confidences never fall below 0.5 (the baseline's reject threshold); PPO's REJECT-elimination is a learned policy-level property invariant to input confidence, whereas the baseline's zero rejects reflect the data distribution.
-- The Baseline-vs-PPO difference in auto-approval error rate is NOT statistically significant at alpha=0.05.
-- The Baseline-vs-PPO difference in auto-approval RATE is highly significant: the two policies sit at very different points on the coverage/precision tradeoff curve.
+- PPO A/B/C produce the same action totals on the eval set (total AUTO=81, SURFACE=96, REJECT=0), so one PPO column is reported in comparison tables (equal totals, not a check that every item gets the same action).
+- Both policies emit 0 REJECT_FOR_MANUAL on this eval set. For the raw-confidence regime, this is because real Claude Haiku confidences never fall below 0.5 (the baseline's reject threshold); PPO's zero rejects follow from the reward tables, under which rejecting beats sending for review only when the chance of a correct prediction is below about 0.22 under Variants A and C (at most 0.33 under B), and no tier in this data is that low.
+- The Baseline-vs-PPO difference in auto-approval error rate is NOT statistically significant at alpha=0.05 (item-level z-test).
+- The Baseline-vs-PPO difference in auto-approval RATE has an item-level p below 0.05: the two policies sit at different points on the coverage/precision tradeoff. Item-level tests treat items as independent, but items cluster in seed scenarios; see the scenario-level comparison in the README before quoting this.

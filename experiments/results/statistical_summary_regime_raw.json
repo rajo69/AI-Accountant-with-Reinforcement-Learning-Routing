@@ -176,8 +176,8 @@
   },
   "notes": [
     "PPO A/B/C DIVERGE on this eval set. Per-variant action totals (AUTO/SURFACE/REJECT): A=64/96/0, B=64/96/0, C=0/160/0. The main Baseline-vs-PPO table below uses Variant A as the PPO representative; the per-variant divergence is the headline finding.",
-    "Both policies emit 0 REJECT_FOR_MANUAL on this eval set. For the raw-confidence regime, this is because real Claude Haiku confidences never fall below 0.5 (the baseline's reject threshold); PPO's REJECT-elimination is a learned policy-level property invariant to input confidence, whereas the baseline's zero rejects reflect the data distribution.",
-    "The Baseline-vs-PPO difference in auto-approval error rate is NOT statistically significant at alpha=0.05.",
-    "The Baseline-vs-PPO difference in auto-approval RATE is highly significant: the two policies sit at very different points on the coverage/precision tradeoff curve."
+    "Both policies emit 0 REJECT_FOR_MANUAL on this eval set. For the raw-confidence regime, this is because real Claude Haiku confidences never fall below 0.5 (the baseline's reject threshold); PPO's zero rejects follow from the reward tables, under which rejecting beats sending for review only when the chance of a correct prediction is below about 0.22 under Variants A and C (at most 0.33 under B), and no tier in this data is that low.",
+    "The Baseline-vs-PPO difference in auto-approval error rate is NOT statistically significant at alpha=0.05 (item-level z-test).",
+    "The Baseline-vs-PPO difference in auto-approval RATE has an item-level p below 0.05: the two policies sit at different points on the coverage/precision tradeoff. Item-level tests treat items as independent, but items cluster in seed scenarios; see the scenario-level comparison in the README before quoting this."
   ]
 }
